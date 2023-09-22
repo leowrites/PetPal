@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pet Applicaiton</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="../index.css" rel="stylesheet" />
+  </head>
+  <body>
+    <main>
+      <div class="container mx-auto px-5 md:px-10">
+        <div class="order-1 grid md:grid-cols-3 md:grid-rows-3 gap-4 h-fit">
+          <div>
+            <img
+              src="/P1/assets/dog_photo1.png"
+              alt=""
+              class="w-full h-full object-cover pet-photo rounded-xl"
+            />
+          </div>
+          <div
+            class="order-3 md:order-2 md:col-span-2 md:row-span-3 pet-overview-box p-5 rounded-xl"
+          >
+            <div class="flex flex-col gap-2">
+              <p class="text-2xl min-w-full">Apply to Adopt</p>
+              <p class="text-xl min-w-full">Additional Information</p>
+              <!-- form stuff -->
+              <form class="flex flex-col w-full gap-4">
+                <div>
+                  <label for="pet-exp" class="block font-semibold"
+                    >Have you had a pet before? How much experience do you have as a pet
+                    owner?</label
+                  >
+                  <input
+                    id="pet-exp"
+                    type="text"
+                    class="w-full px-3 py-2 rounded-lg border-2 border-gray-200"
+                    placeholder="Toronto"
+                  />
+                </div>
+                <div>
+                  <label for="other-pets" class="block font-semibold">Do you have any other pets?</label>
+                  <input
+                    id="other-pets"
+                    type="text"
+                    class="w-full px-3 py-2 rounded-lg border-2 border-gray-200"
+                    placeholder="Toronto"
+                  />
+                </div>
+                <div>
+                  <label for="pet-sleep-loc" class="block font-semibold"
+                    >Where will the pet be sleeping?</label
+                  >
+                  <input
+                    id="pet-sleep-loc"
+                    type="text"
+                    class="w-full px-3 py-2 rounded-lg border-2 border-gray-200"
+                    placeholder="Toronto"
+                  />
+                </div>
+                <div>
+                  <label for="pet-alone-hr" class="block font-semibold"
+                    >How many hours of the day will the pet be alone? Why?</label
+                  >
+                  <input
+                    id="pet-alone-hr"
+                    type="text"
+                    class="w-full px-3 py-2 rounded-lg border-2 border-gray-200"
+                    placeholder="Toronto"
+                  />
+                </div>
+                <div class="flex">
+                  <div class="inline px-2">
+                    <input id="medical-requirement" type="checkbox" placeholder="123-123-123" />
+                  </div>
+                  <label for="medical-requirement" class="font-semibold">
+                    Have you reviewed the pet’s medical conditions and other requirements?</label
+                  >
+                </div>
+                <div>
+                  <button
+                    onclick="location.href='../pet_application/pet_application_basic_info.html'"
+                    class="text-white py-2 px-10 rounded-full enabled-button mt-5 w-fit"
+                  >
+                    <p class="text-sm w-fit">Last</p>
+                  </button>
+                  <button
+                    onclick="location.href='../pet_application/pet_application.html'"
+                    class="text-white py-2 px-10 rounded-full enabled-button mt-5 w-fit"
+                  >
+                    <p class="text-sm w-fit">Submit</p>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="order-2 md:order-3 md:row-span-2">
+            <div class="flex flex-col gap-1 p-5 rounded-xl pet-overview-box">
+              <p class="text-lg font-bold">Don Quixote</p>
+              <p class="text-sm">Listed 3 hours ago</p>
+              <p class="text-sm pet-overview-box-status">Status: Available</p>
+              <p class="text-sm underline pet-overview-box-shelter">Toronto Humane Society</p>
+              <p class="text-sm pet-overview-box-breed">Golden Retriever (Age 3)</p>
+              <p class="text-sm">
+                Meet Don, the most enchanting and extraordinary pet you'll ever have the pleasure of
+                adopting! Fluffy is a rare breed called a "Rainbow Rascal," known for their mythical
+                and colorful fur that shimmers like a thousand gems in the sunlight. This magical
+                fur changes color with Fluffy's mood, making each day an enchanting surprise.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
