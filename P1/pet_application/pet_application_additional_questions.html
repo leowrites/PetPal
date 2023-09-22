@@ -15,7 +15,7 @@
             <img
               src="/P1/assets/dog_photo1.png"
               alt=""
-              class="w-full h-full object-cover pet-photo rounded-xl"
+              class="w-full h-full object-cover pet-photo rounded-xl aspect-square"
             />
           </div>
           <div
@@ -25,7 +25,7 @@
               <p class="text-2xl min-w-full">Apply to Adopt</p>
               <p class="text-xl min-w-full">Additional Information</p>
               <!-- form stuff -->
-              <form class="flex flex-col w-full gap-4">
+              <form class="flex flex-col w-full gap-4" action="../pet_application/pet_application_complete.html">
                 <div>
                   <label for="pet-exp" class="block font-semibold"
                     >Have you had a pet before? How much experience do you have as a pet
@@ -85,7 +85,7 @@
                     <p class="text-sm w-fit">Last</p>
                   </button>
                   <button
-                    onclick="location.href='../pet_application/pet_application.html'"
+                    onclick="location.href='../pet_application/pet_application_complete.html'"
                     class="text-white py-2 px-10 rounded-full enabled-button mt-5 w-fit"
                   >
                     <p class="text-sm w-fit">Submit</p>
