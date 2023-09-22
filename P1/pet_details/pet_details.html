@@ -1,12 +1,87 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Pet Details</title>
     <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body>
-    
-</body>
+    <link href="pet_details.css" rel="stylesheet" />
+  </head>
+  <body>
+    <main>
+      <!-- status banner -->
+      <div class="status-banner text-center text-white w-full mb-10 font-medium text-sm p-2">Don Quixote is not available for adoption at this time, status: withdrawn</div>
+      <div class="container mx-auto px-5 md:px-10">
+        <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
+          <div class="col-span-2">
+            <img class="rounded-xl w-full object-cover pet-photo" src="../assets/dog_photo1.png" />
+          </div>
+          <div class="col-span-1">
+            <img
+              class="rounded-xl max-w-full h-full object-cover pet-photo"
+              src="../assets/dog_photo1.png"
+            />
+          </div>
+          <div class="col-span-1">
+            <img
+              class="rounded-xl max-w-full h-full object-cover pet-photo"
+              src="../assets/dog_photo1.png"
+            />
+          </div>
+        </div>
+        <div class="grid grid-cols-1 my-5 gap-5 md:grid-cols-5">
+          <div
+            class="col-span-1 md:col-span-3 p-5 py-10 rounded-xl pet-detail-box order-last md:order-first"
+          >
+            <div class="flex flex-col gap-2">
+              <div class="div">
+                <p class="text-lg font-semibold">Medical History</p>
+                <p class="text-sm">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta, assumenda beatae
+                  odit voluptate ex quasi cumque quia molestias pariatur qui consequuntur. Culpa
+                  incidunt deleniti officia, vel esse repudiandae molestiae illo.
+                </p>
+              </div>
+              <div class="div">
+                <p class="text-lg font-semibold">Behavior</p>
+                <p class="text-sm">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta, assumenda beatae
+                  odit voluptate ex quasi cumque quia molestias pariatur qui consequuntur. Culpa
+                  incidunt deleniti officia, vel esse repudiandae molestiae illo.
+                </p>
+              </div>
+              <div class="div">
+                <p class="text-lg font-semibold">Other Notes</p>
+                <p class="text-sm">
+                  Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta, assumenda beatae
+                  odit voluptate ex quasi cumque quia molestias pariatur qui consequuntur. Culpa
+                  incidunt deleniti officia, vel esse repudiandae molestiae illo.
+                </p>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-span-1 md:col-span-2 p-5 py-10 rounded-xl pet-overview-box order-first md:order-last"
+          >
+            <div class="flex flex-col gap-1">
+              <p class="text-lg font-bold">Don Quixote</p>
+              <p class="text-sm">Listed 3 hours ago</p>
+              <p class="text-sm pet-overview-box-status">Status: Available</p>
+              <p class="text-sm underline pet-overview-box-shelter">Toronto Humane Society</p>
+              <p class="text-sm pet-overview-box-breed">Golden Retriever (Age 3)</p>
+              <p class="text-sm">
+                Meet Don, the most enchanting and extraordinary pet you'll ever have the pleasure of
+                adopting! Fluffy is a rare breed called a "Rainbow Rascal," known for their mythical
+                and colorful fur that shimmers like a thousand gems in the sunlight. This magical
+                fur changes color with Fluffy's mood, making each day an enchanting surprise.
+              </p>
+              <button class="text-white py-2 px-10 rounded-full enabled-button mt-5 w-fit">
+                <p class="text-sm w-fit">Adopt</p>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
 </html>
