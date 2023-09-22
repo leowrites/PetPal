@@ -5,12 +5,153 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Petpal</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=IBM Plex Sans Condensed' rel='stylesheet'>
+    <link rel="stylesheet" href="index.css">
 </head>
-<body>
-    <div class="container mx-auto">
-        <h1 class="text-3xl font-bold">
-            Hello 309!
-        </h1>
+<body class="relative min-h-[100vh] bg-[#FFFFFF]">
+    <div class="pb-[3rem]">
+        <header class="bg-[#FFF8F4] flex flex-row flex-nowrap justify-between text-[1rem]">
+            <div class=" flex flex-row text-[2rem] p-[1.5rem]">
+                <h1 class="pr-[25px] text-[#290005]">Pet Pal</h1>
+                <object data="./assets/logo.svg" type="image/svg+xml"></object>
+            </div>
+            <div class="flex flex-row text-[1rem] font-medium self-end">
+                <div class="border-b-[1rem] border-[#290005] pb-[1.5rem] px-[2rem] hover:cursor-default">Home</div>
+                <div class="px-[2rem] hover:cursor-pointer">Adopt</div>
+                <div class="px-[2rem] hover:cursor-pointer">Rehome</div>
+                <div class="px-[2rem] hover:cursor-pointer">Shelters</div>
+            </div>
+
+            <div class="self-center flex flex-row gap-[1rem] pr-[1.5rem] font-semibold">
+                <div class="bg-[#FF9447] py-[.75rem] w-[8rem] text-center text-[#FFF8F4]">
+                    Sign Up
+                </div>
+                <div class="border-[#290005] border-[1px] py-[.75rem] w-[8rem] text-center text-[#290005]">
+                    Log In
+                </div>
+            </div>
+        </header>
+        <div>
+            <div class="bg-cover bg-bottom h-[379px] text-center text-[#FFF8F4] flex flex-col justify-center" style="background-image: url(./assets/landing_bg.png);">
+                <h1 class="text-[4rem]">Find a pet you love</h1>
+                <h2 class="text-[1.25rem] font-semibold tracking-wider">Let’s find the friend that’s purr-fect for you</h2>
+            </div>
+
+            <div class="px-[9rem] text-[#290005]">
+                <div class="flex flex-col items-center gap-[.25rem] pb-[3rem]">
+                <div class="flex flex-col justify-start">
+                    <div class="text-[1.5rem] pb-[4px] font-semibold">Latest in Ontario</div>
+                        <div class="flex flex-row flex-wrap justify-start gap-[3rem]">
+                            <div class="rounded-[20px]" style="box-shadow: 0px 7px 22px 0px rgba(0, 0, 0, 0.20);">
+                                <div class="w-[300px] h-[200px] rounded-[20px]" style="background-image: url(./assets/dog_photo1.png);"></div>
+                                <div class="pb-[1rem] pt-[.5rem] px-[.5rem]">
+                                    <div class="flex flex-row flex-nowrap justify-between items-center">
+                                        <div class="font-semibold">Don Quixote</div>
+                                        <div class="text-[.75rem]">Listed 3 hours ago</div>
+                                    </div>
+                                    <div class="flex flex-row flex-nowrap justify-between items-center text-[#5A2028]">
+                                        <div class="text-[.625rem]">Toronto Humane Society</div>
+                                        <div class="text-[.625rem]">Golden Retriever (Age 3)</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="rounded-[20px]" style="box-shadow: 0px 7px 22px 0px rgba(0, 0, 0, 0.20);">
+                                <div class="w-[300px] h-[200px] rounded-[20px]" style="background-image: url(./assets/pet_photo2.png);"></div>
+                                <div class="pb-[1rem] pt-[.5rem] px-[.5rem]">
+                                    <div class="flex flex-row flex-nowrap justify-between items-center">
+                                        <div class="font-semibold">Bert</div>
+                                        <div class="text-[.75rem]">Listed 8 hours ago</div>
+                                    </div>
+                                    <div class="flex flex-row flex-nowrap justify-between items-center text-[#5A2028]">
+                                        <div class="text-[.625rem]">Toronto Animal Rescue</div>
+                                        <div class="text-[.625rem]">German Shorthaired (Age 9)</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="rounded-[20px]" style="box-shadow: 0px 7px 22px 0px rgba(0, 0, 0, 0.20);">
+                                <div class="w-[300px] h-[200px] rounded-[20px]" style="background-image: url(./assets/pet_photo3.png);"></div>
+                                <div class="pb-[1rem] pt-[.5rem] px-[.5rem]">
+                                    <div class="flex flex-row flex-nowrap justify-between items-center">
+                                        <div class="font-semibold">Barack Obama</div>
+                                        <div class="text-[.75rem]">Listed 9 hours ago</div>
+                                    </div>
+                                    <div class="flex flex-row flex-nowrap justify-between items-center text-[#5A2028]">
+                                        <div class="text-[.625rem]">Toronto Animal Rescue</div>
+                                        <div class="text-[.625rem]">Chartreux (Age 5)</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="flex flex-col justify-center items-center gap-[.25rem]">
+                                <div class="hover:cursor-pointer">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60" fill="none">
+                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M30 60C46.5685 60 60 46.5685 60 30C60 13.4315 46.5685 0 30 0C13.4315 0 0 13.4315 0 30C0 46.5685 13.4315 60 30 60ZM21.3681 20.9355L30.1362 29.7037L21.3681 38.4718L28.4392 45.5429L40.7428 33.2392L44.2784 29.7037L40.7428 26.1681L28.4392 13.8645L21.3681 20.9355Z" fill="#290005"/>
+                                    </svg></div>
+                                <div class="font-semibold text-center">See all posts</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="flex flex-col items-center">
+                    <div class="flex flex-col justify-start">
+                    <div class="text-[1.5rem] pb-[4px] font-semibold">Top Shelters in Ontario by User Rating</div>
+                    <div class="flex flex-row flex-wrap justify-start items-center gap-[3rem]">
+                        
+                        <div>
+                        <div class="w-[300px] flex flex-row justify-between p-[1rem] rounded-[10px] font-semibold hover:cursor-pointer" style="box-shadow: 0px 7px 20px 0px rgba(0, 0, 0, 0.20);">
+                            <div class="">Toronto Humane Society</div>
+                            <div class="flex flex-row gap-[1rem]">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="19" viewBox="0 0 20 19" fill="none">
+                                    <path d="M10.2727 0L13.4595 5.82956L19.6477 7.25735L15.429 12.288L16.0668 19L10.2727 16.2796L4.47867 19L5.11649 12.288L0.897736 7.25735L7.086 5.82956L10.2727 0Z" fill="#5A2028"/>
+                                    </svg>
+                                <div>5.0</div>
+                            </div>
+                        </div>
+                        </div>
+
+                        <div>
+                            <div class="w-[300px] flex flex-row justify-between p-[1rem] rounded-[10px] font-semibold hover:cursor-pointer" style="box-shadow: 0px 7px 20px 0px rgba(0, 0, 0, 0.20);">
+                                <div class="">Toronto Animal Rescue</div>
+                                <div class="flex flex-row gap-[1rem]">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="19" viewBox="0 0 20 19" fill="none">
+                                        <path d="M10.2727 0L13.4595 5.82956L19.6477 7.25735L15.429 12.288L16.0668 19L10.2727 16.2796L4.47867 19L5.11649 12.288L0.897736 7.25735L7.086 5.82956L10.2727 0Z" fill="#5A2028"/>
+                                        </svg>
+                                    <div>4.8</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="w-[300px] flex flex-row justify-between p-[1rem] rounded-[10px] font-semibold hover:cursor-pointer" style="box-shadow: 0px 7px 20px 0px rgba(0, 0, 0, 0.20);">
+                                <div class="">Ontario Humane Society</div>
+                                <div class="flex flex-row gap-[1rem]">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="19" viewBox="0 0 20 19" fill="none">
+                                        <path d="M10.2727 0L13.4595 5.82956L19.6477 7.25735L15.429 12.288L16.0668 19L10.2727 16.2796L4.47867 19L5.11649 12.288L0.897736 7.25735L7.086 5.82956L10.2727 0Z" fill="#5A2028"/>
+                                        </svg>
+                                    <div>4.7</div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="flex flex-col justify-center items-center gap-[.25rem]">
+                            <div class="hover:cursor-pointer">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60" fill="none">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M30 60C46.5685 60 60 46.5685 60 30C60 13.4315 46.5685 0 30 0C13.4315 0 0 13.4315 0 30C0 46.5685 13.4315 60 30 60ZM21.3681 20.9355L30.1362 29.7037L21.3681 38.4718L28.4392 45.5429L40.7428 33.2392L44.2784 29.7037L40.7428 26.1681L28.4392 13.8645L21.3681 20.9355Z" fill="#290005"/>
+                                </svg></div>
+                            <div class="font-semibold text-center">See all posts</div>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
+    <footer class="absolute bottom-0 h-[3rem] bg-[#290005] text-center w-[100%] text-white py-[1rem] text-[1rem]">
+        © PetPal 2023
+    </footer>
 </body>
 </html>
