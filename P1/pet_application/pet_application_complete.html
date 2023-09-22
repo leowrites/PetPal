@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pet Applicaiton</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="../index.css" rel="stylesheet" />
+  </head>
+  <body>
+    <main>
+      <div class="container mx-auto px-5 sm:px-5 md:px-5 lg:px-20">
+        <div class="order-1 grid md:grid-cols-3 md:grid-rows-3 gap-4 h-fit">
+          <div>
+            <img
+              src="/P1/assets/dog_photo1.png"
+              alt=""
+              class="w-full h-full object-cover pet-photo rounded-xl"
+            />
+          </div>
+          <div
+            class="order-3 md:order-2 md:col-span-2 md:row-span-3 pet-overview-box p-5 rounded-xl"
+          >
+            <div class="flex flex-col gap-2 h-full">
+              <p class="text-2xl min-w-full font-semibold">Apply to Adopt</p>
+              <!-- form stuff -->
+              <div class="flex flex-col h-full items-center sm:px-10 justify-center gap-2 my-10">
+                <img src="../assets/check_icon.png" alt="" class="w-10" />
+                <p class="text-lg">
+                  Thank you for expressing your interest in adopting Don Quixote! Toronto Humane
+                  Society will be in contact with you soon
+                </p>
+                <button
+                  onclick="location.href='../pet_application/pet_application_additional_questions.html'"
+                  class="text-white py-2 px-10 rounded-full enabled-button mt-5 w-fit"
+                >
+                  <p class="text-sm w-fit">View my application</p>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="order-2 md:order-3 md:row-span-2">
+            <div class="flex flex-col gap-1 p-5 rounded-xl pet-overview-box">
+              <p class="text-lg font-bold">Don Quixote</p>
+              <p class="text-sm">Listed 3 hours ago</p>
+              <p class="text-sm pet-overview-box-status">Status: Available</p>
+              <p class="text-sm underline pet-overview-box-shelter">Toronto Humane Society</p>
+              <p class="text-sm pet-overview-box-breed">Golden Retriever (Age 3)</p>
+              <p class="text-sm">
+                Meet Don, the most enchanting and extraordinary pet you'll ever have the pleasure of
+                adopting! Fluffy is a rare breed called a "Rainbow Rascal," known for their mythical
+                and colorful fur that shimmers like a thousand gems in the sunlight. This magical
+                fur changes color with Fluffy's mood, making each day an enchanting surprise.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>
