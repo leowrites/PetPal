@@ -8,8 +8,30 @@
     <link href="../index.css" rel="stylesheet" />
   </head>
   <body>
-    <main>
-      <div class="container mx-auto px-5 md:px-10">
+    <!-- Navbar -->
+    <header class="bg-[#FFF8F4] flex flex-row flex-nowrap justify-between text-[1rem]">
+      <div class="flex flex-row text-[2rem] p-[1.5rem]">
+        <h1 class="pr-[25px] text-[#290005]">Pet Pal</h1>
+        <object data="./assets/logo.svg" type="image/svg+xml"></object>
+      </div>
+      <div class="flex flex-row text-[1rem] font-medium self-end">
+        <div class="px-[2rem] hover:cursor-pointer">Home</div>
+        <div class="border-b-[1rem] border-[#290005] pb-[1.5rem] px-[2rem] hover:cursor-default">
+          Adopt
+        </div>
+        <div class="px-[2rem] hover:cursor-pointer">Rehome</div>
+        <div class="px-[2rem] hover:cursor-pointer">Shelters</div>
+      </div>
+
+      <div class="self-center flex flex-row gap-[1rem] pr-[1.5rem] font-semibold">
+        <div class="bg-[#FF9447] py-[.75rem] w-[8rem] text-center text-[#FFF8F4]">Sign Up</div>
+        <div class="border-[#290005] border-[1px] py-[.75rem] w-[8rem] text-center text-[#290005]">
+          Log In
+        </div>
+      </div>
+    </header>
+    <main class="pt-10">
+      <div class="container mx-auto px-5 sm:px-5 md:px-5 lg:px-20">
         <div class="order-1 grid md:grid-cols-3 md:grid-rows-3 gap-4 h-fit">
           <div>
             <img
@@ -25,7 +47,10 @@
               <p class="text-2xl min-w-full">Apply to Adopt</p>
               <p class="text-xl min-w-full">Additional Information</p>
               <!-- form stuff -->
-              <form class="flex flex-col w-full gap-4" action="../pet_application/pet_application_complete.html">
+              <form
+                class="flex flex-col w-full gap-4"
+                action="../pet_application/pet_application_complete.html"
+              >
                 <div>
                   <label for="pet-exp" class="block font-semibold"
                     >Have you had a pet before? How much experience do you have as a pet
@@ -39,7 +64,9 @@
                   />
                 </div>
                 <div>
-                  <label for="other-pets" class="block font-semibold">Do you have any other pets?</label>
+                  <label for="other-pets" class="block font-semibold"
+                    >Do you have any other pets?</label
+                  >
                   <input
                     id="other-pets"
                     type="text"
@@ -112,5 +139,10 @@
         </div>
       </div>
     </main>
+    <footer
+      class="absolute bottom-0 h-[3rem] bg-[#290005] text-center w-[100%] text-white py-[1rem] text-[1rem]"
+    >
+      © PetPal 2023
+    </footer>
   </body>
 </html>

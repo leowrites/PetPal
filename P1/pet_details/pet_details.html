@@ -8,9 +8,33 @@
     <link href="../index.css" rel="stylesheet" />
   </head>
   <body>
+    <!-- Navbar -->
+    <header class="bg-[#FFF8F4] flex flex-row flex-nowrap justify-between text-[1rem]">
+      <div class="flex flex-row text-[2rem] p-[1.5rem]">
+        <h1 class="pr-[25px] text-[#290005]">Pet Pal</h1>
+        <object data="./assets/logo.svg" type="image/svg+xml"></object>
+      </div>
+      <div class="flex flex-row text-[1rem] font-medium self-end">
+        <div class="px-[2rem] hover:cursor-pointer">
+          Home
+        </div>
+        <div class="border-b-[1rem] border-[#290005] pb-[1.5rem] px-[2rem] hover:cursor-default">Adopt</div>
+        <div class="px-[2rem] hover:cursor-pointer">Rehome</div>
+        <div class="px-[2rem] hover:cursor-pointer">Shelters</div>
+      </div>
+
+      <div class="self-center flex flex-row gap-[1rem] pr-[1.5rem] font-semibold">
+        <div class="bg-[#FF9447] py-[.75rem] w-[8rem] text-center text-[#FFF8F4]">Sign Up</div>
+        <div class="border-[#290005] border-[1px] py-[.75rem] w-[8rem] text-center text-[#290005]">
+          Log In
+        </div>
+      </div>
+    </header>
     <main>
       <!-- status banner -->
-      <div class="status-banner text-center text-white w-full mb-10 font-medium text-sm p-2">Don Quixote is not available for adoption at this time, status: withdrawn</div>
+      <div class="status-banner text-center text-white w-full mb-10 font-medium text-sm p-2">
+        Don Quixote is not available for adoption at this time, status: withdrawn
+      </div>
       <div class="container mx-auto px-5 md:px-10">
         <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
           <div class="col-span-2">
@@ -75,7 +99,10 @@
                 and colorful fur that shimmers like a thousand gems in the sunlight. This magical
                 fur changes color with Fluffy's mood, making each day an enchanting surprise.
               </p>
-              <button onclick="location.href='../pet_application/pet_application_basic_info.html'" class="text-white py-2 px-10 rounded-full enabled-button mt-5 w-fit">
+              <button
+                onclick="location.href='../pet_application/pet_application_basic_info.html'"
+                class="text-white py-2 px-10 rounded-full enabled-button mt-5 w-fit"
+              >
                 <p class="text-sm w-fit">Adopt</p>
               </button>
             </div>
@@ -83,5 +110,11 @@
         </div>
       </div>
     </main>
+    <!-- Footer -->
+    <footer
+      class="absolute bottom-0 h-[3rem] bg-[#290005] text-center w-[100%] text-white py-[1rem] text-[1rem]"
+    >
+      © PetPal 2023
+    </footer>
   </body>
 </html>
