@@ -22,6 +22,10 @@ p {
   font-family: 'Poppins', sans-serif;
 }
 
+.tab-selected {
+  border-color: #290005;
+}
+
 main {
   min-height: 100vh;
   padding-bottom: 5rem;
