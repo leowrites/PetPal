@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pet Applicaiton</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="../index.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=IBM Plex Sans Condensed' rel='stylesheet'>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <header class="bg-[#FFF8F4] flex flex-row flex-nowrap justify-between text-[1rem]">
+      <div class="flex flex-row text-[2rem] p-[1.5rem]">
+        <h1 class="pr-[25px] text-[#290005]">Pet Pal</h1>
+        <object data="../assets/logo.svg" type="image/svg+xml"></object>
+      </div>
+      <div class="flex flex-row text-[1rem] font-medium self-end">
+        <a href="../index.html">
+          <div class="px-[2rem] hover:cursor-pointer">
+            Home
+          </div>
+        </a>
+        <div class="border-b-[1rem] border-[#290005] pb-[1.5rem] px-[2rem] hover:cursor-default">
+          Adopt
+        </div>
+        <div class="px-[2rem] hover:cursor-pointer">Rehome</div>
+        <div class="px-[2rem] hover:cursor-pointer">Shelters</div>
+      </div>
+
+      <div class="self-center flex flex-row gap-[1rem] pr-[1.5rem] font-semibold">
+        <div class="bg-[#FF9447] py-[.75rem] w-[8rem] text-center text-[#FFF8F4]">Sign Up</div>
+        <div class="border-[#290005] border-[1px] py-[.75rem] w-[8rem] text-center text-[#290005]">
+          Log In
+        </div>
+      </div>
+    </header>
+    <main class="pt-10">
+      <div class="container mx-auto px-5 sm:px-5 md:px-5 lg:px-20">
+        <div class="order-1 grid md:grid-cols-3 md:grid-rows-3 gap-4 h-fit">
+          <div>
+            <img
+              src="/P1/assets/dog_photo1.png"
+              alt=""
+              class="w-full h-full object-cover pet-photo rounded-xl aspect-square"
+            />
+          </div>
+          <div
+            class="order-3 md:order-2 md:col-span-2 md:row-span-3 pet-overview-box p-5 rounded-xl"
+          >
+            <div class="flex flex-col gap-2 h-full">
+              <p class="text-2xl min-w-full font-semibold">Your Application for Don Quixote</p>
+              <!-- form stuff -->
+              <div class="flex flex-col h-full items-center sm:px-10 justify-center gap-2 my-10">
+                <img src="../assets/check_icon.png" alt="" class="w-10" />
+                <p class="text-lg">
+                  Thank you for expressing your interest in adopting Don Quixote! Toronto Humane
+                  Society will be in contact with you soon
+                </p>
+                <button
+                  onclick="location.href='./pet_application_filled_form.html'"
+                  class="text-white py-2 px-10 rounded-full enabled-button mt-5 w-fit"
+                >
+                  <p class="text-sm w-fit">View my application</p>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="order-2 md:order-3 md:row-span-2">
+            <div class="flex flex-col gap-1 p-5 rounded-xl pet-overview-box">
+              <p class="text-lg font-bold">Don Quixote</p>
+              <p class="text-sm">Listed 3 hours ago</p>
+              <p class="text-sm pet-overview-box-status">Status: Available</p>
+              <p class="text-sm underline pet-overview-box-shelter">Toronto Humane Society</p>
+              <p class="text-sm pet-overview-box-breed">Golden Retriever (Age 3)</p>
+              <p class="text-sm">
+                Meet Don, the most enchanting and extraordinary pet you'll ever have the pleasure of
+                adopting! Fluffy is a rare breed called a "Rainbow Rascal," known for their mythical
+                and colorful fur that shimmers like a thousand gems in the sunlight. This magical
+                fur changes color with Fluffy's mood, making each day an enchanting surprise.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer
+      class="absolute bottom-0 h-[3rem] bg-[#290005] text-center w-[100%] text-white py-[1rem] text-[1rem]"
+    >
+      © PetPal 2023
+    </footer>
+  </body>
+</html>

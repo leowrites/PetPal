@@ -1,11 +1,14 @@
-html {
-    margin: 0;
-    padding: 0;
-    font-size: 16px;
+html,
+body {
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+  min-height: 100vh;
 }
 
 body {
-    font-family: 'Poppins', sans-serif;
+  position: relative;
+  font-family: 'Poppins', sans-serif;
 }
 
 h1 {
@@ -14,4 +17,52 @@ h1 {
 
 h2 {
     font-family: 'IBM Plex Sans Condensed';
+}
+
+p {
+  font-family: 'Poppins', sans-serif;
+}
+
+.tab-selected {
+  border-color: #290005;
+}
+
+main {
+  padding-bottom: 5rem;
+}
+
+.pet-photo {
+  border: 2px solid #290005;
+  /* border-radius: 10px; */
+}
+.pet-detail-box, .shelter-chat-box {
+  border: 2px solid #290005;
+}
+.pet-overview-box {
+  border: 2px solid #290005;
+  height: 100%;
+}
+
+.enabled-button {
+  background-color: #ff9447;
+}
+
+.pet-overview-box-status {
+  color: #ff9447;
+}
+.pet-overview-box-breed {
+  color: #953f43;
+}
+.pet-overview-box-shelter {
+  color: #5a2028;
+}
+
+.pet-overview-box-breed,
+.pet-overview-box-shelter,
+.pet-overview-box-status {
+  font-weight: 600;
+}
+
+.status-banner {
+  background-color: #953f43;
 }

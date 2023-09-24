@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pet Applicaiton</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="../index.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=IBM Plex Sans Condensed' rel='stylesheet'>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <header class="bg-[#FFF8F4] flex flex-row flex-nowrap justify-between text-[1rem]">
+      <div class="flex flex-row text-[2rem] p-[1.5rem]">
+        <h1 class="pr-[25px] text-[#290005]">Pet Pal</h1>
+        <object data="../assets/logo.svg" type="image/svg+xml"></object>
+      </div>
+      <div class="flex flex-row text-[1rem] font-medium self-end">
+        <a href="../index.html">
+          <div class="px-[2rem] hover:cursor-pointer">
+            Home
+          </div>
+        </a>
+        <div class="border-b-[1rem] border-[#290005] pb-[1.5rem] px-[2rem] hover:cursor-default">
+          Adopt
+        </div>
+        <div class="px-[2rem] hover:cursor-pointer">Rehome</div>
+        <div class="px-[2rem] hover:cursor-pointer">Shelters</div>
+      </div>
+
+      <div class="self-center flex flex-row gap-[1rem] pr-[1.5rem] font-semibold">
+        <div class="bg-[#FF9447] py-[.75rem] w-[8rem] text-center text-[#FFF8F4]">Sign Up</div>
+        <div class="border-[#290005] border-[1px] py-[.75rem] w-[8rem] text-center text-[#290005]">
+          Log In
+        </div>
+      </div>
+    </header>
+    <main class="pt-10">
+      <div class="container mx-auto px-5 sm:px-5 md:px-5 lg:px-20">
+        <div class="order-1 grid md:grid-cols-3 md:grid-rows-3 gap-4 h-fit">
+          <div>
+            <img
+              src="/P1/assets/dog_photo1.png"
+              alt=""
+              class="w-full h-full object-cover pet-photo rounded-xl aspect-square"
+            />
+          </div>
+          <div
+            class="order-3 md:order-2 md:col-span-2 md:row-span-3 pet-overview-box p-5 rounded-xl"
+          >
+            <div class="flex flex-col gap-2">
+              <p class="text-2xl min-w-full font-semibold">Apply to Adopt</p>
+              <p class="text-xl min-w-full font-semibold">Baisc Information</p>
+              <!-- form stuff -->
+              <form
+                class="grid md:grid-cols-6 w-full gap-3"
+                action="../pet_application/pet_application_additional_questions.html"
+              >
+                <div class="md:col-span-3">
+                  <label for="first-name" class="block uppercase font-semibold">First Name</label>
+                  <input
+                    id="first-name"
+                    type="text"
+                    class="w-full px-3 py-2 rounded-lg border-2 border-gray-200"
+                    placeholder="Petpal"
+                  />
+                </div>
+                <div class="md:col-span-3">
+                  <label for="last-name" class="block uppercase font-semibold">Last Name</label>
+                  <input
+                    id="last-name"
+                    type="text"
+                    class="w-full px-3 py-2 rounded-lg border-2 border-gray-200"
+                    placeholder="Petpal"
+                  />
+                </div>
+                <div class="md:col-span-3">
+                  <label for="email" class="block uppercase font-semibold">Email</label>
+                  <input
+                    id="email"
+                    type="text"
+                    class="w-full px-3 py-2 rounded-lg border-2 border-gray-200"
+                    placeholder="hello@petpal.com"
+                  />
+                </div>
+                <div class="md:col-span-3">
+                  <label for="phone" class="block uppercase font-semibold">Phone Number</label>
+                  <input
+                    id="phone"
+                    type="text"
+                    class="w-full px-3 py-2 rounded-lg border-2 border-gray-200"
+                    placeholder="123-123-123"
+                  />
+                </div>
+                <div class="md:col-span-6">
+                  <label for="address" class="block uppercase font-semibold">Address</label>
+                  <input
+                    id="address"
+                    type="text"
+                    class="w-full px-3 py-2 rounded-lg border-2 border-gray-200"
+                    placeholder="500 Petpal St"
+                  />
+                </div>
+                <div class="md:col-span-3">
+                  <label for="city" class="block uppercase font-semibold">City</label>
+                  <input
+                    id="city"
+                    type="text"
+                    class="w-full px-3 py-2 rounded-lg border-2 border-gray-200"
+                    placeholder="Toronto"
+                  />
+                </div>
+                <div class="md:col-span-3">
+                  <label for="province" class="block uppercase font-semibold">Province</label>
+                  <input
+                    id="province"
+                    type="text"
+                    class="w-full px-3 py-2 rounded-lg border-2 border-gray-200"
+                    placeholder="Ontario"
+                  />
+                </div>
+                <div class="md:col-span-6 flex">
+                  <div class="inline px-2">
+                    <input id="age-requirement" type="checkbox" placeholder="123-123-123" />
+                  </div>
+                  <label for="age-requirement" class="font-semibold"
+                    >Are you 21 years or older?</label
+                  >
+                </div>
+                <div class="md:col-span-6">
+                  <button
+                    onclick="location.href='../pet_application/pet_application_additional_questions.html'"
+                    class="text-white py-2 px-10 rounded-full enabled-button mt-5 w-fit"
+                  >
+                    <p class="text-sm w-fit">Next</p>
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="order-2 md:order-3 md:row-span-2">
+            <div class="flex flex-col gap-1 p-5 rounded-xl pet-overview-box">
+              <p class="text-lg font-bold">Don Quixote</p>
+              <p class="text-sm">Listed 3 hours ago</p>
+              <p class="text-sm pet-overview-box-status">Status: Available</p>
+              <p class="text-sm underline pet-overview-box-shelter">Toronto Humane Society</p>
+              <p class="text-sm pet-overview-box-breed">Golden Retriever (Age 3)</p>
+              <p class="text-sm">
+                Meet Don, the most enchanting and extraordinary pet you'll ever have the pleasure of
+                adopting! Fluffy is a rare breed called a "Rainbow Rascal," known for their mythical
+                and colorful fur that shimmers like a thousand gems in the sunlight. This magical
+                fur changes color with Fluffy's mood, making each day an enchanting surprise.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+    <footer
+      class="absolute bottom-0 h-[3rem] bg-[#290005] text-center w-[100%] text-white py-[1rem] text-[1rem]"
+    >
+      © PetPal 2023
+    </footer>
+  </body>
+</html>
