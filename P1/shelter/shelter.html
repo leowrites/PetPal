@@ -38,12 +38,12 @@
     </header>
     <main>
         <div class="container mx-auto px-5 md:px-10">
-            <div class="grid grid-cols-5 gap-5 my-10">
-                <div class="col-span-3 relative">
+            <div class="grid md:grid-cols-5 gap-5 my-10">
+                <div class="col-span-1 md:col-span-3 relative">
                     <img class="rounded-xl max-w-full h-full object-cover shelter-photo" src="../assets/shelter_photo1.jpeg" />
                     <button class="rounded-xl bg-white border-2 border-black px-3 absolute right-3 bottom-3">More photos</button>
                 </div>
-                <div class="col-span-2 row-span-2 shelter-detail-box rounded-xl">
+                <div class="col-span-1 md:col-span-2 row-span-2 shelter-detail-box rounded-xl">
                     <img class="banner-photo rounded-t-xl" src="../assets/shelter_map_photo1.png" />
                     <div class="flex flex-col gap-1 p-5 py-10">
                         <p class="text-xl font-bold">Toronto Humane Society</p>
@@ -67,7 +67,7 @@
                         </button>
                     </div>
                 </div>
-                <div class="col-span-3 shelter-detail-box rounded-xl p-5 py-10">
+                <div class="col-span-1 md:col-span-3 shelter-detail-box rounded-xl p-5 py-10">
                     <div class="flex flex-col gap-2">
                         <div>
                             <p class="text-lg font-semibold">About</p>
@@ -114,14 +114,14 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-span-5 shelter-detail-box rounded-xl p-5 py-10">
+                <div class="col-span-1 md:col-span-5 shelter-detail-box rounded-xl p-5 py-10">
                     <p class="text-lg font-semibold">Reviews (3)</p>
 
                     <div class="review w-11/12 py-4 flex flex-row items-start gap-4">
                         <div>
                             <ion-icon name="person-circle-outline" class="profile-icon"></ion-icon>
                         </div>
-                        <div class="col-span-5">
+                        <div>
                             <div class="flex justify-between">
                                 <p class="text-md font-semibold">User 1</p>
                                 <p class="text-md font-semibold text-[#ff9447]">3 days ago</p>
@@ -142,7 +142,7 @@
                                 <div class="text-sm">
                                     <ion-icon name="person-circle-outline" class="profile-icon"></ion-icon>
                                 </div>
-                                <div class="col-span-5">
+                                <div>
                                     <div class="flex justify-between">
                                         <p class="text-sm font-semibold">Toronto Humane Society</p>
                                         <p class="text-sm font-semibold text-[#ff9447]">2 days ago</p>
@@ -164,7 +164,7 @@
                         <div>
                             <ion-icon name="person-circle-outline" class="profile-icon"></ion-icon>
                         </div>
-                        <div class="col-span-5">
+                        <div>
                             <div class="flex justify-between">
                                 <p class="text-md font-semibold">User 2</p>
                                 <p class="text-md font-semibold text-[#ff9447]">1 week ago</p>
@@ -184,7 +184,7 @@
                         </div>
                     </div>
 
-                    <div class="flex justify-center">
+                    <div class="flex justify-center mt-4">
                         <button class="rounded-full w-1/2 border border-black py-1">
                             Load more
                         </button>
