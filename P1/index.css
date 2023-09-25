@@ -31,11 +31,11 @@ main {
   padding-bottom: 5rem;
 }
 
-.pet-photo {
+.pet-photo, .shelter-photo {
   border: 2px solid #290005;
   /* border-radius: 10px; */
 }
-.pet-detail-box, .shelter-chat-box {
+.pet-detail-box, .shelter-chat-box, .shelter-detail-box {
   border: 2px solid #290005;
 }
 .pet-overview-box {
@@ -65,4 +65,20 @@ main {
 
 .status-banner {
   background-color: #953f43;
+}
+
+.schedule-table {
+    font-size: small;
+}
+
+.schedule-table td {
+    width: 8rem;
+}
+
+.rating-star-filled {
+    color: #ff9447;
+}
+
+.rating-star-unfilled {
+    color: #d9d9d9;
 }
