@@ -5,8 +5,197 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Shelter</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=IBM Plex Sans Condensed' rel='stylesheet'>
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <link href="../index.css" rel="stylesheet" />
 </head>
 <body>
+    <header class="bg-[#FFF8F4] flex flex-row flex-nowrap justify-between text-[1rem]">
+        <div class="flex flex-row text-[2rem] p-[1.5rem]">
+            <h1 class="pr-[25px] text-[#290005]">Pet Pal</h1>
+            <object data="../assets/logo.svg" type="image/svg+xml"></object>
+        </div>
+        <div class="flex flex-row text-[1rem] font-medium self-end">
+            <a href="../index.html">
+                <div class="px-[2rem] hover:cursor-pointer">
+                    Home
+                </div>
+            </a>
+            <div class="px-[2rem] hover:cursor-pointer ">Adopt</div>
+            <div class="px-[2rem] hover:cursor-pointer">Rehome</div>
+            <div class="border-b-[1rem] border-[#290005] pb-[1.5rem] px-[2rem] hover:cursor-default">Shelters</div>
+        </div>
     
+        <div class="self-center flex flex-row gap-[1rem] pr-[1.5rem] font-semibold">
+            <button class="bg-[#FF9447] py-[.75rem] w-[8rem] text-center text-[#FFF8F4]">Sign Up</button>
+            <button class="border-[#290005] border-[1px] py-[.75rem] w-[8rem] text-center text-[#290005]">
+                Log In
+            </button>
+        </div>
+    </header>
+    <main>
+        <div class="container mx-auto px-5 md:px-10">
+            <div class="grid md:grid-cols-5 gap-5 my-10">
+                <div class="col-span-1 md:col-span-3 relative">
+                    <img class="rounded-xl max-w-full h-full object-cover shelter-photo" src="../assets/shelter_photo1.jpeg" />
+                    <button class="rounded-xl bg-white border-2 border-black px-3 absolute right-3 bottom-3">More photos</button>
+                </div>
+                <div class="col-span-1 md:col-span-2 row-span-2 shelter-detail-box rounded-xl">
+                    <img class="banner-photo rounded-t-xl" src="../assets/shelter_map_photo1.png" />
+                    <div class="flex flex-col gap-1 p-5 py-10">
+                        <p class="text-xl font-bold">Toronto Humane Society</p>
+                        <div class="text-sm flex item-center gap-1">
+                            <span class="leading-4 pr-1">4.0</span>
+                            <ion-icon name="star" class="rating-star-filled"></ion-icon>
+                            <ion-icon name="star" class="rating-star-filled"></ion-icon>
+                            <ion-icon name="star" class="rating-star-filled"></ion-icon>
+                            <ion-icon name="star" class="rating-star-filled"></ion-icon>
+                            <ion-icon name="star" class="rating-star-unfilled"></ion-icon>
+                        </div>
+                        <p class="text-sm pet-overview-box-status">11 River St, Toronto, ON M5A 4C2</p>
+                        <a class="text-sm underline pet-overview-box-shelter" href="https://torontohumanesociety.com">torontohumanesociety.com</a>
+                        <p class="text-sm pet-overview-box-breed">+1 (416) 392 2273</p>
+                        <p class="text-sm pt-2">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                        </p>
+                        <button
+                            class="text-white py-2 px-10 rounded-full enabled-button mt-5 w-fit">
+                            <p class="text-sm w-fit">Find Pets</p>
+                        </button>
+                    </div>
+                </div>
+                <div class="col-span-1 md:col-span-3 shelter-detail-box rounded-xl p-5 py-10">
+                    <div class="flex flex-col gap-2">
+                        <div>
+                            <p class="text-lg font-semibold">About</p>
+                            <p class="text-sm">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta, assumenda beatae
+                                odit voluptate ex quasi cumque quia molestias pariatur qui consequuntur. Culpa
+                                incidunt deleniti officia, vel esse repudiandae molestiae illo.
+                            </p>
+                        </div>
+                        <div>
+                            <p class="text-lg font-semibold">Open hours</p>
+                            <p class="text-sm">
+                                <table class="schedule-table">
+                                    <tr>
+                                        <td>Monday</td>
+                                        <td>11 am-7 pm</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Tuesday</td>
+                                        <td>3 pm-7 pm</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Wednesday</td>
+                                        <td>Closed</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Thursday</td>
+                                        <td>3 pm-7 pm</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Friday</td>
+                                        <td>11 am-7 pm</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Saturday</td>
+                                        <td>10 am-6 pm</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Sunday</td>
+                                        <td>10 am-6 pm</td>
+                                    </tr>
+                                </table>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-span-1 md:col-span-5 shelter-detail-box rounded-xl p-5 py-10">
+                    <p class="text-lg font-semibold">Reviews (3)</p>
+
+                    <div class="review w-11/12 py-4 flex flex-row items-start gap-4">
+                        <div>
+                            <ion-icon name="person-circle-outline" class="profile-icon"></ion-icon>
+                        </div>
+                        <div>
+                            <div class="flex justify-between">
+                                <p class="text-md font-semibold">User 1</p>
+                                <p class="text-md font-semibold text-[#ff9447]">3 days ago</p>
+                            </div>
+                            <div class="text-sm flex item-center gap-1 py-2">
+                                <ion-icon name="star" class="rating-star-filled"></ion-icon>
+                                <ion-icon name="star" class="rating-star-filled"></ion-icon>
+                                <ion-icon name="star" class="rating-star-filled"></ion-icon>
+                                <ion-icon name="star" class="rating-star-filled"></ion-icon>
+                                <ion-icon name="star" class="rating-star-unfilled"></ion-icon>
+                            </div>
+                            <p>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+                                aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                            </p>
+
+                            <div class="review-reply w-full mt-4 mb-2 flex flex-row items-start gap-4 pl-4 border-l-2 border-[#d2d2d2]">
+                                <div class="text-sm">
+                                    <ion-icon name="person-circle-outline" class="profile-icon"></ion-icon>
+                                </div>
+                                <div>
+                                    <div class="flex justify-between">
+                                        <p class="text-sm font-semibold">Toronto Humane Society</p>
+                                        <p class="text-sm font-semibold text-[#ff9447]">2 days ago</p>
+                                    </div>
+                                    <p class="text-sm py-1">
+                                        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et
+                                        dolore magna
+                                        aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                                        consequat.
+                                    </p>
+                                </div>
+                            </div>
+
+                            <a class="text-xs font-semibold text-[#a9a9a9]" href="#">Reply</a>
+                        </div>
+                    </div>
+
+                    <div class="review w-11/12 py-4 flex flex-row items-start gap-4">
+                        <div>
+                            <ion-icon name="person-circle-outline" class="profile-icon"></ion-icon>
+                        </div>
+                        <div>
+                            <div class="flex justify-between">
+                                <p class="text-md font-semibold">User 2</p>
+                                <p class="text-md font-semibold text-[#ff9447]">1 week ago</p>
+                            </div>
+                            <div class="text-sm flex item-center gap-1 py-2">
+                                <ion-icon name="star" class="rating-star-filled"></ion-icon>
+                                <ion-icon name="star" class="rating-star-filled"></ion-icon>
+                                <ion-icon name="star" class="rating-star-filled"></ion-icon>
+                                <ion-icon name="star" class="rating-star-filled"></ion-icon>
+                                <ion-icon name="star" class="rating-star-unfilled"></ion-icon>
+                            </div>
+                            <p>
+                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna
+                                aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                            </p>
+                            <a class="text-xs font-semibold text-[#a9a9a9]" href="#">Reply</a>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-center mt-4">
+                        <button class="rounded-full w-1/2 border border-black py-1">
+                            Load more
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="absolute bottom-0 h-[3rem] bg-[#290005] text-center w-[100%] text-white py-[1rem] text-[1rem]">
+        © PetPal 2023
+    </footer>
 </body>
 </html>
