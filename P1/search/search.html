@@ -3,9 +3,255 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Petpal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=IBM Plex Sans Condensed' rel='stylesheet'>
+    <link rel="stylesheet" href="./../index.css">
 </head>
-<body>
-    
+<body class="relative min-h-[100vh] bg-[#FFFFFF]">
+    <div class="pb-[3rem]">
+        <header class="">
+            <div class="hidden lg:block bg-[#FFF8F4] lg:flex lg:flex-row flex-nowrap justify-between text-[1rem] border-b-[.2rem] border-[#290005]">
+                <div class=" flex flex-row text-[2rem] py-[1.5rem] pl-[1.5rem]">
+                    <h1 class="pr-[0px] xl:pr-[25px] text-[#290005]">Pet Pal</h1>
+                    <object data="./../assets/logo.svg" type="image/svg+xml"></object>
+                </div>
+                <div class="flex flex-row text-[1rem] font-medium self-end">
+                    <a href="../index.html">
+                        <div class="px-[2rem] hover:cursor-pointer">Home</div>
+                    </a>
+                    <a href="./search/search.html">
+                        <div class="border-b-[1rem] border-[#290005] pb-[1.5rem] px-[2rem] hover:cursor-default">Adopt</div>
+                    </a>
+                    <div class="px-[2rem] hover:cursor-pointer">Rehome</div>
+                    <div class="px-[2rem] hover:cursor-pointer">Shelters</div>
+                </div>
+
+                <div class="self-center flex flex-row gap-[1rem] pr-[1.5rem] font-semibold">
+                    <div class="bg-[#FF9447] py-[.75rem] w-[8rem] text-center text-[#FFF8F4]">
+                        Sign Up
+                    </div>
+                    <div class="border-[#290005] border-[1px] py-[.75rem] w-[8rem] text-center text-[#290005]">
+                        Log In
+                    </div>
+                </div>
+            </div>
+            <div class="lg:hidden bg-[#FFF8F4]">
+                <div class="flex flex-row flex-nowrap justify-between px-[1.5rem] py-[1rem] text-[1rem]">
+                    <div class=" flex flex-row text-[2rem]">
+                        <h1 class="pr-[25px] text-[#290005]">Pet Pal</h1>
+                        <object data="./assets/logo.svg" type="image/svg+xml"></object>
+                    </div>
+                    <div class="self-center">
+                        <button type="button" id="navBarCollapsible" class="cursor-pointer">
+                            <svg  id="navBarCollapsibleClosed" xmlns="http://www.w3.org/2000/svg" width="42" height="40" viewBox="0 0 42 40" fill="none">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M2.24999 4.33329H39.75C40.9006 4.33329 41.8333 3.40055 41.8333 2.24996C41.8333 1.09937 40.9006 0.166626 39.75 0.166626H2.24999C1.0994 0.166626 0.166656 1.09937 0.166656 2.24996C0.166656 3.40055 1.0994 4.33329 2.24999 4.33329ZM41.8333 37.6666C41.8333 38.8172 40.9006 39.75 39.75 39.75H2.24999C1.0994 39.75 0.166656 38.8172 0.166656 37.6666C0.166656 36.516 1.0994 35.5833 2.24999 35.5833H39.75C40.9006 35.5833 41.8333 36.516 41.8333 37.6666ZM2.24999 18.9166H39.75C40.9006 18.9166 41.8333 19.8494 41.8333 21C41.8333 22.1506 40.9006 23.0833 39.75 23.0833H2.24999C1.0994 23.0833 0.166656 22.1506 0.166656 21C0.166656 19.8494 1.0994 18.9166 2.24999 18.9166Z" fill="#290005"/>
+                            </svg>
+                            <svg id="navBarCollapsibleOpen" class="hidden" xmlns="http://www.w3.org/2000/svg" width="42" height="42" viewBox="0 0 42 42" fill="none">
+                                <path d="M41.2292 38.2708C41.6236 38.662 41.8454 39.1945 41.8454 39.75C41.8454 40.3055 41.6236 40.838 41.2292 41.2292C40.838 41.6236 40.3055 41.8454 39.75 41.8454C39.1945 41.8454 38.662 41.6236 38.2708 41.2292L21 23.9375L3.72918 41.2292C3.338 41.6236 2.80551 41.8454 2.25002 41.8454C1.69452 41.8454 1.16203 41.6236 0.770849 41.2292C0.376447 40.838 0.154602 40.3055 0.154602 39.75C0.154602 39.1945 0.376447 38.662 0.770849 38.2708L18.0625 21L0.770849 3.72915C0.242393 3.2007 0.0360079 2.43046 0.229436 1.70857C0.422864 0.98669 0.986719 0.422835 1.7086 0.229407C2.43049 0.0359789 3.20073 0.242364 3.72918 0.77082L21 18.0625L38.2708 0.77082C39.0878 -0.0461016 40.4123 -0.0461016 41.2292 0.77082C42.0461 1.58774 42.0461 2.91223 41.2292 3.72915L23.9375 21L41.2292 38.2708Z" fill="#290005"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div id="navBarCollapsibleContent" class="overflow-hidden flex flex-col items-end"
+                    style="box-shadow: 0px 0px 18px 0px rgba(0, 0, 0, 0.1) inset;">
+                    <div class="flex flex-col text-[1rem] font-medium w-[100%] font-semibold text-[290005]" >
+                        <!-- border-b-[1rem] border-[#290005] pb-[1.5rem]  -->
+                        <a href="../index.html">
+                            <div class="border-b-[.05rem] border-[#6C6866] py-[1rem] mx-[1.5rem] grow">
+                                <div class="px-[2rem] hover:cursor-pointer w-[100%] text-end">Home</div>
+                            </div>
+                        </a>
+                        <div class="border-b-[.05rem] border-[#6C6866] py-[1rem] mx-[1.5rem] grow">
+                            <div class="px-[2rem] hover:cursor-pointer w-[100%] text-end">Adopt</div>
+                        </div>
+                        <div class="border-b-[.05rem] border-[#6C6866] py-[1rem] mx-[1.5rem] grow">
+                            <div class="px-[2rem] hover:cursor-pointer w-[100%] text-end">Rehome</div>
+                        </div>
+                        <div class="border-b-[.05rem] border-[#6C6866] py-[1rem] mx-[1.5rem] grow">
+                            <div class="px-[2rem] hover:cursor-pointer w-[100%] text-end">Shelters</div>
+                        </div>
+                    </div>
+
+                    <div class="flex flex-row justify-end gap-[1rem] mr-[1.5rem] w-[100%] py-[1rem] font-semibold">
+                        <div class="bg-[#FF9447] py-[.75rem] w-[8rem] text-center text-[#FFF8F4]">
+                            Sign Up
+                        </div>
+                        <div class="border-[#290005] border-[1px] py-[.75rem] w-[8rem] text-center text-[#290005]">
+                            Log In
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div class="">
+        <div class="my-[1rem] mx-[.5rem] md:mx-[10%] flex flex-col items-center">
+            <form class="mx-[.5rem] px-[.5rem] pb-[1rem] border-b-[1px] border-[#290005]/20 text-center flex flex-row flex-wrap justify-center gap-[.5rem] text-[#292929] font-normal">
+                <label class="rounded border-[#898989] border-[.1rem] p-[.5rem] relative block">
+                    <input type="text" id="location" class="focus:outline-none placeholder:text-[#292929] w-[12rem]" placeholder="Choose a Location">
+                    <span class="absolute right-3 inset-y-0 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="21.5" viewBox="0 0 12 18" fill="none">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M5.99999 0.666626C9.22166 0.666626 11.8333 3.2783 11.8333 6.49996C11.95 9.10829 9.85833 12.5833 6.67499 16.9833C6.51827 17.1998 6.26724 17.3279 5.99999 17.3279C5.73275 17.3279 5.48172 17.1998 5.325 16.9833C2.14166 12.575 0.0499946 9.09996 0.166661 6.49996C0.166661 3.2783 2.77833 0.666626 5.99999 0.666626ZM5.99999 15.0916C8.22499 11.9416 10.2833 8.61663 10.1667 6.57496V6.54996V6.49996C10.1667 4.19877 8.30118 2.33329 5.99999 2.33329C3.69881 2.33329 1.83333 4.19877 1.83333 6.49996V6.54996C1.71666 8.59163 3.77499 11.9166 5.99999 15.0916ZM5.99999 3.99996C4.61928 3.99996 3.49999 5.11925 3.49999 6.49996C3.49999 7.88067 4.61928 8.99996 5.99999 8.99996C7.38071 8.99996 8.49999 7.88067 8.49999 6.49996C8.49999 5.83692 8.2366 5.20103 7.76776 4.73219C7.29892 4.26335 6.66304 3.99996 5.99999 3.99996ZM5.16666 6.49996C5.16666 6.9602 5.53976 7.33329 5.99999 7.33329C6.46023 7.33329 6.83333 6.9602 6.83333 6.49996C6.83333 6.03972 6.46023 5.66663 5.99999 5.66663C5.53976 5.66663 5.16666 6.03972 5.16666 6.49996Z" fill="#231F20"/>
+                        </svg>
+                    </span>
+                </label>
+                <label class="rounded border-[#898989] border-[.1rem] w-auto p-[.5rem] relative block">
+                    <input type="text" id="palName" class="focus:outline-none placeholder:text-[#292929] w-[8rem]" placeholder="Pal by Name">
+                    <span class="absolute right-3 inset-y-0 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                            <path fill-rule="evenodd" clip-rule="evenodd" d="M12.5917 11.4166L17.0917 15.9083C17.2494 16.0648 17.3382 16.2778 17.3382 16.5C17.3382 16.7222 17.2494 16.9352 17.0917 17.0916C16.9352 17.2494 16.7222 17.3381 16.5 17.3381C16.2778 17.3381 16.0648 17.2494 15.9083 17.0916L11.4167 12.5916C10.252 13.5058 8.81387 14.0018 7.33332 14C3.65142 14 0.666656 11.0152 0.666656 7.33329C0.666656 3.65139 3.65142 0.666626 7.33332 0.666626C11.0152 0.666626 14 3.65139 14 7.33329C14.0018 8.81384 13.5058 10.252 12.5917 11.4166ZM7.33332 2.33329C4.5719 2.33329 2.33332 4.57187 2.33332 7.33329C2.33332 10.0947 4.5719 12.3333 7.33332 12.3333C10.0947 12.3333 12.3333 10.0947 12.3333 7.33329C12.3333 4.57187 10.0947 2.33329 7.33332 2.33329Z" fill="#231F20"/>
+                        </svg>
+                    </span>
+                </label>
+                <select type="text" id="breed" class="rounded border-[#898989] border-[.1rem] p-[.5rem] w-[10rem] focus:outline-none">
+                    <option selected class="opacity-[20%]">Select a Breed</option>
+                    <option value="golden">Golden Retirever</option>
+                    <option value="chartreux">Chartreux</option>
+                    <option value="bernese">Bernese Mountain Dog</option>
+                    <option value="orangeTabby">Orange Tabby</option>
+                </select>
+                <label class="rounded border-[#898989] border-[.1rem] w-auto p-[.5rem] flex flex-row flex-nowrap gap-[.5rem]">
+                    Age
+                    <input type="number" id="ageMin" class="focus:outline-none w-[2rem]" placeholder="Min">
+                    to
+                    <input type="number" id="ageMin" class="focus:outline-none w-[2rem]" placeholder="Max">
+                </label>
+                <select type="text" id="breed" class="rounded border-[#898989] border-[.1rem] p-[.5rem] w-[10rem] focus:outline-none">
+                    <option selected class="opacity-[20%]">Select a Size</option>
+                    <option value="small">Small</option>
+                    <option value="medium">Medium</option>
+                    <option value="large">Large</option>
+                </select>
+                <select type="text" id="breed" class="rounded border-[#898989] border-[.1rem] p-[.5rem] w-[7rem] focus:outline-none">
+                    <option selected class="opacity-[20%]">Color</option>
+                    <option value="red">Red</option>
+                    <option value="orange">Orange</option>
+                    <option value="yellow">Yellow</option>
+                    <option value="black">Black</option>
+                    <option value="white">White</option>
+                    <option value="grey">Grey</option>
+                    <option value="patterned">Patterned</option>
+                </select>
+                <select type="text" id="breed" class="rounded border-[#898989] border-[.1rem] p-[.5rem] w-[7rem] focus:outline-none">
+                    <option selected class="opacity-[20%]">Gender</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+                <input type="submit" value="Submit" class="rounded bg-[#FF9447] text-[#FFFFFF] border-[.1rem] p-[.5rem] w-[7rem] cursor-pointer">
+            </form>
+            <div class="mt-[2rem] flex flex-row flex-wrap place-content-center gap-[3rem] max-w-[1100px]">
+                <a href="../pet_details/pet_details.html">
+                    <div class="rounded-[20px] w-[300px]" style="box-shadow: 0px 7px 22px 0px rgba(0, 0, 0, 0.20);">
+                        <div class="w-[300px] h-[200px] rounded-[20px]" style="background-image: url(./../assets/dog_photo1.png);"></div>
+                        <div class="pb-[1rem] pt-[.5rem] px-[.5rem]">
+                            <div class="flex flex-row flex-nowrap justify-between items-center">
+                                <div class="font-semibold">Don Quixote</div>
+                                <div class="text-[.75rem]">Listed 3 hours ago</div>
+                            </div>
+                            <div class="flex flex-row flex-nowrap justify-between items-center text-[#5A2028]">
+                                <div class="text-[.625rem]">Toronto Humane Society</div>
+                                <div class="text-[.625rem]">Golden Retriever (Age 3)</div>
+                            </div>
+                        </div>
+                    </div>
+                </a>  
+                <div class="rounded-[20px] w-[300px]" style="box-shadow: 0px 7px 22px 0px rgba(0, 0, 0, 0.20);">
+                    <div class="w-[300px] h-[200px] rounded-[20px]" style="background-image: url(./../assets/pet_photo2.png);"></div>
+                    <div class="pb-[1rem] pt-[.5rem] px-[.5rem]">
+                        <div class="flex flex-row flex-nowrap justify-between items-center">
+                            <div class="font-semibold">Bert</div>
+                            <div class="text-[.75rem]">Listed 8 hours ago</div>
+                        </div>
+                        <div class="flex flex-row flex-nowrap justify-between items-center text-[#5A2028]">
+                            <div class="text-[.625rem]">Toronto Animal Rescue</div>
+                            <div class="text-[.625rem]">German Shorthaired (Age 9)</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="rounded-[20px] w-[300px]" style="box-shadow: 0px 7px 22px 0px rgba(0, 0, 0, 0.20);">
+                    <div class="w-[300px] h-[200px] rounded-[20px]" style="background-image: url(./../assets/pet_photo3.png);"></div>
+                    <div class="pb-[1rem] pt-[.5rem] px-[.5rem]">
+                        <div class="flex flex-row flex-nowrap justify-between items-center">
+                            <div class="font-semibold">Barack Obama</div>
+                            <div class="text-[.75rem]">Listed 9 hours ago</div>
+                        </div>
+                        <div class="flex flex-row flex-nowrap justify-between items-center text-[#5A2028]">
+                            <div class="text-[.625rem]">Toronto Animal Rescue</div>
+                            <div class="text-[.625rem]">Chartreux (Age 5)</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="rounded-[20px] w-[300px]" style="box-shadow: 0px 7px 22px 0px rgba(0, 0, 0, 0.20);">
+                    <div class="w-[300px] h-[200px] rounded-[20px]" style="background-image: url(./../assets/pet_photo4.png);"></div>
+                    <div class="pb-[1rem] pt-[.5rem] px-[.5rem]">
+                        <div class="flex flex-row flex-nowrap justify-between items-center">
+                            <div class="font-semibold">Shoes</div>
+                            <div class="text-[.75rem]">Listed 2 days ago</div>
+                        </div>
+                        <div class="flex flex-row flex-nowrap justify-between items-center text-[#5A2028]">
+                            <div class="text-[.625rem]">Toronto Humane Society</div>
+                            <div class="text-[.625rem]">Orange Tabby (Age 1)</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="rounded-[20px] w-[300px]" style="box-shadow: 0px 7px 22px 0px rgba(0, 0, 0, 0.20);">
+                    <div class="w-[300px] h-[200px] rounded-[20px]" style="background-image: url(./../assets/pet_photo5.png);"></div>
+                    <div class="pb-[1rem] pt-[.5rem] px-[.5rem]">
+                        <div class="flex flex-row flex-nowrap justify-between items-center">
+                            <div class="font-semibold">Chaser</div>
+                            <div class="text-[.75rem]">Listed 8 hours ago</div>
+                        </div>
+                        <div class="flex flex-row flex-nowrap justify-between items-center text-[#5A2028]">
+                            <div class="text-[.625rem]">Ontario Animal Rescue</div>
+                            <div class="text-[.625rem]">Bernese Mountain Dog (Age 5)</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="rounded-[20px] w-[300px]" style="box-shadow: 0px 7px 22px 0px rgba(0, 0, 0, 0.20);">
+                    <div class="w-[300px] h-[200px] rounded-[20px]" style="background-image: url(./../assets/pet_photo6.png);"></div>
+                    <div class="pb-[1rem] pt-[.5rem] px-[.5rem]">
+                        <div class="flex flex-row flex-nowrap justify-between items-center">
+                            <div class="font-semibold">Bill</div>
+                            <div class="text-[.75rem]">Listed 9 hours ago</div>
+                        </div>
+                        <div class="flex flex-row flex-nowrap justify-between items-center text-[#5A2028]">
+                            <div class="text-[.625rem]">Toronto Humane Society</div>
+                            <div class="text-[.625rem]">Husky (Age 2 Months)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="my-[1rem] md:my-[2rem] self-center flex flex-row flex-nowrap items-center gap-[1rem] font-semibold text-[#290005]">
+                <div class="flex flex-row flex-nowrap gap-[1rem] opacity-[60%]">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="20" viewBox="0 0 26 20" fill="none">
+                        <path d="M0.500001 9.99991V9.99991C0.503783 9.84201 0.533338 9.68578 0.5875 9.53741C0.616418 9.4846 0.649877 9.43441 0.6875 9.38741C0.720202 9.31815 0.757798 9.25132 0.8 9.18741L8.3 0.437407C8.59028 0.0980051 9.03958 -0.0607536 9.47865 0.0209337C9.91772 0.102621 10.2799 0.412344 10.4286 0.833434C10.5774 1.25452 10.4903 1.72301 10.2 2.06241L4.4625 8.74991L24.25 8.74991C24.9404 8.74991 25.5 9.30955 25.5 9.99991C25.5 10.6903 24.9404 11.2499 24.25 11.2499L4.4625 11.2499L10.2 17.9374C10.4903 18.2768 10.5774 18.7453 10.4286 19.1664C10.2799 19.5875 9.91772 19.8972 9.47865 19.9789C9.03958 20.0606 8.59028 19.9018 8.3 19.5624L0.8 10.8124C0.757798 10.7485 0.720202 10.6817 0.6875 10.6124C0.649877 10.5654 0.616418 10.5152 0.5875 10.4624C0.533338 10.314 0.503783 10.1578 0.500001 9.99991Z" fill="#290005" fill-opacity="1"/>
+                    </svg>
+                    Previous
+                </div>
+                <div class="flex flex-row flex-nowrap items-center gap-[1rem]">
+                    <div class="w-[40px] h-[40px] border-2 border-[#290005] bg-[#290005] text-[#FFF8F4] rounded flex items-center justify-center">1</div>
+                    <div class="w-[40px] h-[40px] border-2 border-[#290005] bg-[#FFFFFF] text-[#290005] rounded flex items-center justify-center cursor-pointer">2</div>
+                    <div class="w-[40px] h-[40px] border-2 border-[#290005] bg-[#FFFFFF] text-[#290005] rounded flex items-center justify-center cursor-pointer">3</div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="42" height="8" viewBox="0 0 42 8" fill="none">
+                        <path fill-rule="evenodd" clip-rule="evenodd" d="M4.25 0.25C2.17893 0.25 0.5 1.92893 0.5 4C0.5 6.07107 2.17893 7.75 4.25 7.75C6.32107 7.75 8 6.07107 8 4C8 1.92893 6.32107 0.25 4.25 0.25ZM17.25 4C17.25 1.92893 18.9289 0.25 21 0.25C23.0711 0.25 24.75 1.92893 24.75 4C24.75 6.07107 23.0711 7.75 21 7.75C18.9289 7.75 17.25 6.07107 17.25 4ZM19.75 4C19.75 4.69036 20.3096 5.25 21 5.25C21.6904 5.25 22.25 4.69036 22.25 4C22.25 3.30964 21.6904 2.75 21 2.75C20.3096 2.75 19.75 3.30964 19.75 4ZM37.75 0.25C35.6789 0.25 34 1.92893 34 4C34 6.07107 35.6789 7.75 37.75 7.75C39.8211 7.75 41.5 6.07107 41.5 4C41.5 1.92893 39.8211 0.25 37.75 0.25ZM36.5 4C36.5 4.69036 37.0596 5.25 37.75 5.25C38.4404 5.25 39 4.69036 39 4C39 3.30964 38.4404 2.75 37.75 2.75C37.0596 2.75 36.5 3.30964 36.5 4ZM3 4C3 4.69036 3.55964 5.25 4.25 5.25C4.94036 5.25 5.5 4.69036 5.5 4C5.5 3.30964 4.94036 2.75 4.25 2.75C3.55964 2.75 3 3.30964 3 4Z" fill="#290005"/>
+                    </svg>
+                    <div class="w-[40px] h-[40px] border-2 border-[#290005] bg-[#FFFFFF] text-[#290005] rounded flex items-center justify-center cursor-pointer">10</div>
+                </div>
+                <div class="flex flex-row flex-nowrap gap-[1rem] cursor-pointer">
+                    <div class="underline">Next</div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="26" height="20" viewBox="0 0 26 20" fill="none">
+                        <path d="M25.5 10.0001V10.0001C25.4962 10.158 25.4667 10.3142 25.4125 10.4626C25.3836 10.5154 25.3501 10.5656 25.3125 10.6126C25.2798 10.6818 25.2422 10.7487 25.2 10.8126L17.7 19.5626C17.4097 19.902 16.9604 20.0608 16.5214 19.9791C16.0823 19.8974 15.7201 19.5877 15.5714 19.1666C15.4226 18.7455 15.5097 18.277 15.8 17.9376L21.5375 11.2501H1.75C1.05964 11.2501 0.5 10.6904 0.5 10.0001C0.5 9.30974 1.05964 8.75009 1.75 8.75009H21.5375L15.8 2.06259C15.5097 1.72319 15.4226 1.25471 15.5714 0.833617C15.7201 0.412527 16.0823 0.102804 16.5214 0.0211166C16.9604 -0.0605706 17.4097 0.0981885 17.7 0.437591L25.2 9.18759C25.2422 9.2515 25.2798 9.31834 25.3125 9.38759C25.3501 9.4346 25.3836 9.48478 25.4125 9.53759C25.4667 9.68596 25.4962 9.84219 25.5 10.0001Z" fill="#290005"/>
+                    </svg>
+                </div>
+            </div>
+            <div class="mt-[-1rem]">Showing 6 of 58</div>
+        </div>
+    </div>
+    <footer class="absolute bottom-0 h-[3rem] bg-[#290005] text-center w-[100%] text-white py-[1rem] text-[1rem]">
+        © PetPal 2023
+    </footer>
+    <script src="./../navBar.js"></script>
 </body>
 </html>
