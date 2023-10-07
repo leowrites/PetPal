@@ -122,6 +122,15 @@
                                 class="w-full px-3 py-2 rounded-lg border-2 border-gray-200" placeholder="Breed" />
                         </div>
                         <div class="md:col-span-6">
+                            <label for="status" class="block uppercase font-semibold">Status</label>
+                            <select id="status" class="w-full px-3 py-2 rounded-lg border-2 border-gray-200">
+                                <option value="available">Available</option>
+                                <option value="fostered">Pending</option>
+                                <option value="adopted">Adopted</option>
+                                <option value="withdrawn">Withdrawn</option>
+                            </select>
+                        </div>
+                        <div class="md:col-span-6">
                             <label for="about" class="block uppercase font-semibold">About</label>
                             <textarea id="about" type="text" class="w-full px-3 py-2 rounded-lg border-2 border-gray-200 text-left" placeholder="About"
                                 rows="5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Soluta, assumenda beatae odit voluptate ex quasi cumque quia molestias pariatur qui consequuntur. Culpa incidunt deleniti officia, vel esse repudiandae molestiae illo.</textarea>
@@ -143,7 +152,7 @@
                         </div>
                         <div class="md:col-span-6">
                             <button
-                                onclick="location.href='../pet_application/pet_application_additional_questions.html'"
+                                onclick="location.href='../pet_edit/pet_edit.html'"
                                 class="text-white py-2 px-10 rounded-full enabled-button mt-5 w-fit">
                                 <p class="text-sm w-fit">Update</p>
                             </button>
