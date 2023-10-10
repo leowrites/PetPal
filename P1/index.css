@@ -92,6 +92,17 @@ main {
 .review .profile-icon {
     font-size: 3rem;
 }
+
 .review-reply .profile-icon {
     font-size: 2rem;
+}
+
+.no-spinner {
+  -moz-appearance: textfield;
+}
+
+.no-spinner::-webkit-outer-spin-button,
+.no-spinner::-webkit-inner-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
 }
