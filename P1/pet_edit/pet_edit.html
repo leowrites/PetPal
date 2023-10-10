@@ -13,37 +13,38 @@
 </head>
 
 <body>
-    <!-- Navbar -->
     <header class="">
-        <div class="hidden lg:block bg-[#FFF8F4] lg:flex lg:flex-row flex-nowrap justify-between text-[1rem]">
-            <div class="flex flex-row text-[2rem] py-[1.5rem] pl-[1.5rem]">
-                <h1 class="pr-[0px] xl:pr-[25px] text-[#290005]">Pet Pal</h1>
-                <object data="../assets/logo.svg" type="image/svg+xml"></object>
-            </div>
-            <div class="flex flex-row text-[1rem] font-medium self-end">
-                <a href="/p1/index.html">
-                    <div class="border-b-[1rem] border-[#290005] pb-[1.5rem] px-[2rem] hover:cursor-default">
-                        Home
-                    </div>
+        <div class="hidden lg:block bg-[#FFF8F4] lg:flex lg:flex-row flex-nowrap gap-[2rem] justify-between text-[1rem]">
+            <!-- normal navbar start -->
+            <div class=" flex flex-row text-[2rem] items-center pl-[1.5rem]">
+                <a href="./../index.html"><h1 class="pr-[10px] text-[#290005] my-[1.5rem]">Pet Pal</h1></a>
+                <a href="./../index.html"><object style="pointer-events: none;" data="./../assets/logo.svg" class="my-[1.5rem]" type="image/svg+xml"></object></a>
+                <a href="./../index.html" class="hover:border-b-[1rem] hover:border-[#290005] hover:pb-[1.5rem] hover:self-end self-center text-[1rem] font-medium px-[2rem] ml-[1rem] hover:cursor-pointer">
+                    Home
                 </a>
-                <div class="px-[2rem] hover:cursor-pointer">Adopt</div>
-                <div class="px-[2rem] hover:cursor-pointer">Rehome</div>
-                <div class="px-[2rem] hover:cursor-pointer">Shelters</div>
+                <a href="./../search/search.html" class="hover:border-b-[1rem] hover:border-[#290005] hover:pb-[1.5rem] hover:self-end self-center text-[1rem] font-medium px-[2rem] hover:cursor-pointer">
+                    Adopt
+                </a>
             </div>
 
-            <div class="self-center flex flex-row gap-[1rem] pr-[1.5rem] font-semibold">
-                <div class="bg-[#FF9447] py-[.75rem] w-[8rem] text-center text-[#FFF8F4]">Sign Up</div>
-                <div class="border-[#290005] border-[1px] py-[.75rem] w-[8rem] text-center text-[#290005]">
-                    Log In
-                </div>
+            <div class="self-center flex flex-row gap-[1rem] pr-[1.5rem] font-semibold items-center">
+                <a href="./../shelter_management/shelter_management.html">
+                    <div class="mx-[1rem] font-medium hover:cursor-pointer border-b-[3px] border-[#FF9447]">My Listings</div>
+                </a>
+                <a href="./../account_update/shelter_profile.html"
+                    class="hover:opacity-[80%] transition bg-[#FF9447] py-[1.2rem] px-[1rem] w-[10rem] text-center text-[#FFF8F4] hover:cursor-pointer rounded-full flex flex-nowrap justify-center items-center space-x-2">
+                    <img src="./../assets/profile_icon.svg" alt="profile_icon.svg" class="h-6 w-6">
+                    <span>My Profile</span>
+                </a>
             </div>
         </div>
         <div class="lg:hidden bg-[#FFF8F4]">
+            <!-- mobile navbar start -->
             <div class="flex flex-row flex-nowrap justify-between px-[1.5rem] py-[1rem] text-[1rem]">
-                <div class="flex flex-row text-[2rem]">
+                <a href="./../index.html" class=" flex flex-row text-[2rem]">
                     <h1 class="pr-[25px] text-[#290005]">Pet Pal</h1>
-                    <object data="../assets/logo.svg" type="image/svg+xml"></object>
-                </div>
+                    <object data="./../assets/logo.svg" type="image/svg+xml"></object>
+                </a>
                 <div class="self-center">
                     <button type="button" id="navBarCollapsible" class="cursor-pointer">
                         <svg id="navBarCollapsibleClosed" xmlns="http://www.w3.org/2000/svg" width="42" height="40"
@@ -62,32 +63,27 @@
                 </div>
             </div>
             <div id="navBarCollapsibleContent" class="overflow-hidden flex flex-col items-end"
-                style="box-shadow: 0px 0px 18px 0px rgba(0, 0, 0, 0.1) inset">
+                style="box-shadow: 0px 0px 18px 0px rgba(0, 0, 0, 0.1) inset;">
                 <div class="flex flex-col text-[1rem] font-medium w-[100%] font-semibold text-[290005]">
-                    <!-- border-b-[1rem] border-[#290005] pb-[1.5rem]  -->
-                    <a href="./index.html">
-                        <div class="border-b-[.05rem] border-[#6C6866] py-[1rem] mx-[1.5rem] grow">
-                            <div class="px-[2rem] hover:cursor-pointer w-[100%] text-end">Home</div>
-                        </div>
+                    <a href="./../index.html" class="border-b-[.05rem] border-[#6C6866] py-[1rem] mx-[1.5rem] grow">
+                        <div class="px-[2rem] hover:cursor-pointer w-[100%] text-end">Home</div>
                     </a>
-                    <div class="border-b-[.05rem] border-[#6C6866] py-[1rem] mx-[1.5rem] grow">
+                    <a href="./../search/search.html" class="border-b-[.05rem] border-[#6C6866] py-[1rem] mx-[1.5rem] grow">
                         <div class="px-[2rem] hover:cursor-pointer w-[100%] text-end">Adopt</div>
-                    </div>
-                    <div class="border-b-[.05rem] border-[#6C6866] py-[1rem] mx-[1.5rem] grow">
-                        <div class="px-[2rem] hover:cursor-pointer w-[100%] text-end">Rehome</div>
-                    </div>
-                    <div class="border-b-[.05rem] border-[#6C6866] py-[1rem] mx-[1.5rem] grow">
-                        <div class="px-[2rem] hover:cursor-pointer w-[100%] text-end">Shelters</div>
-                    </div>
+                    </a>
+                    <a href="./../shelter_management/shelter_management.html" class="border-b-[.05rem] border-[#6C6866] py-[1rem] mx-[1.5rem] grow">
+                        <div class="px-[2rem] hover:cursor-pointer w-[100%] text-end">My Listings</div>
+                    </a>
                 </div>
 
                 <div class="flex flex-row justify-end gap-[1rem] mr-[1.5rem] w-[100%] py-[1rem] font-semibold">
-                    <div class="bg-[#FF9447] py-[.75rem] w-[8rem] text-center text-[#FFF8F4]">Sign Up</div>
-                    <div class="border-[#290005] border-[1px] py-[.75rem] w-[8rem] text-center text-[#290005]">
-                        Log In
-                    </div>
+                    <a href="./../account_update/shelter_profile.html" class="bg-[#FF9447] py-[.75rem] w-[10rem] text-center text-[#FFF8F4] rounded-full flex flex-row gap-[.5rem] justify-center">
+                        <img src="./../assets/profile_icon.svg" alt="profile_icon.svg" class="h-6 w-6">
+                        My Profile
+                    </a>
                 </div>
             </div>
+            <!-- mobile navbar end -->
         </div>
     </header>
     <!-- main -->
