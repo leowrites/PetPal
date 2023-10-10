@@ -37,6 +37,24 @@ main {
   transition: max-height 0.2s ease-out;
 }
 
+#notificationsDropdown {
+  max-height: 0px;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+}
+
+.show {
+  visibility: visible !important;
+  -webkit-animation: fadeIn 1s !important;
+  animation: fadeIn 1s;
+  z-index: 1000;
+}
+
+#notificationsDropdownMobile {
+  visibility: hidden;
+  z-index: 10;
+}
+
 .pet-photo, .shelter-photo {
   border: 2px solid #290005;
   /* border-radius: 10px; */
