@@ -53,6 +53,10 @@ main {
   background-color: #ff9447;
 }
 
+.disabled-button {
+  background-color: #290005;
+}
+
 .pet-overview-box-status {
   color: #ff9447;
 }
