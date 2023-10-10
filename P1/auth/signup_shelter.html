@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Sign Up</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="../index.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
@@ -29,14 +29,14 @@
             </div>
   
             <div class="self-center flex flex-row gap-[1rem] pr-[1.5rem] font-semibold">
-                <a href="/P1/auth/signup_non_shelter.html">
-                    <div class="bg-[#FF9447] py-[.75rem] w-[8rem] text-center text-[#FFF8F4] hover:cursor-pointer">
-                        Sign Up
+                <div class="bg-[#FF9447] py-[.75rem] w-[8rem] text-center text-[#FFF8F4] hover:cursor-pointer">
+                    Sign Up
+                </div>
+                <a href="/P1/auth/login.html">
+                    <div class="border-[#290005] border-[1px] py-[.75rem] w-[8rem] text-center text-[#290005] hover:cursor-pointer">
+                        Log In
                     </div>
                 </a>
-                <div class="border-[#290005] border-[1px] py-[.75rem] w-[8rem] text-center text-[#290005] hover:cursor-pointer">
-                    Log In
-                </div>
             </div>
         </div>
         
@@ -78,36 +78,45 @@
                 </div>
   
                 <div class="flex flex-row justify-end gap-[1rem] mr-[1.5rem] w-[100%] py-[1rem] font-semibold">
-                    <a href="/P1/auth/signup_non_shelter.html">
-                        <div class="bg-[#FF9447] py-[.75rem] w-[8rem] text-center text-[#FFF8F4]">
-                            Sign Up
+                    <div class="bg-[#FF9447] py-[.75rem] w-[8rem] text-center text-[#FFF8F4]">
+                        Sign Up
+                    </div>
+                    <a href="/P1/auth/login.html">
+                        <div class="border-[#290005] border-[1px] py-[.75rem] w-[8rem] text-center text-[#290005]">
+                            Log In
                         </div>
                     </a>
-                    <div class="border-[#290005] border-[1px] py-[.75rem] w-[8rem] text-center text-[#290005]">
-                        Log In
-                    </div>
                 </div>
             </div>
         </div>
     </header>
 
     <main class="pt-10">
-        <div class="container mx-auto px-5 md:px-20">
+        <div class="container mx-auto px-5 md:px-20 pb-10">
             <div class="mt-12 flex items-center justify-center flex-col bg-white">
                 <h1 class="text-[#290005] text-4xl mb-1">Welcome to Pet Pal!</h1>
                 <div class="flex justify-items-center flex-row gap-10 pb-5 items-baseline">
-                    <button class="w-36 py-4" 
-                      onclick="location.href='signup_non_shelter.html'">
+                    <button class="border-b-8 border-[#FF9447] w-36 py-4 px-[1rem] tab-selected font-semibold" 
+                      onclick="location.href='signup.html'">
                         New Account
                     </button>
                     <button
-                        class="border-b-8 border-[#FF9447] w-36 py-4 px-[1rem] tab-selected font-semibold"
+                        class="w-36 py-4"
                         onclick="location.href='login.html'">
                         Login
                     </button>
                 </div>
                 <div class="">
                     <form class="flex flex-col gap-1 text-xl justify-center w-full max-w-lg mx-auto">
+                        <div class="mb-4 flex items-center">
+                          <input
+                            id="isShelter"
+                            type="checkbox"
+                            class="w-6 h-6 border border-[#290005] bg-[#FFF8F4] rounded-md"
+                            checked
+                            />
+                            <label for="isShelter" class="ml-4 font-medium text-lg">I am a shelter</label>
+                        </div>
                         <div class="mb-4">
                             <label for="username" class="block font-medium">Username</label>
                             <input
@@ -116,6 +125,15 @@
                             class="w-full px-3 py-2 text-sm rounded-lg border-2 border-[#290005] bg-[#FFF8F4] mr-12 ml-0 sm:mr-40"
                             placeholder="justinli"
                             />
+                        </div>
+                        <div class="mb-4">
+                          <label for="email" class="block font-medium">Email</label>
+                          <input
+                          id="email"
+                          type="email" 
+                          class="w-full px-3 py-2 text-sm rounded-lg border-2 border-[#290005] bg-[#FFF8F4]"
+                          placeholder="justinli@gmail.com"
+                          />
                         </div>
                         <div class="mb-8">
                             <div class="flex flex-row justify-between">
@@ -131,13 +149,49 @@
                                 placeholder="*******"
                             />
                         </div>
-                        <div class="w-full">
-                            <button type="submit"
-                                class="px-3 py-2 w-9/12 rounded-lg border-2 border-[#290005] font-semibold text-white bg-[#290005] mx-4 sm:mx-8"
-                            >
-                                Sign In
-                            </button>
-                        </div>
+                        <p class="text-[#290005] text-2xl font-semibold mb-1">Shelter Information</p>
+                        <div class="mb-4">
+                          <label for="shelterName" class="block font-medium">Shelter Name</label>
+                          <input
+                          id="shelterName"
+                          type="text"
+                          class="w-full px-3 py-2 text-sm rounded-lg border-2 border-[#290005] bg-[#FFF8F4] mr-0 ml-0 sm:mr-24"
+                          placeholder="Toronto Humane Society"
+                          />
+                      </div>
+                      <div class="mb-4">
+                        <label for="contactEmail" class="block font-medium">Contact Email</label>
+                        <input
+                        id="contactEmail"
+                        type="email" 
+                        class="w-full px-3 py-2 text-sm rounded-lg border-2 border-[#290005] bg-[#FFF8F4]"
+                        placeholder="torontohumanesociety@gmail.com"
+                        />
+                      </div>
+                      <div class="mb-4">
+                        <label for="location" class="block font-medium">Location</label>
+                        <input
+                        id="location"
+                        type="text" 
+                        class="w-full px-3 py-2 text-sm rounded-lg border-2 border-[#290005] bg-[#FFF8F4]"
+                        placeholder="Toronto, ON"
+                        />
+                      </div>
+                      <div class="mb-4">
+                        <label for="mission" class="block font-medium">Mission Statement</label>
+                        <textarea
+                          id="mission"
+                          class="w-full px-3 py-2 text-sm rounded-lg border-2 border-[#290005] bg-[#FFF8F4]"
+                          placeholder="We love pets!"
+                          rows="4"></textarea>
+                      </div>
+                      <div class="w-full">
+                        <button type="submit"
+                            class="px-3 py-2 sm:w-9/12 rounded-lg border-2 border-[#290005] font-semibold text-white bg-[#290005] mx-4 sm:mx-8"
+                        >
+                            Create Account
+                        </button>
+                      </div>
                     </form>
                 </div>
             </div>
