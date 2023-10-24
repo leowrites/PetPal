@@ -8,6 +8,6 @@ class PetApplication(models.Model):
         (2, "Accepted"),
         (3, "Denied"),
         (4, "Withdrawn")
-    ))
+    ), default=1)
     application_time = models.DateTimeField(auto_now_add=True)
     last_updated = models.DateTimeField(auto_now=True)
