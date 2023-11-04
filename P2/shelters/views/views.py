@@ -6,18 +6,30 @@ from shelters.models.application_response import Question
 from shelters.serializers import serializers
 
 
-# Create your views here.
 # POST /shelters/{shelter_id}/listings/{listing_id}/applications
-# for now: /shelters
-class CreateApplicationForListing(generics.CreateAPIView):
-    serializer_class = serializers.PetApplicationFormSerializer
+# GET /shelters/<shelter_id>/listings/<listing_id>/applications
+# TODO: on GET only allow if the shelter owns this listing
+# TODO: on POST allow anyone to make a request to apply
+class CreateApplicationForListing(generics.ListCreateAPIView):
+
+    def get_serializer_class(self):
+        print(self.request.method)
+        if self.request.method == 'GET':
+            return serializers.PetApplicationSerializer
+        else:
+            return serializers.PetApplicationFormSerializer
+
+    def get_queryset(self):
+        return PetApplication.objects.filter(listing_id=self.kwargs['listing_id'])
 
 
-# GET /shelters/{shelter_id}/listings/{listing_id}/shelters/{application_id}
-# PUT /shelters/{shelter_id}/listings/{listing_id}/shelters/{application_id}
+# GET /shelters/<shelter_id>/listings/<listing_id>/applications/<application_id>
+# PUT /shelters/<shelter_id>/listings/<listing_id>/applications/<application_id>
 class GetPetApplicationDetails(generics.RetrieveUpdateAPIView):
-    queryset = PetApplication.objects.all()
     serializer_class = serializers.PetApplicationSerializer
+
+    def get_object(self):
+        return get_object_or_404(PetApplication, id=self.kwargs['application_id'])
 
 
 class ListOrCreateShelterQuestion(generics.ListCreateAPIView):
@@ -25,7 +37,7 @@ class ListOrCreateShelterQuestion(generics.ListCreateAPIView):
 
     def get_queryset(self):
         # uncomment once others are implemented
-        # shelter = get_object_or_404(Shelter, userId=self.request.user.id)
+        # shelter = get_object_or_404(Shelter, user=self.request.user)
         # questions = Question.objects.filter(owner=shelter)
         # return questions
         return Question.objects.all()

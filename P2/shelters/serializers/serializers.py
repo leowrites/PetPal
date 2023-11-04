@@ -3,13 +3,14 @@ from shelters.models.pet_application import PetApplication, PetListing
 from shelters.models.application_response import Question, ListingQuestion, Answer
 
 
-def get_status(obj):
-    return obj.get_status_display()
+class AnswerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Answer
+        fields = '__all__'
 
 
 class PetApplicationSerializer(serializers.ModelSerializer):
-    status = serializers.SerializerMethodField()
-    answers = serializers.StringRelatedField(many=True)
+    answers = AnswerSerializer(many=True, read_only=True)
 
     class Meta:
         model = PetApplication
@@ -52,18 +53,12 @@ class PetApplicationFormSerializer(serializers.Serializer):
             Answer.objects.create(answer=value, question_id=key, application=application)
         return application
 
-    # need to figure out how GET works (for user it should be a form and for admin it should be list of all
-    # applications)
 
 class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
         fields = '__all__'
 
-
-# class QuestionIdSerializer(serializers.ModelSerializer):
-#     class Meta:
-#         model =
 
 class PetListingSerializer(serializers.ModelSerializer):
     questions = serializers.PrimaryKeyRelatedField(many=True, queryset=Question.objects.all(), write_only=True)
