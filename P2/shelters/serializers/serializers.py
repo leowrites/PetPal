@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from shelters.models.pet_application import PetApplication, PetListing
-from shelters.models.application_response import Question, ListingQuestion
+from shelters.models.application_response import Question, ListingQuestion, Answer
 
 
 def get_status(obj):
@@ -34,16 +34,26 @@ class PetApplicationFormSerializer(serializers.Serializer):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        listing_id = kwargs['context']['request'].parser_context['kwargs']['listing_id']
-        listing_questions = ListingQuestion.objects.filter(listing_id=listing_id)
+        self.listing_id = self.context.get('request').parser_context.get('kwargs').get('listing_id')
+        listing_questions = ListingQuestion.objects.filter(listing_id=self.listing_id)
 
         question_dict = {}
         # for each question that belongs to this pet listing, make a field for it
+        # may need to add more data such as type of the question so corresponding fields can be used
         for listing_question in listing_questions:
             question_string = listing_question.question.question
-            question_dict[str(listing_question.question.id)] = serializers.CharField(label=question_string)
+            question_dict[str(listing_question.id)] = serializers.CharField(label=question_string, required=False)
         self.fields.update(question_dict)
 
+    def create(self, validated_data):
+        # should create an application instance here as well as for each response create answers
+        application = PetApplication.objects.create(listing_id=self.listing_id)
+        for key, value in validated_data.items():
+            Answer.objects.create(answer=value, question_id=key, application=application)
+        return application
+
+    # need to figure out how GET works (for user it should be a form and for admin it should be list of all
+    # applications)
 
 class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
