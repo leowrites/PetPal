@@ -9,9 +9,8 @@ from shelters.serializers import serializers
 # Create your views here.
 # POST /shelters/{shelter_id}/listings/{listing_id}/applications
 # for now: /shelters
-class ListOrCreateApplicationForListing(generics.ListCreateAPIView):
-    queryset = PetApplication.objects.all()
-    serializer_class = serializers.PetApplicationSerializer
+class CreateApplicationForListing(generics.CreateAPIView):
+    serializer_class = serializers.PetApplicationFormSerializer
 
 
 # GET /shelters/{shelter_id}/listings/{listing_id}/shelters/{application_id}

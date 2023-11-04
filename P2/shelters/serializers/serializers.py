@@ -28,12 +28,21 @@ class ListingQuestionSerializer(serializers.ModelSerializer):
         fields = ['id', 'question']
 
 
-class PetApplicationFormSerializer(serializers.ModelSerializer):
-    questions = ListingQuestionSerializer(many=True)
+class PetApplicationFormSerializer(serializers.Serializer):
+    # on post, each question associated with the listing should be a field in the serializer
+    # listing_questions = ListingQuestionSerializer(many=True)
 
-    class Meta:
-        model = PetListing
-        fields = ['questions']
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        listing_id = kwargs['context']['request'].parser_context['kwargs']['listing_id']
+        listing_questions = ListingQuestion.objects.filter(listing_id=listing_id)
+
+        question_dict = {}
+        # for each question that belongs to this pet listing, make a field for it
+        for listing_question in listing_questions:
+            question_string = listing_question.question.question
+            question_dict[str(listing_question.question.id)] = serializers.CharField(label=question_string)
+        self.fields.update(question_dict)
 
 
 class QuestionSerializer(serializers.ModelSerializer):
