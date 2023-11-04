@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from shelters.models.pet_application import PetApplication
+from shelters.models.pet_application import PetApplication, PetListing
 from shelters.models.application_response import Question, ListingQuestion
 
 
@@ -9,6 +9,7 @@ def get_status(obj):
 
 class PetApplicationSerializer(serializers.ModelSerializer):
     status = serializers.SerializerMethodField()
+    answers = serializers.StringRelatedField(many=True)
 
     class Meta:
         model = PetApplication
@@ -25,3 +26,63 @@ class ListingQuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = ListingQuestion
         fields = ['id', 'question']
+
+
+class PetApplicationFormSerializer(serializers.ModelSerializer):
+    questions = ListingQuestionSerializer(many=True)
+
+    class Meta:
+        model = PetListing
+        fields = ['questions']
+
+
+class QuestionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Question
+        fields = '__all__'
+
+
+# class QuestionIdSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model =
+
+class PetListingSerializer(serializers.ModelSerializer):
+    questions = serializers.PrimaryKeyRelatedField(many=True, queryset=Question.objects.all(), write_only=True)
+    listing_questions = serializers.SerializerMethodField(read_only=True)
+
+    # user can select the questions, which will create new rows in listing questions
+    class Meta:
+        # for listing or creating a serializer
+        model = PetListing
+        fields = '__all__'
+
+    def create(self, validated_data):
+        questions_data = validated_data.pop('questions')
+        pet_listing = PetListing.objects.create(**validated_data)
+        for question in questions_data:
+            ListingQuestion.objects.create(listing=pet_listing, question=question)
+        return pet_listing
+
+    def update(self, instance, validated_data):
+        # if question is not already in the listing then update it
+        questions_data = validated_data.pop('questions')
+        # remove the ones that no longer exist
+        new_question_ids = [q.id for q in questions_data]
+        # Get all questions that belong to this pet listing
+        existing_questions = ListingQuestion.objects.filter(listing=instance)
+        existing_question_ids = [q.question.id for q in existing_questions]
+
+        for question in questions_data:
+            if question.id not in existing_question_ids:
+                ListingQuestion.objects.create(listing=instance, question=question)
+
+        for existing_question in existing_questions:
+            if existing_question.question.id not in new_question_ids:
+                existing_question.delete()
+
+        # for question in questions_data:
+        return super().update(instance, validated_data)
+
+    def get_listing_questions(self, obj):
+        listing_questions = ListingQuestion.objects.filter(listing=obj)
+        return ListingQuestionSerializer(listing_questions, many=True).data

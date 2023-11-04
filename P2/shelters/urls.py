@@ -12,5 +12,13 @@ urlpatterns = [
     path('<int:pk>/listings/<int:listing_id>/questions', views.ListOrCreateListingQuestion.as_view(),
          name='listing-question-list-create'),
     path('<int:pk>/listings/<int:listing_id>/questions/<int:question_id>',
-         views.RemoveListingQuestion.as_view(), name='listing-question-delete')
+         views.RemoveListingQuestion.as_view(), name='listing-question-delete'),
+    path('<int:pk>/listings/<int:listing_id>/applications/<int:application_id>', views.GetPetApplicationDetails.as_view(),
+         name='pet-application-details'),
+    path('<int:pk>/listings/<int:listing_id>/applications', views.ListOrCreateApplicationForListing.as_view(),
+         name='pet-application-list-create'),
+    path('<int:pk>/listings', views.ListOrCreatePetListing.as_view(),
+         name='pet-listing-list-create'),
+    path('<int:pk>/listings/<int:listing_id>', views.UpdateOrDeletePetListing.as_view(),
+         name='pet-listing-update-destroy')
 ]
