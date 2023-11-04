@@ -1,6 +1,6 @@
 from rest_framework import serializers
-from applications.models.pet_application import PetApplication
-from applications.models.application_response import Question, ListingQuestion
+from shelters.models.pet_application import PetApplication
+from shelters.models.application_response import Question, ListingQuestion
 
 
 def get_status(obj):

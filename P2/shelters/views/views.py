@@ -1,27 +1,27 @@
 from rest_framework import generics
 from rest_framework.generics import get_object_or_404
 
-from applications.models.pet_application import PetApplication
-from applications.models.application_response import Question
-from applications.serializers import serializers
+from shelters.models.pet_application import PetApplication
+from shelters.models.application_response import Question
+from shelters.serializers import serializers
 
 
 # Create your views here.
-# POST /shetlers/{shelter_id}/listings/{listing_id}/applications/
-# for now: /applications
-class PetApplicationListByPetListing(generics.ListCreateAPIView):
+# POST /shelters/{shelter_id}/listings/{listing_id}/shelters/
+# for now: /shelters
+class ListOrCreateApplicationForListing(generics.ListCreateAPIView):
     queryset = PetApplication.objects.all()
     serializer_class = serializers.PetApplicationSerializer
 
 
-# GET /shelters/{shelter_id}/listings/{listing_id}/applications/{application_id}
-# PUT /shelters/{shelter_id}/listings/{listing_id}/applications/{application_id}
+# GET /shelters/{shelter_id}/listings/{listing_id}/shelters/{application_id}
+# PUT /shelters/{shelter_id}/listings/{listing_id}/shelters/{application_id}
 class PetApplicationDetails(generics.RetrieveUpdateAPIView):
     queryset = PetApplication.objects.all()
     serializer_class = serializers.PetApplicationSerializer
 
 
-# GET /shelters/{shelter_id}/applications
+# GET /shelters/{shelter_id}/shelters
 class PetApplicationListByShelter(generics.ListAPIView):
     queryset = PetApplication.objects.all()
     serializer_class = serializers.PetApplicationSerializer
@@ -56,3 +56,4 @@ class ListOrCreateListingQuestion(generics.ListCreateAPIView):
 
 class RemoveListingQuestion(generics.DestroyAPIView):
     serializer_class = serializers.ListingQuestionSerializer
+
