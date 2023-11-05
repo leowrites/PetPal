@@ -90,7 +90,15 @@ class PetApplicationFormSerializer(serializers.Serializer):
         self.fields.update(question_dict)
 
     def create(self, validated_data):
-        # should create an application instance here as well as for each response create answers
+        # check listing is available
+        listing = PetListing.objects.get(id=self.listing_id)
+        if listing.status == 'not_available':
+            raise serializers.ValidationError("This listing is not available")
+
+        # check if this user already has an applicant for this listing
+        user = self.context['request'].user
+        if PetApplication.objects.filter(applicant=user, listing_id=self.listing_id).exists():
+            raise serializers.ValidationError("You already applied to this listing")
         application = PetApplication.objects.create(listing_id=self.listing_id)
         for key, value in validated_data.items():
             Answer.objects.create(answer=value, question_id=key, application=application)

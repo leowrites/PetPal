@@ -2,8 +2,12 @@ from django.db import models
 
 
 class PetListing(models.Model):
+    STATUS_CHOICES = (
+        ("available", "Available"),
+        ("not_available", "Not Available")
+    )
     name = models.CharField(max_length=200)
-
+    # status = models.CharField(max_length=15, choices=STATUS_CHOICES, default="pending")
 
 class PetApplication(models.Model):
     STATUS_CHOICES = (
