@@ -1,11 +1,18 @@
 from rest_framework import generics
 from rest_framework.generics import get_object_or_404
 from rest_framework import filters
+from rest_framework.pagination import PageNumberPagination
 
 from shelters.models.pet_application import PetApplication, PetListing, PetApplicationFilter
 from shelters.models.application_response import Question
 from shelters.serializers import serializers
 from django_filters.rest_framework import DjangoFilterBackend
+
+
+class ApplicationPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 10
 
 
 # POST /shelters/{shelter_id}/listings/{listing_id}/applications
@@ -17,6 +24,7 @@ class ListOrCreateApplicationForListing(generics.ListCreateAPIView):
     filterset_class = PetApplicationFilter
     ordering_fields = ['application_time', 'last_updated']
     ordering = ['last_updated']
+    pagination_class = ApplicationPagination
 
     def get_serializer_class(self):
         print(self.request.method)
