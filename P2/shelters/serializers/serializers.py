@@ -20,13 +20,30 @@ class PetApplicationSerializer(serializers.ModelSerializer):
 class ShelterQuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
-        fields = ['id', 'question']
+        fields = ['id', 'question', 'type', 'required']
 
 
 class ListingQuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = ListingQuestion
-        fields = ['id', 'question']
+        fields = ['id', 'question', 'rank']
+
+
+def type_to_field(question_type, label, required):
+    if question_type == Question.FILE:
+        return serializers.FileField(label=label, required=required)
+    elif question_type == Question.CHECKBOX:
+        return serializers.BooleanField(label=label, required=required)
+    elif question_type == Question.DATE:
+        return serializers.DateField(input_formats=['%d-%m-%Y'], label=label, required=required)
+    elif question_type == Question.EMAIL:
+        return serializers.EmailField(max_length=200, min_length=0, label=label, required=required)
+    elif question_type == Question.TEXT:
+        return serializers.CharField(max_length=1000, label=label, required=required)
+    elif question_type == Question.NUMBER:
+        return serializers.IntegerField(label=label, required=required)
+    else:
+        return serializers.CharField(label=label, required=required)
 
 
 class PetApplicationFormSerializer(serializers.Serializer):
@@ -36,14 +53,16 @@ class PetApplicationFormSerializer(serializers.Serializer):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.listing_id = self.context.get('request').parser_context.get('kwargs').get('listing_id')
-        listing_questions = ListingQuestion.objects.filter(listing_id=self.listing_id)
+        listing_questions = ListingQuestion.objects.filter(listing_id=self.listing_id).order_by('rank')
 
         question_dict = {}
         # for each question that belongs to this pet listing, make a field for it
         # may need to add more data such as type of the question so corresponding fields can be used
         for listing_question in listing_questions:
-            question_string = listing_question.question.question
-            question_dict[str(listing_question.id)] = serializers.CharField(label=question_string, required=False)
+            question = listing_question.question
+            question_string = question.question
+            # the serializer field differs depending on the type of the question
+            question_dict[str(listing_question.id)] = type_to_field(question_type=question.type, label=question_string,                                                          required=question.required)
         self.fields.update(question_dict)
 
     def create(self, validated_data):
@@ -62,7 +81,7 @@ class QuestionSerializer(serializers.ModelSerializer):
 
 class PetListingSerializer(serializers.ModelSerializer):
     questions = serializers.PrimaryKeyRelatedField(many=True, queryset=Question.objects.all(), write_only=True)
-    listing_questions = serializers.SerializerMethodField(read_only=True)
+    listing_questions = ListingQuestionSerializer(many=True, read_only=True)
 
     # user can select the questions, which will create new rows in listing questions
     class Meta:
@@ -96,7 +115,3 @@ class PetListingSerializer(serializers.ModelSerializer):
 
         # for question in questions_data:
         return super().update(instance, validated_data)
-
-    def get_listing_questions(self, obj):
-        listing_questions = ListingQuestion.objects.filter(listing=obj)
-        return ListingQuestionSerializer(listing_questions, many=True).data
