@@ -1,11 +1,16 @@
 from django.db import models
+from django.contrib.auth.models import User
 from .pet_application import PetApplication, PetListing
 
 
 # each question is owned by a shelter
 class Question(models.Model):
-    # owner = models.ForeignKey(User, on_delete=models.CASCADE)
+    # shelter can own questions
+    # shelter = models.ForeignKey(Shelter, related_name='questions', on_delete=models.CASCADE)
     question = models.CharField(max_length=1000)
+
+    def __str__(self):
+        return self.question
 
 
 # one question can be used for many listings, one listing can have many questions

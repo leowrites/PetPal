@@ -48,7 +48,7 @@ class PetApplicationFormSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         # should create an application instance here as well as for each response create answers
-        application = PetApplication.objects.create(listing_id=self.listing_id)
+        application = PetApplication.objects.create(listing_id=self.listing_id, applicant=self.context['request'].user)
         for key, value in validated_data.items():
             Answer.objects.create(answer=value, question_id=key, application=application)
         return application

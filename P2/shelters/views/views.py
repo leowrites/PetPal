@@ -1,9 +1,9 @@
 from rest_framework import generics
 from rest_framework.generics import get_object_or_404
-
 from shelters.models.pet_application import PetApplication, PetListing
 from shelters.models.application_response import Question
 from shelters.serializers import serializers
+from rest_framework.permissions import IsAuthenticated
 
 
 # POST /shelters/{shelter_id}/listings/{listing_id}/applications
@@ -11,6 +11,7 @@ from shelters.serializers import serializers
 # TODO: on GET only allow if the shelter owns this listing
 # TODO: on POST allow anyone to make a request to apply
 class CreateApplicationForListing(generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticated]
 
     def get_serializer_class(self):
         print(self.request.method)
