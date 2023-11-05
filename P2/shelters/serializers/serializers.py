@@ -62,7 +62,7 @@ class PetApplicationFormSerializer(serializers.Serializer):
             question = listing_question.question
             question_string = question.question
             # the serializer field differs depending on the type of the question
-            question_dict[str(listing_question.id)] = type_to_field(question_type=question.type, label=question_string,                                                          required=question.required)
+            question_dict[str(listing_question.id)] = type_to_field(question_type=question.type, label=question_string, required=question.required)
         self.fields.update(question_dict)
 
     def create(self, validated_data):
@@ -77,11 +77,16 @@ class QuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
         fields = '__all__'
+        extra_kwargs = {
+            'id': {
+                'read_only': False
+            }
+        }
 
 
 class PetListingSerializer(serializers.ModelSerializer):
-    questions = serializers.PrimaryKeyRelatedField(many=True, queryset=Question.objects.all(), write_only=True)
-    listing_questions = ListingQuestionSerializer(many=True, read_only=True)
+    # questions = serializers.PrimaryKeyRelatedField(many=True, queryset=Question.objects.all(), write_only=True)
+    listing_questions = ListingQuestionSerializer(many=True)
 
     # user can select the questions, which will create new rows in listing questions
     class Meta:
@@ -90,28 +95,38 @@ class PetListingSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
     def create(self, validated_data):
-        questions_data = validated_data.pop('questions')
+        questions_data = validated_data.pop('listing_questions', [])
         pet_listing = PetListing.objects.create(**validated_data)
         for question in questions_data:
-            ListingQuestion.objects.create(listing=pet_listing, question=question)
+            ListingQuestion.objects.create(listing=pet_listing, **question)
         return pet_listing
 
     def update(self, instance, validated_data):
         # if question is not already in the listing then update it
-        questions_data = validated_data.pop('questions')
+        listing_questions_data = validated_data.pop('listing_questions', [])
         # remove the ones that no longer exist
-        new_question_ids = [q.id for q in questions_data]
+        new_question_ids = {q['question'].id: q for q in listing_questions_data}
         # Get all questions that belong to this pet listing
         existing_questions = ListingQuestion.objects.filter(listing=instance)
-        existing_question_ids = [q.question.id for q in existing_questions]
+        existing_question_ids = {q.question.id: q for q in existing_questions}
 
-        for question in questions_data:
-            if question.id not in existing_question_ids:
-                ListingQuestion.objects.create(listing=instance, question=question)
+        existing_questions_to_update = []
+        new_questions = []
 
-        for existing_question in existing_questions:
-            if existing_question.question.id not in new_question_ids:
-                existing_question.delete()
+        # add new ones
+        for question_id, question_data in new_question_ids.items():
+            if question_id in existing_question_ids:
+                existing_question = existing_question_ids[question_id]
+                existing_question.rank = question_data['rank']
+                existing_questions_to_update.append(existing_question)
+            else:
+                new_questions.append(ListingQuestion(listing=instance, **question_data))
+        
+        ListingQuestion.objects.bulk_create(new_questions)
+        ListingQuestion.objects.bulk_update(existing_questions_to_update, ['rank'])
+
+        old_question_ids = set(existing_question_ids.keys()) - set(new_question_ids.keys())
+        ListingQuestion.objects.filter(listing=instance, question_id__in=old_question_ids).delete()
 
         # for question in questions_data:
         return super().update(instance, validated_data)
