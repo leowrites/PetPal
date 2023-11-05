@@ -15,6 +15,49 @@ class PetApplicationSerializer(serializers.ModelSerializer):
     class Meta:
         model = PetApplication
         fields = '__all__'
+        extra_kwargs = {
+            'listing': {
+                'required': False
+            }
+        }
+
+    def update(self, instance, validated_data):
+        # Check if the 'status' field is included in the request data
+        if 'status' not in validated_data:
+            raise serializers.ValidationError("The status field is required.")
+
+        request = self.context.get('request')
+        new_status = validated_data['status']
+        # make sure the applicant can only update the status from pending -> withdrawn,
+        # or approved -> accepted, withdrawn
+        # if request.user.is_anonymous:
+        #     raise serializers.ValidationError("You must be logged in!")
+
+        # uncomment once user model & shelter model are merged
+        # if request.user == instance.applicant:
+        #     if instance.status == 'pending' and new_status != 'withdrawn':
+        #         raise serializers.ValidationError("Applicant can only update status from pending to withdrawn.")
+        #     elif instance.status == 'approved' and new_status not in ['accepted', 'withdrawn']:
+        #         raise serializers.ValidationError("Applicant can only update status from approved "
+        #                                           "to withdrawn or accepted.")
+        #     else:
+        #         raise serializers.ValidationError("You can only update the status to withdrawn or accepted")
+        # add logic for shelter here once shelter is added
+        # if True:
+        #     pass
+        # else:
+        #     # check owner of this listing is the current user
+        #     if instance.listing.shelter != request.user:
+        #         raise serializers.ValidationError("You do not own this listing")
+        #     # will let them update anytime if they change their mind
+        #     if new_status != ['accepted', 'denied', 'pending']:
+        #         raise serializers.ValidationError("Shelter can only update status from pending to accepted or withdrawn.")
+        #     else:
+        #         raise serializers.ValidationError("You can only update the status to pending, accepted, or denied")
+        # Only update the 'status' field
+        instance.status = validated_data['status']
+        instance.save(update_fields=['status'])
+        return instance
 
 
 class ShelterQuestionSerializer(serializers.ModelSerializer):

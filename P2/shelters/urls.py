@@ -13,7 +13,7 @@ urlpatterns = [
          name='listing-question-list-create'),
     path('<int:pk>/listings/<int:listing_id>/questions/<int:question_id>',
          views.RemoveListingQuestion.as_view(), name='listing-question-delete'),
-    path('<int:pk>/listings/<int:listing_id>/applications/<int:application_id>', views.GetPetApplicationDetails.as_view(),
+    path('<int:pk>/listings/<int:listing_id>/applications/<int:application_id>', views.UpdateOrGetPetApplicationDetails.as_view(),
          name='pet-application-details'),
     path('<int:pk>/listings/<int:listing_id>/applications', views.CreateApplicationForListing.as_view(),
          name='pet-application-list-create'),
