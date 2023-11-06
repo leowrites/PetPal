@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from shelters.models.pet_application import PetApplication, PetListing
 from shelters.models.application_response import Question, ListingQuestion, Answer
+from shelters import models
 
 
 class AnswerSerializer(serializers.ModelSerializer):
@@ -21,6 +22,15 @@ class ShelterQuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
         fields = ['id', 'question']
+
+    def create(self, validated_data):
+        user = self.context['request'].user
+        # pretty sure this logic can be moved to the view, we can have a
+        # permission method for this
+        if not hasattr(user, 'shelter'):
+            raise serializers.ValidationError("You are not a shelter")
+        question = Question.objects.create(**validated_data, shelter=user.shelter)
+        return question
 
 
 class ListingQuestionSerializer(serializers.ModelSerializer):
@@ -100,3 +110,9 @@ class PetListingSerializer(serializers.ModelSerializer):
     def get_listing_questions(self, obj):
         listing_questions = ListingQuestion.objects.filter(listing=obj)
         return ListingQuestionSerializer(listing_questions, many=True).data
+
+
+class ShelterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Shelter
+        fields = '__all__'

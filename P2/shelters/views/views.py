@@ -2,6 +2,7 @@ from rest_framework import generics
 from rest_framework.generics import get_object_or_404
 from shelters.models.pet_application import PetApplication, PetListing
 from shelters.models.application_response import Question
+from shelters import models
 from shelters.serializers import serializers
 from rest_framework.permissions import IsAuthenticated
 
@@ -75,3 +76,9 @@ class UpdateOrDeletePetListing(generics.RetrieveUpdateDestroyAPIView):
 
     def get_object(self):
         return get_object_or_404(PetListing, id=self.kwargs['listing_id'])
+
+
+# Shelter
+class ListOrCreateShelter(generics.ListCreateAPIView):
+    queryset = models.Shelter.objects.all()
+    serializer_class = serializers.ShelterSerializer
