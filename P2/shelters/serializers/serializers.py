@@ -165,7 +165,7 @@ class QuestionSerializer(serializers.ModelSerializer):
 
 class PetListingSerializer(serializers.ModelSerializer):
     # questions = serializers.PrimaryKeyRelatedField(many=True, queryset=Question.objects.all(), write_only=True)
-    assigned_questions = AssignedQuestionSerializer(many=True)
+    assigned_questions = AssignedQuestionSerializer(many=True, required=False)
 
     # user can select the questions, which will create new rows in listing questions
     class Meta:
