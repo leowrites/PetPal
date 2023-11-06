@@ -1,10 +1,11 @@
 from django.db import models
 from django.contrib.auth.models import User
+from .shelter import Shelter
 
 
 class PetListing(models.Model):
     name = models.CharField(max_length=200)
-    # shelter = ...  to be added once there is a shelter model
+    shelter = models.ForeignKey(Shelter, related_name='listings', on_delete=models.CASCADE)
 
 
 class PetApplication(models.Model):

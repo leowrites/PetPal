@@ -1,12 +1,11 @@
 from django.db import models
-from django.contrib.auth.models import User
 from .pet_application import PetApplication, PetListing
+from .shelter import Shelter
 
 
 # each question is owned by a shelter
 class Question(models.Model):
-    # shelter can own questions
-    # shelter = models.ForeignKey(Shelter, related_name='questions', on_delete=models.CASCADE)
+    shelter = models.ForeignKey(Shelter, related_name='questions', on_delete=models.CASCADE)
     question = models.CharField(max_length=1000)
 
     def __str__(self):
