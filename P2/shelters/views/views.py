@@ -5,7 +5,7 @@ from rest_framework.pagination import PageNumberPagination
 
 from shelters.filters import PetApplicationFilter
 from shelters.models.pet_application import PetApplication, PetListing
-from shelters.models.application_response import Question
+from shelters.models.application_response import ShelterQuestion
 from shelters import models
 from shelters.serializers import serializers
 from rest_framework.permissions import IsAuthenticated
@@ -43,11 +43,14 @@ class ListOrCreateApplicationForListing(generics.ListCreateAPIView):
 
 # GET /shelters/<shelter_id>/listings/<listing_id>/applications/<application_id>
 # PUT /shelters/<shelter_id>/listings/<listing_id>/applications/<application_id>
-class GetPetApplicationDetails(generics.RetrieveUpdateAPIView):
+class UpdateOrGetPetApplicationDetails(generics.RetrieveUpdateAPIView):
     serializer_class = serializers.PetApplicationSerializer
 
     def get_object(self):
         return get_object_or_404(PetApplication, id=self.kwargs['application_id'])
+
+    def get_queryset(self):
+        return PetApplication.objects.get_queryset()
 
 
 class ListOrCreateShelterQuestion(generics.ListCreateAPIView):
@@ -58,7 +61,7 @@ class ListOrCreateShelterQuestion(generics.ListCreateAPIView):
         # shelter = get_object_or_404(Shelter, user=self.request.user)
         # questions = Question.objects.filter(owner=shelter)
         # return questions
-        return Question.objects.all()
+        return ShelterQuestion.objects.all()
 
 
 class UpdateOrDestroyShelterQuestion(generics.RetrieveUpdateDestroyAPIView):
@@ -66,19 +69,19 @@ class UpdateOrDestroyShelterQuestion(generics.RetrieveUpdateDestroyAPIView):
 
     def get_object(self):
         # need to validate owner once shelter is implemented (use permission_classes)
-        return get_object_or_404(Question, id=self.kwargs['question_id'])
+        return get_object_or_404(ShelterQuestion, id=self.kwargs['question_id'])
 
 
 class ListOrCreateListingQuestion(generics.ListCreateAPIView):
-    serializer_class = serializers.ListingQuestionSerializer
+    serializer_class = serializers.AssignedQuestionSerializer
 
     def get_queryset(self):
         # update to filter
-        return Question.objects.all()
+        return ShelterQuestion.objects.all()
 
 
 class RemoveListingQuestion(generics.DestroyAPIView):
-    serializer_class = serializers.ListingQuestionSerializer
+    serializer_class = serializers.AssignedQuestionSerializer
 
 
 class ListOrCreatePetListing(generics.ListCreateAPIView):
