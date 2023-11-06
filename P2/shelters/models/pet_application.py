@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import User
+from .shelter import Shelter
 
 
 class PetListing(models.Model):
@@ -7,7 +9,9 @@ class PetListing(models.Model):
         ("not_available", "Not Available")
     )
     name = models.CharField(max_length=200)
-    # status = models.CharField(max_length=15, choices=STATUS_CHOICES, default="pending")
+    shelter = models.ForeignKey(Shelter, related_name='listings', on_delete=models.CASCADE)
+    status = models.CharField(max_length=15, choices=STATUS_CHOICES, default="available")
+
 
 class PetApplication(models.Model):
     STATUS_CHOICES = (
@@ -16,7 +20,7 @@ class PetApplication(models.Model):
         ("denied", "Denied"),
         ("withdrawn", "Withdrawn"),
     )
-    # applicant = models.ForeignKey(User, on_delete=models.CASCADE)
+    applicant = models.ForeignKey(User, related_name='applications', on_delete=models.CASCADE)
     listing = models.ForeignKey(PetListing, related_name='applications', on_delete=models.CASCADE)
     status = models.CharField(max_length=15, choices=STATUS_CHOICES, default="pending")
     application_time = models.DateTimeField(auto_now_add=True)
