@@ -15,7 +15,8 @@ class CreateApplicationForListing(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_serializer_class(self):
-        print(self.request.method)
+        if self.request is None:
+            return serializers.PetApplicationSerializer
         if self.request.method == 'GET':
             return serializers.PetApplicationSerializer
         else:
