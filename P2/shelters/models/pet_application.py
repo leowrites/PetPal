@@ -4,8 +4,13 @@ from .shelter import Shelter
 
 
 class PetListing(models.Model):
+    STATUS_CHOICES = (
+        ("available", "Available"),
+        ("not_available", "Not Available")
+    )
     name = models.CharField(max_length=200)
     shelter = models.ForeignKey(Shelter, related_name='listings', on_delete=models.CASCADE)
+    status = models.CharField(max_length=15, choices=STATUS_CHOICES, default="available")
 
 
 class PetApplication(models.Model):
@@ -14,6 +19,7 @@ class PetApplication(models.Model):
         ("accepted", "Accepted"),
         ("denied", "Denied"),
         ("withdrawn", "Withdrawn"),
+        ("approved", "Approved"),
     )
     applicant = models.ForeignKey(User, related_name='applications', on_delete=models.CASCADE)
     listing = models.ForeignKey(PetListing, related_name='applications', on_delete=models.CASCADE)

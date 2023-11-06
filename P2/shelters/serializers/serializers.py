@@ -2,6 +2,7 @@ from rest_framework import serializers
 from shelters.models.pet_application import PetApplication, PetListing
 from shelters.models.application_response import ShelterQuestion, AssignedQuestion, ApplicationResponse
 from shelters import models
+from users.serializers.serializers import UserSerializer
 
 
 class ShelterQuestionSerializer(serializers.ModelSerializer):
@@ -27,10 +28,51 @@ class ApplicationResponseSerializer(serializers.ModelSerializer):
 
 class PetApplicationSerializer(serializers.ModelSerializer):
     application_responses = ApplicationResponseSerializer(many=True, read_only=True)
+    applicant = UserSerializer(read_only=True)
 
     class Meta:
         model = PetApplication
         fields = '__all__'
+        extra_kwargs = {
+            'listing': {
+                'required': False
+            }
+        }
+
+    def update(self, instance, validated_data):
+        # Check if the 'status' field is included in the request data
+        if 'status' not in validated_data:
+            raise serializers.ValidationError("The status field is required.")
+
+        request = self.context.get('request')
+        new_status = validated_data['status']
+        # make sure the applicant can only update the status from pending -> withdrawn,
+        # or approved -> accepted, withdrawn
+        if request.user.is_anonymous:
+            raise serializers.ValidationError("You must be logged in!")
+
+        is_shelter = hasattr(request.user, 'shelter')
+        # check this user owns this shelter
+        if is_shelter and instance.listing.shelter.id != request.user.shelter.id:
+            raise serializers.ValidationError("You do not own this listing")
+        elif not is_shelter and request.user != instance.applicant:
+            # user does not own this application either
+            raise serializers.ValidationError("You do not own this application")
+
+        if is_shelter and new_status not in ['approved', 'denied', 'pending']:
+            raise serializers.ValidationError("Shelter can only update status to pending, approved, and denied.")
+        if not is_shelter:
+            if instance.status not in ['pending', 'approved']:
+                raise serializers.ValidationError("You can't update the status right now.")
+            if instance.status == 'pending' and new_status != 'withdrawn':
+                raise serializers.ValidationError("Applicant can only update status from pending to withdrawn.")
+            elif instance.status == 'approved' and new_status not in ['accepted', 'withdrawn']:
+                raise serializers.ValidationError("Applicant can only update status from approved "
+                                                  "to withdrawn or accepted.")
+
+        instance.status = validated_data['status']
+        instance.save(update_fields=['status'])
+        return instance
 
 
 class AssignedQuestionSerializer(serializers.ModelSerializer):
@@ -76,7 +118,15 @@ class PetApplicationFormSerializer(serializers.Serializer):
         self.fields.update(question_dict)
 
     def create(self, validated_data):
-        # should create an application instance here as well as for each response create answers
+        # check listing is available
+        listing = PetListing.objects.get(id=self.listing_id)
+        if listing.status == 'not_available':
+            raise serializers.ValidationError("This listing is not available")
+
+        # check if this user already has an application for this listing
+        user = self.context['request'].user
+        if PetApplication.objects.filter(applicant=user, listing_id=self.listing_id).exists():
+            raise serializers.ValidationError("You already applied to this listing")
         application = PetApplication.objects.create(listing_id=self.listing_id, applicant=self.context['request'].user)
         for key, value in validated_data.items():
             ApplicationResponse.objects.create(answer=value, question_id=key, application=application)

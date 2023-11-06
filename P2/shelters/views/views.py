@@ -43,11 +43,14 @@ class ListOrCreateApplicationForListing(generics.ListCreateAPIView):
 
 # GET /shelters/<shelter_id>/listings/<listing_id>/applications/<application_id>
 # PUT /shelters/<shelter_id>/listings/<listing_id>/applications/<application_id>
-class GetPetApplicationDetails(generics.RetrieveUpdateAPIView):
+class UpdateOrGetPetApplicationDetails(generics.RetrieveUpdateAPIView):
     serializer_class = serializers.PetApplicationSerializer
 
     def get_object(self):
         return get_object_or_404(PetApplication, id=self.kwargs['application_id'])
+
+    def get_queryset(self):
+        return PetApplication.objects.get_queryset()
 
 
 class ListOrCreateShelterQuestion(generics.ListCreateAPIView):
