@@ -4,8 +4,11 @@ from rest_framework import filters
 from rest_framework.pagination import PageNumberPagination
 
 from shelters.models.pet_application import PetApplication, PetListing, PetApplicationFilter
+from shelters.models.pet_application import PetApplication, PetListing
 from shelters.models.application_response import Question
+from shelters import models
 from shelters.serializers import serializers
+from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 
 
@@ -20,6 +23,7 @@ class ApplicationPagination(PageNumberPagination):
 # TODO: on GET only allow if the shelter owns this listing
 # TODO: on POST allow anyone to make a request to apply
 class ListOrCreateApplicationForListing(generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticated]
     filter_backends = [filters.OrderingFilter, DjangoFilterBackend]
     filterset_class = PetApplicationFilter
     ordering_fields = ['application_time', 'last_updated']
@@ -88,3 +92,9 @@ class UpdateOrDeletePetListing(generics.RetrieveUpdateDestroyAPIView):
 
     def get_object(self):
         return get_object_or_404(PetListing, id=self.kwargs['listing_id'])
+
+
+# Shelter
+class ListOrCreateShelter(generics.ListCreateAPIView):
+    queryset = models.Shelter.objects.all()
+    serializer_class = serializers.ShelterSerializer
