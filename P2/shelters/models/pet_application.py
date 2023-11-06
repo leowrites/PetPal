@@ -19,6 +19,7 @@ class PetApplication(models.Model):
         ("accepted", "Accepted"),
         ("denied", "Denied"),
         ("withdrawn", "Withdrawn"),
+        ("approved", "Approved"),
     )
     applicant = models.ForeignKey(User, related_name='applications', on_delete=models.CASCADE)
     listing = models.ForeignKey(PetListing, related_name='applications', on_delete=models.CASCADE)
