@@ -45,7 +45,7 @@ class PetApplicationSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("You do not own this application")
 
         if is_shelter and new_status not in ['approved', 'denied', 'pending']:
-            raise serializers.ValidationError("Shelter can only update status to pending, approved, and withdrawn.")
+            raise serializers.ValidationError("Shelter can only update status to pending, approved, and denied.")
         if not is_shelter:
             if instance.status not in ['pending', 'approved']:
                 raise serializers.ValidationError("You can't update the status right now.")
