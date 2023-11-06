@@ -15,7 +15,7 @@ urlpatterns = [
          views.RemoveListingQuestion.as_view(), name='listing-question-delete'),
     path('<int:pk>/listings/<int:listing_id>/applications/<int:application_id>', views.GetPetApplicationDetails.as_view(),
          name='pet-application-details'),
-    path('<int:pk>/listings/<int:listing_id>/applications', views.CreateApplicationForListing.as_view(),
+    path('<int:pk>/listings/<int:listing_id>/applications', views.ListOrCreateApplicationForListing.as_view(),
          name='pet-application-list-create'),
     path('<int:pk>/listings', views.ListOrCreatePetListing.as_view(),
          name='pet-listing-list-create'),
