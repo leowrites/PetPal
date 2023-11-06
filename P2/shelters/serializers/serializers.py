@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from shelters.models.pet_application import PetApplication, PetListing
 from shelters.models.application_response import Question, ListingQuestion, Answer
+from shelters import models
 
 
 class AnswerSerializer(serializers.ModelSerializer):
@@ -21,6 +22,15 @@ class ShelterQuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Question
         fields = ['id', 'question', 'type', 'required']
+
+    def create(self, validated_data):
+        user = self.context['request'].user
+        # pretty sure this logic can be moved to the view, we can have a
+        # permission method for this
+        if not hasattr(user, 'shelter'):
+            raise serializers.ValidationError("You are not a shelter")
+        question = Question.objects.create(**validated_data, shelter=user.shelter)
+        return question
 
 
 class ListingQuestionSerializer(serializers.ModelSerializer):
@@ -67,7 +77,7 @@ class PetApplicationFormSerializer(serializers.Serializer):
 
     def create(self, validated_data):
         # should create an application instance here as well as for each response create answers
-        application = PetApplication.objects.create(listing_id=self.listing_id)
+        application = PetApplication.objects.create(listing_id=self.listing_id, applicant=self.context['request'].user)
         for key, value in validated_data.items():
             Answer.objects.create(answer=value, question_id=key, application=application)
         return application
@@ -121,7 +131,7 @@ class PetListingSerializer(serializers.ModelSerializer):
                 existing_questions_to_update.append(existing_question)
             else:
                 new_questions.append(ListingQuestion(listing=instance, **question_data))
-        
+
         ListingQuestion.objects.bulk_create(new_questions)
         ListingQuestion.objects.bulk_update(existing_questions_to_update, ['rank'])
 
@@ -130,3 +140,13 @@ class PetListingSerializer(serializers.ModelSerializer):
 
         # for question in questions_data:
         return super().update(instance, validated_data)
+
+    def get_listing_questions(self, obj):
+        listing_questions = ListingQuestion.objects.filter(listing=obj)
+        return ListingQuestionSerializer(listing_questions, many=True).data
+
+
+class ShelterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Shelter
+        fields = '__all__'

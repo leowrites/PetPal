@@ -1,10 +1,10 @@
 from django.db import models
 from .pet_application import PetApplication, PetListing
+from .shelter import Shelter
 
 
 # each question is owned by a shelter
 class Question(models.Model):
-    # owner = models.ForeignKey(User, on_delete=models.CASCADE)
     # the types here will result in corresponding fields
     FILE = 'FILE'
     CHECKBOX = 'CHECKBOX'
@@ -20,12 +20,14 @@ class Question(models.Model):
         (TEXT, 'Text'),
         (NUMBER, 'Number')
     )
+    shelter = models.ForeignKey(Shelter, related_name='questions', on_delete=models.CASCADE)
     question = models.CharField(max_length=1000)
     type = models.CharField(choices=QUESTION_TYPE_CHOICES, max_length=100, default=TEXT)
     required = models.BooleanField(default=True)
 
     def __str__(self):
         return self.question
+
 
 
 class ListingQuestion(models.Model):
