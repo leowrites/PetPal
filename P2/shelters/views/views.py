@@ -1,18 +1,34 @@
 from rest_framework import generics
 from rest_framework.generics import get_object_or_404
+from rest_framework import filters
+from rest_framework.pagination import PageNumberPagination
+
+from shelters.filters import PetApplicationFilter
 from shelters.models.pet_application import PetApplication, PetListing
 from shelters.models.application_response import Question
 from shelters import models
 from shelters.serializers import serializers
 from rest_framework.permissions import IsAuthenticated
+from django_filters.rest_framework import DjangoFilterBackend
+
+
+class ApplicationPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 10
 
 
 # POST /shelters/{shelter_id}/listings/{listing_id}/applications
 # GET /shelters/<shelter_id>/listings/<listing_id>/applications
 # TODO: on GET only allow if the shelter owns this listing
 # TODO: on POST allow anyone to make a request to apply
-class CreateApplicationForListing(generics.ListCreateAPIView):
+class ListOrCreateApplicationForListing(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
+    filter_backends = [filters.OrderingFilter, DjangoFilterBackend]
+    filterset_class = PetApplicationFilter
+    ordering_fields = ['application_time', 'last_updated']
+    ordering = ['last_updated']
+    pagination_class = ApplicationPagination
 
     def get_serializer_class(self):
         print(self.request.method)
