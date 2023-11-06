@@ -3,7 +3,7 @@ from rest_framework.generics import get_object_or_404
 from rest_framework import filters
 from rest_framework.pagination import PageNumberPagination
 
-from shelters.models.pet_application import PetApplication, PetListing, PetApplicationFilter
+from shelters.filters import PetApplicationFilter
 from shelters.models.pet_application import PetApplication, PetListing
 from shelters.models.application_response import Question
 from shelters import models

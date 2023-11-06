@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 from .shelter import Shelter
-import django_filters
 
 
 class PetListing(models.Model):
@@ -21,11 +20,3 @@ class PetApplication(models.Model):
     status = models.CharField(max_length=15, choices=STATUS_CHOICES, default="pending")
     application_time = models.DateTimeField(auto_now_add=True)
     last_updated = models.DateTimeField(auto_now=True)
-
-
-class PetApplicationFilter(django_filters.FilterSet):
-    status = django_filters.ChoiceFilter(choices=PetApplication.STATUS_CHOICES)
-
-    class Meta:
-        model = PetApplication
-        fields = ['status']
