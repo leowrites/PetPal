@@ -25,5 +25,5 @@ urlpatterns = [
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('users/', include('users.urls', namespace='users')),
     path('admin/', admin.site.urls),
-    path('applications/', include('applications.urls', namespace='applications'))
+    path('shelters/', include('shelters.urls', namespace='shelters'))
 ]
