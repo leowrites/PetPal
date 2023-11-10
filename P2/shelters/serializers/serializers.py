@@ -243,4 +243,9 @@ class ShelterReviewSerializer(serializers.ModelSerializer):
 class ApplicationCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.ApplicationComment
-        fields = ['text']
+        fields = ['text', 'user', 'date_created']
+        read_only_fields = ['user', 'date_created']
+
+    def create(self, validated_data):
+        comment = models.ApplicationComment.objects.create(**validated_data)
+        return comment

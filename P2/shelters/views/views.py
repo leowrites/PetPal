@@ -133,4 +133,4 @@ class ListOrCreateApplicationComment(generics.ListCreateAPIView):
         if not (user == application.applicant or user == application.listing.shelter.owner):
             raise serializers.ValidationError("You do not have permission to comment on this application")
 
-        serializer.save(user=user, application=application, listing=listing)
+        serializer.save(user=user, application=application)
