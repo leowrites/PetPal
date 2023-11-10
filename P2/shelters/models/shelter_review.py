@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-from shelters.models.shelter import Shelter
+from shelters.models import Shelter
 
 
 class ShelterReview(models.Model):
