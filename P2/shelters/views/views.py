@@ -107,6 +107,7 @@ class ListOrCreateShelter(generics.ListCreateAPIView):
 class ListOrCreateShelterReview(generics.ListCreateAPIView):
     serializer_class = serializers.ShelterReviewSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = ApplicationPagination
 
     def get_queryset(self):
         return models.ShelterReview.objects.filter(shelter_id=self.kwargs['pk'])\
@@ -116,6 +117,7 @@ class ListOrCreateShelterReview(generics.ListCreateAPIView):
 class ListOrCreateApplicationComment(generics.ListCreateAPIView):
     serializer_class = serializers.ApplicationCommentSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = ApplicationPagination
 
     def get_queryset(self):
         get_object_or_404(models.Shelter, id=self.kwargs['pk'])
