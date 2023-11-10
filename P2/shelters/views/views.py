@@ -101,3 +101,9 @@ class UpdateOrDeletePetListing(generics.RetrieveUpdateDestroyAPIView):
 class ListOrCreateShelter(generics.ListCreateAPIView):
     queryset = models.Shelter.objects.all()
     serializer_class = serializers.ShelterSerializer
+
+
+# Shelter reviews
+class ListOrCreateShelterReview(generics.ListCreateAPIView):
+    queryset = models.ShelterReview.objects.all().order_by('-date_created')
+    serializer_class = serializers.ShelterReviewSerializer

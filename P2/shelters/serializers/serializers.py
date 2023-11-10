@@ -3,6 +3,7 @@ from shelters.models.pet_application import PetApplication, PetListing
 from shelters.models.application_response import ShelterQuestion, AssignedQuestion, ApplicationResponse
 from shelters import models
 from users.serializers.serializers import UserSerializer
+from django.contrib.auth.models import User
 
 
 class ShelterQuestionSerializer(serializers.ModelSerializer):
@@ -219,3 +220,22 @@ class ShelterSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Shelter
         fields = '__all__'
+
+
+class ShelterReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.ShelterReview
+        exclude = ('user',)
+
+    def create(self, validated_data):
+        request = self.context.get('request')
+        user = request.user
+        if user.is_anonymous:
+            raise serializers.ValidationError("You must be logged in!")
+        
+        shelter = validated_data['shelter']
+        if not models.Shelter.objects.filter(id=shelter.id).exists():
+            raise serializers.ValidationError("Shelter does not exist")
+        
+        review = models.ShelterReview.objects.create(**validated_data, user=user)
+        return review
