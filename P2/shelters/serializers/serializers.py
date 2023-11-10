@@ -4,7 +4,6 @@ from shelters.models.pet_application import PetApplication, PetListing
 from shelters.models.application_response import ShelterQuestion, AssignedQuestion, ApplicationResponse
 from shelters import models
 from users.serializers.serializers import UserSerializer
-from django.contrib.auth.models import User
 
 
 class ShelterQuestionSerializer(serializers.ModelSerializer):
