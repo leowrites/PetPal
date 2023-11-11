@@ -21,11 +21,10 @@ class ApplicationPagination(PageNumberPagination):
 
 # POST /shelters/{shelter_id}/listings/{listing_id}/applications
 # GET /shelters/<shelter_id>/listings/<listing_id>/applications
-# TODO: on GET only allow if the shelter owns this listing
-# TODO: on POST allow anyone to make a request to apply
 class ListOrCreateApplicationForListing(generics.ListCreateAPIView):
+    # Only the owner can get
     permission_classes = [IsAuthenticated,
-                          permissions.IsShelterOwner | (permissions.IsCreateOnly & ~permissions.IsShelterOwner)]
+                          permissions.IsShelterOwner|permissions.IsCreateOnly]
     filter_backends = [filters.OrderingFilter, DjangoFilterBackend]
     filterset_class = PetApplicationFilter
     ordering_fields = ['application_time', 'last_updated']
@@ -45,8 +44,6 @@ class ListOrCreateApplicationForListing(generics.ListCreateAPIView):
         self.check_object_permissions(self.request, shelter)
         return PetApplication.objects.filter(listing_id=self.kwargs['listing_id'])
 
-    # TODO: protect create
-
 
 # GET /shelters/<shelter_id>/listings/<listing_id>/applications/<application_id>
 # PUT /shelters/<shelter_id>/listings/<listing_id>/applications/<application_id>
@@ -65,19 +62,22 @@ class UpdateOrGetPetApplicationDetails(generics.RetrieveUpdateAPIView):
 class ListOrCreateShelterQuestion(generics.ListCreateAPIView):
     serializer_class = serializers.ShelterQuestionSerializer
     # only the owner of this shelter can get questions for this shelter, as well as make new ones
-    permission_classes = [IsAuthenticated, permissions.IsShelterOwner]
+    permission_classes = [IsAuthenticated, permissions.IsAnyShelterOwner, permissions.IsShelterOwner]
 
     def get_queryset(self):
         shelter = get_object_or_404(models.Shelter, id=self.kwargs['pk'])
         self.check_object_permissions(self.request, shelter)
-        return ShelterQuestion.objects.all(shelter=shelter)
+        return ShelterQuestion.objects.filter(shelter=shelter)
 
-    # TODO: run permission for create
+    def perform_create(self, serializer):
+        shelter = get_object_or_404(models.Shelter, id=self.kwargs['pk'])
+        self.check_object_permissions(self.request, shelter)
+        return super().perform_create(serializer)
 
 
 class UpdateOrDestroyShelterQuestion(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = serializers.ShelterQuestionSerializer
-    permission_classes = [IsAuthenticated, permissions.IsShelterOwner]
+    permission_classes = [IsAuthenticated, permissions.IsAnyShelterOwner, permissions.IsShelterOwner]
 
     def get_object(self):
         obj = get_object_or_404(ShelterQuestion, id=self.kwargs['question_id'])
