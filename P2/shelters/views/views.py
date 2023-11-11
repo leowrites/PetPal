@@ -23,7 +23,7 @@ class ApplicationPagination(PageNumberPagination):
 # TODO: on GET only allow if the shelter owns this listing
 # TODO: on POST allow anyone to make a request to apply
 class ListOrCreateApplicationForListing(generics.ListCreateAPIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     filter_backends = [filters.OrderingFilter, DjangoFilterBackend]
     filterset_class = PetApplicationFilter
     ordering_fields = ['application_time', 'last_updated']
@@ -69,7 +69,7 @@ class UpdateOrDestroyShelterQuestion(generics.RetrieveUpdateDestroyAPIView):
 
     def get_object(self):
         # need to validate owner once shelter is implemented (use permission_classes)
-        return get_object_or_404(ShelterQuestion, id=self.kwargs['question_id'])
+        return get_object_or_404(ShelterQuestion, id=self.kwargs['question_id'], shelter=self.kwargs['pk'])
 
 
 class ListOrCreateListingQuestion(generics.ListCreateAPIView):
@@ -98,6 +98,6 @@ class UpdateOrDeletePetListing(generics.RetrieveUpdateDestroyAPIView):
 
 
 # Shelter
-class ListOrCreateShelter(generics.ListCreateAPIView):
+class ListShelter(generics.ListAPIView):
     queryset = models.Shelter.objects.all()
     serializer_class = serializers.ShelterSerializer

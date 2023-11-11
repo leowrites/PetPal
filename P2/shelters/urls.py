@@ -21,5 +21,5 @@ urlpatterns = [
          name='pet-listing-list-create'),
     path('<int:pk>/listings/<int:listing_id>', views.UpdateOrDeletePetListing.as_view(),
          name='pet-listing-update-destroy'),
-    path('', views.ListOrCreateShelter.as_view(), name='shelter-list-create')
+    path('', views.ListShelter.as_view(), name='shelter-list-create')
 ]
