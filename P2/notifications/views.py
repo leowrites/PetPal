@@ -1,6 +1,7 @@
 from rest_framework.generics import RetrieveDestroyAPIView, ListAPIView
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 from django.core.exceptions import PermissionDenied
 from django.urls import reverse_lazy
 
@@ -64,7 +65,7 @@ class NotificationDeleteOrRetrieveAPIView(RetrieveDestroyAPIView):
             pass
             # TODO: to be finished once reviews are added by Jason
             # review = notification.associated_model
-        return super().retrieve(request, *args, **kwargs)
+        return Response(response_data)
         
 class NotificationListAPIView(ListAPIView):
     serializer_class = NotificationSerializer
