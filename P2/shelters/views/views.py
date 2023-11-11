@@ -94,7 +94,7 @@ class UpdateOrDeletePetListing(generics.RetrieveUpdateDestroyAPIView):
     queryset = PetListing.objects.all()
 
     def get_object(self):
-        return get_object_or_404(PetListing, id=self.kwargs['listing_id'])
+        return get_object_or_404(PetListing, shelter=self.kwargs['pk'], id=self.kwargs['listing_id'])
 
 
 # Shelter
