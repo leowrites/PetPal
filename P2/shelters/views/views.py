@@ -2,12 +2,16 @@ from rest_framework import generics
 from rest_framework.generics import get_object_or_404
 from rest_framework import filters
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.permissions import IsAuthenticated
+from django_filters.rest_framework import DjangoFilterBackend
 
 from shelters.filters import PetApplicationFilter
 from shelters.models.pet_application import PetApplication, PetListing
 from shelters.models.application_response import ShelterQuestion
 from shelters import models
 from shelters.serializers import serializers
+from notifications.models import Notification
+from django.contrib.auth.models import User
 from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from shelters.permissions import permissions
@@ -115,6 +119,16 @@ class RemoveListingQuestion(generics.DestroyAPIView):
 class ListOrCreatePetListing(generics.ListCreateAPIView):
     serializer_class = serializers.PetListingSerializer
     queryset = PetListing.objects.all()
+
+    def perform_create(self, serializer):
+        pet_listing = serializer.save()
+        for user in User.objects.all():
+            if user != pet_listing.shelter.owner:
+                notification = Notification.objects.create(
+                    user=user,
+                    notification_type="petListing",
+                    associated_model=pet_listing
+                )
 
 
 class UpdateOrDeletePetListing(generics.RetrieveUpdateDestroyAPIView):
