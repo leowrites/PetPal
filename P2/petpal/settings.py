@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'shelters',
     'rest_framework_simplejwt',
     'users',
-    'django_filters'
+    'django_filters',
+    'notifications',
 ]
 
 MIDDLEWARE = [
