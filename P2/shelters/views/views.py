@@ -124,8 +124,6 @@ class RetrieveUpdateOrDestroyAssignedQuestion(generics.RetrieveUpdateDestroyAPIV
         else:
             return self.serializer_class
 
-    def get_object(self):
-        return get_object_or_404(AssignedQuestion, id=self.kwargs.get('question_id'))
 
 
 class ListOrCreatePetListing(generics.ListCreateAPIView):
@@ -166,6 +164,7 @@ class ListOrCreateShelterReview(generics.ListCreateAPIView):
     def get_queryset(self):
         return models.ShelterReview.objects.filter(shelter_id=self.kwargs['pk'])\
                                             .order_by('-date_created')
+
 
 # Pet application comments
 class ListOrCreateApplicationComment(generics.ListCreateAPIView):
