@@ -91,6 +91,15 @@ class AssignedQuestionSerializer(serializers.ModelSerializer):
         return assigned_question
 
 
+# only difference to the one above is that on GET methods, it returns a bit more information about the question
+class AssignedQuestionDetailsSerializer(serializers.ModelSerializer):
+    question = ShelterQuestionSerializer(read_only=True)
+
+    class Meta:
+        model = AssignedQuestion
+        fields = ['id', 'question', 'rank','required']
+
+
 def type_to_field(question_type, label, required):
     if question_type == ShelterQuestion.FILE:
         return serializers.FileField(label=label, required=required)

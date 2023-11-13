@@ -84,6 +84,14 @@ class ListOrCreateListingQuestion(generics.ListCreateAPIView):
 class RetrieveUpdateOrDestroyAssignedQuestion(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = serializers.AssignedQuestionSerializer
 
+    def get_serializer_class(self):
+        if not self.request:
+            return self.serializer_class
+        elif self.request.method == 'GET':
+            return serializers.AssignedQuestionDetailsSerializer
+        else:
+            return self.serializer_class
+
     def get_object(self):
         return get_object_or_404(AssignedQuestion, id=self.kwargs.get('question_id'))
 
