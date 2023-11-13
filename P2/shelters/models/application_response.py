@@ -23,7 +23,6 @@ class ShelterQuestion(models.Model):
     shelter = models.ForeignKey(Shelter, related_name='shelter_questions', on_delete=models.CASCADE)
     question = models.CharField(max_length=1000)
     type = models.CharField(choices=QUESTION_TYPE_CHOICES, max_length=100, default=TEXT)
-    required = models.BooleanField(default=True)
 
     def __str__(self):
         return self.question
@@ -33,6 +32,7 @@ class AssignedQuestion(models.Model):
     question = models.ForeignKey(ShelterQuestion, on_delete=models.CASCADE)
     listing = models.ForeignKey(PetListing, related_name='assigned_questions', on_delete=models.CASCADE)
     rank = models.PositiveSmallIntegerField(blank=True, default=0)
+    required = models.BooleanField(default=True)
 
 
 class ApplicationResponse(models.Model):
