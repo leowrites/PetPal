@@ -174,6 +174,17 @@ class ListOrCreateShelterReview(generics.ListCreateAPIView):
         return models.ShelterReview.objects.filter(shelter_id=self.kwargs['pk'])\
                                             .order_by('-date_created')
 
+    def perform_create(self, serializer):
+        shelter_review_instance = serializer.save()
+
+        shelter = shelter_review_instance.shelter
+        if shelter != self.request.user:
+            notification = Notification.objects.create(
+                user=shelter.owner,
+                notification_type="review",
+                associated_model=shelter_review_instance
+            )
+
 
 # Pet application comments
 class ListOrCreateApplicationComment(generics.ListCreateAPIView):
@@ -199,4 +210,16 @@ class ListOrCreateApplicationComment(generics.ListCreateAPIView):
         if not (user == application.applicant or user == application.listing.shelter.owner):
             raise serializers.ValidationError("You do not have permission to comment on this application")
 
-        serializer.save(user=user, application=application)
+        application_comment = serializer.save(user=user, application=application)
+        if self.request.user == application.applicant:
+            notification = Notification.objects.create(
+                user = application.listing.shelter.owner,
+                notification_type = "applicationMessage",
+                associated_model = application_comment
+            )
+        elif self.request.user == application.listing.shelter.owner:
+            notification = Notification.objects.create(
+                user = application.applicant,
+                notification_type = "applicationMessage",
+                associated_model = application_comment
+            )
