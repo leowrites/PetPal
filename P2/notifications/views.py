@@ -25,20 +25,18 @@ class NotificationDeleteOrRetrieveAPIView(RetrieveDestroyAPIView):
         notification.save()
         response_data = {'redirect': ''}
         if notification.notification_type == "applicationMessage":
-            pass
-            # TODO: to be finished once comments are added by Jason
-            # application_response = notification.associated_model
-            # application = application_response.application
-            # listing = application.listing
-            # shelter = listing.shelter
-            # response_data['redirect'] = reverse_lazy(
-            #     'shelters:pet-application-details', 
-            #     kwargs={
-            #         'pk': shelter.id,
-            #         'listing_id': listing.id,
-            #         'application_id': application.id
-            #     }
-            # )
+            application_comment = notification.associated_model
+            application = application_comment.application
+            listing = application.listing
+            shelter = listing.shelter
+            response_data['redirect'] = reverse_lazy(
+                'shelters:application-comment-list-create',
+                kwargs={
+                    'pk': shelter.id,
+                    'listing_id': listing.id,
+                    'application_id': application.id
+                }
+            )
         elif notification.notification_type in ("applicationStatusChange", "application"):
             application = notification.associated_model
             listing = application.listing
@@ -62,9 +60,14 @@ class NotificationDeleteOrRetrieveAPIView(RetrieveDestroyAPIView):
                 }
             )
         elif notification.notification_type == "review":
-            pass
-            # TODO: to be finished once reviews are added by Jason
-            # review = notification.associated_model
+            shelter_review = notification.associated_model
+            shelter = shelter_review.shelter
+            response_data['redirect'] = reverse_lazy(
+                'shelters:shelter-review-list-create', 
+                kwargs={
+                    'pk': shelter.id
+                }
+            )
         return Response(response_data)
         
 class NotificationListAPIView(ListAPIView):
