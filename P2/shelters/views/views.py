@@ -101,12 +101,22 @@ class ListOrCreateAssignedQuestion(generics.ListCreateAPIView):
         self.check_object_permissions(self.request, listing.shelter)
         return models.AssignedQuestion.objects.filter(listing=listing)
 
+    def perform_create(self, serializer):
+        # only the owner of the listing has permission to create the questions
+        self.check_permissions(self.request)
+        listing = get_object_or_404(PetListing, id=self.kwargs['listing_id'])
+        self.check_object_permissions(self.request, listing.shelter)
+        return super().perform_create(serializer)
+
 
 class RetrieveUpdateOrDestroyAssignedQuestion(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = serializers.AssignedQuestionSerializer
     permission_classes = [IsAuthenticated, permissions.IsAnyShelterOwner, permissions.IsShelterOwner]
 
     def get_object(self):
+        self.check_permissions(self.request)
+        question = get_object_or_404(models.AssignedQuestion, id=self.kwargs['question_id'])
+        self.check_object_permissions(self.request, question.listing.shelter)
         question = get_object_or_404(models.AssignedQuestion, id=self.kwargs['question_id'])
         return question
 
@@ -123,7 +133,6 @@ class RetrieveUpdateOrDestroyAssignedQuestion(generics.RetrieveUpdateDestroyAPIV
             return serializers.AssignedQuestionDetailsSerializer
         else:
             return self.serializer_class
-
 
 
 class ListOrCreatePetListing(generics.ListCreateAPIView):
