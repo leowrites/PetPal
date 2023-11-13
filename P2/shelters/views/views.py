@@ -177,7 +177,7 @@ class ListOrCreatePetListing(generics.ListCreateAPIView):
                 ) for user in User.objects.filter(shelter__isnull=True)
             ]
 
-        Notification.objects.bulk_create(notifications)
+            Notification.objects.bulk_create(notifications)
 
 
 class RetrieveUpdateOrDeletePetListing(generics.RetrieveUpdateDestroyAPIView):
