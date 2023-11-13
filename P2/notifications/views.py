@@ -2,6 +2,7 @@ from rest_framework.generics import RetrieveDestroyAPIView, ListAPIView
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.pagination import PageNumberPagination
 from django.core.exceptions import PermissionDenied
 from django.urls import reverse_lazy
 
@@ -66,10 +67,16 @@ class NotificationDeleteOrRetrieveAPIView(RetrieveDestroyAPIView):
             # TODO: to be finished once reviews are added by Jason
             # review = notification.associated_model
         return Response(response_data)
-        
+
+class NotificationPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 10
+
 class NotificationListAPIView(ListAPIView):
     serializer_class = NotificationSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = NotificationPagination
     
     def get_queryset(self):
         return Notification.objects.filter(user=self.request.user)
