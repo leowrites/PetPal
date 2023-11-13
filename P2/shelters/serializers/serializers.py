@@ -245,7 +245,3 @@ class ApplicationCommentSerializer(serializers.ModelSerializer):
         model = models.ApplicationComment
         fields = ['text', 'user', 'date_created']
         read_only_fields = ['user', 'date_created']
-
-    def create(self, validated_data):
-        comment = models.ApplicationComment.objects.create(**validated_data)
-        return comment
