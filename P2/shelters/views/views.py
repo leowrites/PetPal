@@ -3,6 +3,7 @@ from rest_framework.generics import get_object_or_404
 from rest_framework import filters
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.exceptions import NotFound
 from django_filters.rest_framework import DjangoFilterBackend
 
 from shelters.filters import PetApplicationFilter
@@ -132,8 +133,10 @@ class ListOrCreateApplicationComment(generics.ListCreateAPIView):
 
     def get_queryset(self):
         get_object_or_404(models.Shelter, id=self.kwargs['pk'])
-        get_object_or_404(models.PetListing, id=self.kwargs['listing_id'])
-        get_object_or_404(models.PetApplication, id=self.kwargs['application_id'])
+        if get_object_or_404(models.PetListing, id=self.kwargs['listing_id']).shelter.id != self.kwargs['pk']:
+            raise NotFound("Listing does not belong to shelter")
+        if get_object_or_404(models.PetApplication, id=self.kwargs['application_id']).listing.id != self.kwargs['listing_id']:
+            raise NotFound("Application does not belong to listing")
         return models.ApplicationComment.objects.filter(application_id=self.kwargs['application_id'])\
                                                 .order_by('-date_created')
 
