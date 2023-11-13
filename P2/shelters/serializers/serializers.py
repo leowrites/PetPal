@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from shelters.models.pet_application import PetApplication, PetListing
 from shelters.models.application_response import ShelterQuestion, AssignedQuestion, ApplicationResponse
@@ -240,3 +241,28 @@ class ShelterSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Shelter
         fields = '__all__'
+
+
+class ShelterReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.ShelterReview
+        fields = ['text', 'user', 'date_created', 'rating', 'shelter']
+        read_only_fields = ['user', 'date_created']
+
+    def create(self, validated_data):
+        request = self.context.get('request')
+        user = request.user
+        
+        shelter = validated_data['shelter']
+        if not models.Shelter.objects.filter(id=shelter.id).exists():
+            raise serializers.ValidationError("Shelter does not exist")
+        
+        review = models.ShelterReview.objects.create(**validated_data, user=user)
+        return review
+    
+
+class ApplicationCommentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.ApplicationComment
+        fields = ['text', 'user', 'date_created']
+        read_only_fields = ['user', 'date_created']

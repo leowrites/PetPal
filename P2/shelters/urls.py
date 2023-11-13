@@ -19,7 +19,10 @@ urlpatterns = [
          name='pet-application-list-create'),
     path('<int:pk>/listings', views.ListOrCreatePetListing.as_view(),
          name='pet-listing-list-create'),
-    path('<int:pk>/listings/<int:listing_id>', views.UpdateOrDeletePetListing.as_view(),
+    path('<int:pk>/listings/<int:listing_id>', views.RetrieveUpdateOrDeletePetListing.as_view(),
          name='pet-listing-update-destroy'),
-    path('', views.ListOrCreateShelter.as_view(), name='shelter-list-create')
+    path('', views.ListOrCreateShelter.as_view(), name='shelter-list-create'),
+    path('<int:pk>/reviews', views.ListOrCreateShelterReview.as_view(), name='shelter-review-list-create'),
+    path('<int:pk>/listings/<int:listing_id>/applications/<int:application_id>/comments', views.ListOrCreateApplicationComment.as_view(), 
+         name='application-comment-list-create'),
 ]
