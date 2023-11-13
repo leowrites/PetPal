@@ -196,6 +196,7 @@ class ListOrCreateApplicationComment(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         get_object_or_404(models.Shelter, id=self.kwargs['pk'])
         application = get_object_or_404(PetApplication, id=self.kwargs['application_id'])
+        application.save()
         listing = get_object_or_404(PetListing, id=self.kwargs['listing_id'])
         user = self.request.user
 

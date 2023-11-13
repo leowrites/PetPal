@@ -34,8 +34,8 @@ class PetApplicationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PetApplication
-        fields = ['status', 'listing', 'application_responses', 'applicant']
-        read_only_fields = ['listing']
+        fields = ['status', 'listing', 'application_responses', 'applicant', 'id', 'application_time', 'last_updated']
+        read_only_fields = ['listing', 'application_responses', 'applicant', 'id', 'application_time', 'last_updated']
 
     def update(self, instance, validated_data):
         # Check if the 'status' field is included in the request data
@@ -69,7 +69,7 @@ class PetApplicationSerializer(serializers.ModelSerializer):
                                                   "to withdrawn or accepted.")
 
         instance.status = validated_data['status']
-        instance.save(update_fields=['status'])
+        instance.save(update_fields=['status', 'last_updated'])
         return instance
 
 
