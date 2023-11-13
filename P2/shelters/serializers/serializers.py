@@ -79,6 +79,16 @@ class AssignedQuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = AssignedQuestion
         fields = ['id', 'question', 'rank', 'required']
+        extra_kwargs = {
+            'id': {
+                'read_only': True
+            }
+        }
+
+    def create(self, validated_data):
+        listing_id = self.context.get('request').parser_context.get('kwargs').get('listing_id')
+        assigned_question = AssignedQuestion.objects.create(**validated_data, listing_id=listing_id)
+        return assigned_question
 
 
 def type_to_field(question_type, label, required):

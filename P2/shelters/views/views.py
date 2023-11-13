@@ -7,7 +7,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 from shelters.filters import PetApplicationFilter
 from shelters.models.pet_application import PetApplication, PetListing
-from shelters.models.application_response import ShelterQuestion
+from shelters.models.application_response import ShelterQuestion, AssignedQuestion
 from shelters import models
 from shelters.serializers import serializers
 from notifications.models import Notification
@@ -78,11 +78,14 @@ class ListOrCreateListingQuestion(generics.ListCreateAPIView):
 
     def get_queryset(self):
         # update to filter
-        return ShelterQuestion.objects.all()
+        return models.AssignedQuestion.objects.filter(listing_id=self.kwargs.get('listing_id'))
 
 
-class RemoveListingQuestion(generics.DestroyAPIView):
+class RetrieveUpdateOrDestroyAssignedQuestion(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = serializers.AssignedQuestionSerializer
+
+    def get_object(self):
+        return get_object_or_404(AssignedQuestion, id=self.kwargs.get('question_id'))
 
 
 class ListOrCreatePetListing(generics.ListCreateAPIView):
