@@ -3,7 +3,7 @@ from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.pagination import PageNumberPagination
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import PermissionDenied, BadRequest
 from django.urls import reverse_lazy
 
 from notifications.models import Notification
@@ -79,4 +79,10 @@ class NotificationListAPIView(ListAPIView):
     pagination_class = NotificationPagination
     
     def get_queryset(self):
-        return Notification.objects.filter(user=self.request.user)
+        query_set = Notification.objects.filter(user=self.request.user).order_by('-created')
+        read_status = self.request.query_params.get('read', None)
+        if read_status is not None:
+            if read_status not in ('true', 'false'):
+                raise BadRequest('Invalid read status value')
+            query_set = query_set.filter(read=(read_status.lower() == 'true'))
+        return query_set
