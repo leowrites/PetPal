@@ -225,7 +225,8 @@ class ShelterSerializer(serializers.ModelSerializer):
 class ShelterReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.ShelterReview
-        exclude = ('user',)
+        fields = ['text', 'user', 'date_created', 'rating', 'shelter']
+        read_only_fields = ['user', 'date_created']
 
     def create(self, validated_data):
         request = self.context.get('request')
