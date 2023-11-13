@@ -90,7 +90,7 @@ class UpdateOrDestroyShelterQuestion(generics.RetrieveUpdateDestroyAPIView):
         return obj
 
 
-class ListOrCreateListingQuestion(generics.ListCreateAPIView):
+class ListOrCreateAssignedQuestion(generics.ListCreateAPIView):
     serializer_class = serializers.AssignedQuestionSerializer
     permission_classes = [IsAuthenticated, permissions.IsAnyShelterOwner, permissions.IsShelterOwner]
 
