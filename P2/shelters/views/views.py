@@ -48,6 +48,9 @@ class ListOrCreateApplicationForListing(generics.ListCreateAPIView):
         shelter = get_object_or_404(models.Shelter, id=self.kwargs['pk'])
         self.check_object_permissions(self.request, shelter)
         return PetApplication.objects.filter(listing_id=self.kwargs['listing_id'])
+    
+    def perform_create(self, serializer):
+        return super().perform_create(serializer)
 
 
 # GET /shelters/<shelter_id>/listings/<listing_id>/applications/<application_id>
