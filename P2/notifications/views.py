@@ -2,7 +2,7 @@ from rest_framework.generics import RetrieveDestroyAPIView, ListAPIView
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from rest_framework.pagination import LimitOffsetPagination
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.exceptions import PermissionDenied, ValidationError
 from django.urls import reverse_lazy
 
@@ -71,7 +71,7 @@ class NotificationDeleteOrRetrieveAPIView(RetrieveDestroyAPIView):
 class NotificationListAPIView(ListAPIView):
     serializer_class = NotificationSerializer
     permission_classes = [IsAuthenticated]
-    pagination_class = LimitOffsetPagination
+    pagination_class = PageNumberPagination
     
     def get_queryset(self):
         query_set = Notification.objects.filter(user=self.request.user).order_by('-created')
