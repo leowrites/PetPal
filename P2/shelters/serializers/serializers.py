@@ -10,11 +10,7 @@ class ShelterQuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = ShelterQuestion
         fields = ['id', 'question', 'type']
-        extra_kwargs = {
-            'id': {
-                'read_only': True
-            }
-        }
+        read_only_fields = ['id']
 
     def create(self, validated_data):
         user = self.context['request'].user
@@ -39,11 +35,7 @@ class PetApplicationSerializer(serializers.ModelSerializer):
     class Meta:
         model = PetApplication
         fields = ['status', 'listing', 'application_responses', 'applicant']
-        extra_kwargs = {
-            'listing': {
-                'read_only': True
-            }
-        }
+        read_only_fields = ['listing']
 
     def update(self, instance, validated_data):
         # Check if the 'status' field is included in the request data
@@ -85,11 +77,7 @@ class AssignedQuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = AssignedQuestion
         fields = ['id', 'question', 'rank', 'required']
-        extra_kwargs = {
-            'id': {
-                'read_only': True
-            }
-        }
+        read_only_fields = ['id']
 
     def create(self, validated_data):
         listing_id = self.context.get('request').parser_context.get('kwargs').get('listing_id')
@@ -187,14 +175,7 @@ class PetListingSerializer(serializers.ModelSerializer):
         # for listing or creating a serializer
         model = PetListing
         fields = ['id', 'name', 'shelter', 'status', 'assigned_questions']
-        extra_kwargs = {
-            'shelter': {
-                'read_only': True
-            },
-            'id': {
-                'read_only': True
-            }
-        }
+        read_only_fields = ['shelter', 'id']
 
     def create(self, validated_data):
         questions_data = validated_data.pop('assigned_questions', [])
@@ -244,11 +225,7 @@ class ShelterSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Shelter
         fields = ['name', 'owner']
-        extra_kwrags = {
-            'owner': {
-                'read_only': True
-            }
-        }
+        read_only_fields = ['owner']
 
 
 class ShelterReviewSerializer(serializers.ModelSerializer):
