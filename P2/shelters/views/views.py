@@ -85,7 +85,7 @@ class UpdateOrDestroyShelterQuestion(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated, permissions.IsAnyShelterOwner, permissions.IsShelterOwner]
 
     def get_object(self):
-        obj = get_object_or_404(ShelterQuestion, id=self.kwargs['question_id'])
+        obj = get_object_or_404(ShelterQuestion, id=self.kwargs['question_id'], shelter_id=self.kwargs['pk'])
         self.check_object_permissions(self.request, obj.shelter)
         return obj
 
@@ -124,8 +124,6 @@ class RetrieveUpdateOrDestroyAssignedQuestion(generics.RetrieveUpdateDestroyAPIV
         else:
             return self.serializer_class
 
-    def get_object(self):
-        return get_object_or_404(AssignedQuestion, id=self.kwargs.get('question_id'))
 
 
 class ListOrCreatePetListing(generics.ListCreateAPIView):
@@ -148,11 +146,11 @@ class RetrieveUpdateOrDeletePetListing(generics.RetrieveUpdateDestroyAPIView):
     queryset = PetListing.objects.all()
 
     def get_object(self):
-        return get_object_or_404(PetListing, id=self.kwargs['listing_id'])
+        return get_object_or_404(PetListing, shelter=self.kwargs['pk'], id=self.kwargs['listing_id'])
 
 
 # Shelter
-class ListOrCreateShelter(generics.ListCreateAPIView):
+class ListShelter(generics.ListAPIView):
     queryset = models.Shelter.objects.all()
     serializer_class = serializers.ShelterSerializer
 
@@ -166,6 +164,7 @@ class ListOrCreateShelterReview(generics.ListCreateAPIView):
     def get_queryset(self):
         return models.ShelterReview.objects.filter(shelter_id=self.kwargs['pk'])\
                                             .order_by('-date_created')
+
 
 # Pet application comments
 class ListOrCreateApplicationComment(generics.ListCreateAPIView):

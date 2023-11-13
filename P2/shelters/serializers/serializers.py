@@ -10,6 +10,7 @@ class ShelterQuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = ShelterQuestion
         fields = ['id', 'question', 'type']
+        read_only_fields = ['id']
 
     def create(self, validated_data):
         user = self.context['request'].user
@@ -33,12 +34,8 @@ class PetApplicationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PetApplication
-        fields = '__all__'
-        extra_kwargs = {
-            'listing': {
-                'required': False
-            }
-        }
+        fields = ['status', 'listing', 'application_responses', 'applicant']
+        read_only_fields = ['listing']
 
     def update(self, instance, validated_data):
         # Check if the 'status' field is included in the request data
@@ -80,11 +77,7 @@ class AssignedQuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = AssignedQuestion
         fields = ['id', 'question', 'rank', 'required']
-        extra_kwargs = {
-            'id': {
-                'read_only': True
-            }
-        }
+        read_only_fields = ['id']
 
     def create(self, validated_data):
         listing_id = self.context.get('request').parser_context.get('kwargs').get('listing_id')
@@ -173,17 +166,6 @@ class PetApplicationFormSerializer(serializers.Serializer):
         }
 
 
-class QuestionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = ShelterQuestion
-        fields = '__all__'
-        extra_kwargs = {
-            'id': {
-                'read_only': False
-            }
-        }
-
-
 class PetListingSerializer(serializers.ModelSerializer):
     # questions = serializers.PrimaryKeyRelatedField(many=True, queryset=Question.objects.all(), write_only=True)
     assigned_questions = AssignedQuestionSerializer(many=True, required=False)
@@ -192,11 +174,13 @@ class PetListingSerializer(serializers.ModelSerializer):
     class Meta:
         # for listing or creating a serializer
         model = PetListing
-        fields = '__all__'
+        fields = ['id', 'name', 'shelter', 'status', 'assigned_questions']
+        read_only_fields = ['shelter', 'id']
 
     def create(self, validated_data):
         questions_data = validated_data.pop('assigned_questions', [])
-        pet_listing = PetListing.objects.create(**validated_data)
+        shelter = self.context.get('request').user.shelter
+        pet_listing = PetListing.objects.create(**validated_data, shelter=shelter)
         for question in questions_data:
             AssignedQuestion.objects.create(listing=pet_listing, **question)
         return pet_listing
@@ -240,7 +224,8 @@ class PetListingSerializer(serializers.ModelSerializer):
 class ShelterSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Shelter
-        fields = '__all__'
+        fields = ['name', 'owner']
+        read_only_fields = ['owner']
 
 
 class ShelterReviewSerializer(serializers.ModelSerializer):
@@ -252,14 +237,14 @@ class ShelterReviewSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         request = self.context.get('request')
         user = request.user
-        
+
         shelter = validated_data['shelter']
         if not models.Shelter.objects.filter(id=shelter.id).exists():
             raise serializers.ValidationError("Shelter does not exist")
-        
+
         review = models.ShelterReview.objects.create(**validated_data, user=user)
         return review
-    
+
 
 class ApplicationCommentSerializer(serializers.ModelSerializer):
     class Meta:
