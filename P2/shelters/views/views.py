@@ -132,7 +132,7 @@ class ListOrCreatePetListing(generics.ListCreateAPIView):
                 )
 
 
-class UpdateOrDeletePetListing(generics.RetrieveUpdateDestroyAPIView):
+class RetrieveUpdateOrDeletePetListing(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = serializers.PetListingSerializer
     queryset = PetListing.objects.all()
 
