@@ -8,7 +8,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 from shelters.filters import PetApplicationFilter
 from shelters.models.pet_application import PetApplication, PetListing
-from shelters.models.application_response import ShelterQuestion
+from shelters.models.application_response import ShelterQuestion, AssignedQuestion
 from shelters import models
 from shelters.serializers import serializers
 from notifications.models import Notification
@@ -90,7 +90,7 @@ class UpdateOrDestroyShelterQuestion(generics.RetrieveUpdateDestroyAPIView):
         return obj
 
 
-class ListOrCreateListingQuestion(generics.ListCreateAPIView):
+class ListOrCreateAssignedQuestion(generics.ListCreateAPIView):
     serializer_class = serializers.AssignedQuestionSerializer
     permission_classes = [IsAuthenticated, permissions.IsAnyShelterOwner, permissions.IsShelterOwner]
 
@@ -102,7 +102,7 @@ class ListOrCreateListingQuestion(generics.ListCreateAPIView):
         return models.AssignedQuestion.objects.filter(listing=listing)
 
 
-class RemoveListingQuestion(generics.DestroyAPIView):
+class RetrieveUpdateOrDestroyAssignedQuestion(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = serializers.AssignedQuestionSerializer
     permission_classes = [IsAuthenticated, permissions.IsAnyShelterOwner, permissions.IsShelterOwner]
 
@@ -115,6 +115,17 @@ class RemoveListingQuestion(generics.DestroyAPIView):
         question = get_object_or_404(models.AssignedQuestion, id=self.kwargs['question_id'])
         self.check_object_permissions(self.request, question.listing.shelter)
         return super().destroy(self, request, *args, **kwargs)
+
+    def get_serializer_class(self):
+        if not self.request:
+            return self.serializer_class
+        elif self.request.method == 'GET':
+            return serializers.AssignedQuestionDetailsSerializer
+        else:
+            return self.serializer_class
+
+    def get_object(self):
+        return get_object_or_404(AssignedQuestion, id=self.kwargs.get('question_id'))
 
 
 class ListOrCreatePetListing(generics.ListCreateAPIView):
