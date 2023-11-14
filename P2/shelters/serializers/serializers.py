@@ -174,7 +174,7 @@ class PetListingSerializer(serializers.ModelSerializer):
     class Meta:
         # for listing or creating a serializer
         model = PetListing
-        fields = ['id', 'name', 'shelter', 'status', 'assigned_questions']
+        fields = ['id', 'name', 'shelter', 'status', 'assigned_questions', 'age', 'breed']
         read_only_fields = ['shelter', 'id']
 
     def create(self, validated_data):
@@ -225,7 +225,7 @@ class ShelterSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Shelter
         fields = ['name', 'owner']
-        read_only_fields = ['owner']
+        read_only_fields = ['owner']    
 
 
 class ShelterReviewSerializer(serializers.ModelSerializer):
