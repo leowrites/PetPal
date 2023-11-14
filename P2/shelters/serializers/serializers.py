@@ -3,7 +3,7 @@ from rest_framework import serializers
 from shelters.models.pet_application import PetApplication, PetListing
 from shelters.models.application_response import ShelterQuestion, AssignedQuestion, ApplicationResponse
 from shelters import models
-from users.serializers.serializers import UserSerializer
+from users.serializers.serializers import UserProfileSerializer
 
 
 class ShelterQuestionSerializer(serializers.ModelSerializer):
@@ -30,7 +30,7 @@ class ApplicationResponseSerializer(serializers.ModelSerializer):
 
 class PetApplicationSerializer(serializers.ModelSerializer):
     application_responses = ApplicationResponseSerializer(many=True, read_only=True)
-    applicant = UserSerializer(read_only=True)
+    applicant = UserProfileSerializer(read_only=True)
 
     class Meta:
         model = PetApplication

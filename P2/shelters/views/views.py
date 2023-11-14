@@ -25,21 +25,15 @@ class ApplicationPagination(PageNumberPagination):
 
 # SHELTERS!!
 
-# POST /shelters
 # GET /shelters
-# TODO: change to only a ListAPIView
-class ListOrCreateShelter(generics.ListCreateAPIView):
-    permission_classes = [IsAuthenticated] # TODO: don't think we need this, check
+class ListShelter(generics.ListAPIView):
+    queryset = models.Shelter.objects.all()
     serializer_class = serializers.ShelterSerializer
     pagination_class = ApplicationPagination
     ordering = ['shelter_name']
     ordering_fields = ['shelter_name', 'location']
     filter_backends = [filters.OrderingFilter, DjangoFilterBackend]
     filterset_fields = ['shelter_name', 'location']
-    queryset = models.Shelter.objects.all()
-
-    def perform_create(self, serializer):
-        serializer.save(owner=self.request.user)
 
 # GET /shelters/{shelter_id}
 # PUT /shelters/{shelter_id}
@@ -53,10 +47,18 @@ class ViewOrUpdateOrDestroyShelter(generics.RetrieveUpdateDestroyAPIView):
             permission_classes = []
         else:
             permission_classes = [IsAuthenticated, permissions.IsShelterOwner]
-        return permission_classes
-    
+        return [permission() for permission in permission_classes]
+
     def get_object(self):
-        return get_object_or_404(models.Shelter, id=self.kwargs['pk'])
+        shelter = get_object_or_404(models.Shelter, id=self.kwargs['pk'])
+        self.check_object_permissions(self.request, shelter)
+        return shelter
+    
+    def perform_destroy(self, instance):
+        owner = instance.owner
+        owner.is_shelter = False
+        owner.save()
+        instance.delete()
 
 
 # POST /shelters/{shelter_id}/listings/{listing_id}/applications
@@ -194,12 +196,6 @@ class RetrieveUpdateOrDeletePetListing(generics.RetrieveUpdateDestroyAPIView):
 
     def get_object(self):
         return get_object_or_404(PetListing, shelter=self.kwargs['pk'], id=self.kwargs['listing_id'])
-
-
-# Shelter
-# class ListShelter(generics.ListAPIView):
-#     queryset = models.Shelter.objects.all()
-#     serializer_class = serializers.ShelterSerializer
 
 
 # Shelter reviews

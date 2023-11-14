@@ -4,7 +4,7 @@ from django.contrib.auth.password_validation import validate_password
 from shelters.models.shelter import Shelter
 
 
-class UserSerializer(serializers.ModelSerializer):
+class UserCreationSerializer(serializers.ModelSerializer):
     is_shelter = serializers.BooleanField(label="Are you a shelter?")
     shelter_name = serializers.CharField(write_only=True, required=False)
     contact_email = serializers.EmailField(write_only=True, required=False)
@@ -51,3 +51,8 @@ class UserSerializer(serializers.ModelSerializer):
     def validate_password(self, password):
         validate_password(password=password)
         return password
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'email', 'is_shelter']
