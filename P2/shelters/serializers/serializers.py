@@ -70,6 +70,7 @@ class PetApplicationGetOrUpdateSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         instance.status = validated_data['status']
         instance.save(update_fields=['status', 'last_updated'])
+        request = self.context.get('request')
 
         # send notification to the shelter owner or user
         if request.user == instance.applicant:
