@@ -1,15 +1,15 @@
-from django.test import TestCase, RequestFactory
 from django.contrib.auth.models import User
 from users.views import views
-from shelters.views import views as shelter_views
 from shelters.models import Shelter, ShelterQuestion
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
 )
+from rest_framework.test import (APIRequestFactory, force_authenticate, APIClient, APITestCase)
+from django.urls import reverse
 
 
 def create_user(username='Leo', is_shelter=False):
-    factory = RequestFactory()
+    factory = APIRequestFactory()
     request = factory.post('/users', {
         'username': username,
         'password': '123123123a!',
@@ -19,7 +19,7 @@ def create_user(username='Leo', is_shelter=False):
 
 
 def login(username='Leo', password='123123123a!'):
-    factory = RequestFactory()
+    factory = APIRequestFactory()
     request = factory.post('/api/token', {
         'username': username,
         'password': password
@@ -27,9 +27,9 @@ def login(username='Leo', password='123123123a!'):
     return TokenObtainPairView.as_view()(request)
 
 
-class UserCreationTest(TestCase):
+class UserCreationTest(APITestCase):
     def setUp(self):
-        self.factory = RequestFactory()
+        self.factory = APIRequestFactory()
 
     def test_CreateUser_UserDoesNotExist_CreatesUser(self):
         create_user()
@@ -44,9 +44,9 @@ class UserCreationTest(TestCase):
         self.assertEquals(response.data['username'][0], 'A user with that username already exists.')
 
 
-class ShelterUserCreationTest(TestCase):
+class ShelterUserCreationTest(APITestCase):
     def setUp(self):
-        self.factory = RequestFactory()
+        self.factory = APIRequestFactory()
 
     def test_CreateUser_UserIsShelter_CreatesUserAndShelter(self):
         create_user(is_shelter=True)
@@ -62,32 +62,30 @@ class ShelterUserCreationTest(TestCase):
             Shelter.objects.get(owner=user)
 
 
-class ShelterQuestionCreationTest(TestCase):
+class ShelterQuestionCreationTest(APITestCase):
 
     def setUp(self):
-        self.factory = RequestFactory()
         normal_user_username = 'Leo'
-        shelter_user_username = 'Jack'
-
-        create_user(shelter_user_username, is_shelter=True)
-        response = login(shelter_user_username)
-        self.shelter_access = response.data['access']
-
         create_user(normal_user_username)
-        response = login(normal_user_username)
-        self.user_access = response.data['access']
+        user = User.objects.get(username=normal_user_username)
+        self.user_client = APIClient()
+        self.user_client.force_authenticate(user)
 
-        self.user = User.objects.get(username=normal_user_username)
-        self.shelter_user = User.objects.get(username=shelter_user_username)
-        self.shelter = self.shelter_user.shelter
+        shelter_user_username = 'Jack'
+        create_user(shelter_user_username, is_shelter=True)
+        shelter_user = User.objects.get(username=shelter_user_username)
+        self.shelter_client = APIClient()
+        self.shelter_client.force_authenticate(shelter_user)
+
+        self.shelter = shelter_user.shelter
 
     def test_CreateQuestion_UserIsShelter_CreatesQuestion(self):
-        request = self.factory.post(f'/shelter/{self.shelter.id}/questions', {
+        request_body = {
             "question": "What is your name?",
             "type": "NUMBER",
-            "required": True
-        }, HTTP_AUTHORIZATION=f'Bearer {self.shelter_access}')
-        response = shelter_views.ListOrCreateShelterQuestion.as_view()(request)
+        }
+        response = self.shelter_client.post(reverse('shelters:shelter-question-list-create',
+                                                    kwargs={'pk': self.shelter.id}), request_body)
         self.assertEquals(response.status_code, 201)
         self.shelter.refresh_from_db()
         # check it has a question
@@ -95,23 +93,34 @@ class ShelterQuestionCreationTest(TestCase):
         self.assertEquals(question.question, "What is your name?")
 
     def test_CreateQuestion_UserIsNotShelter_CreatesNoQuestion(self):
-        request = self.factory.post(f'/shelter/{self.shelter.id}/questions', {
+        request_body = {
             "question": "What is your name?",
             "type": "NUMBER",
-            "required": True
-        }, HTTP_AUTHORIZATION=f'Bearer {self.user_access}')
-        response = shelter_views.ListOrCreateShelterQuestion.as_view()(request)
-        self.assertEquals(response.status_code, 400)
+        }
+        response = self.user_client.post(reverse('shelters:shelter-question-list-create',
+                                                 kwargs={'pk': self.shelter.id}),request_body)
+        self.assertEquals(response.status_code, 403)
         self.assertFalse(ShelterQuestion.objects.exists())
-        self.assertEquals(response.data[0], 'You are not a shelter')
 
     def test_CreateQuestion_NotAuthenticated_CreatesNoQuestion(self):
-        pass
+        self.user_client.logout()
+        response = self.user_client.post(reverse('shelters:shelter-question-list-create',
+                                                 kwargs={'pk': self.shelter.id}))
+        self.assertEquals(response.status_code, 401)
 
     def test_CreateQuestion_OwnerOfAnotherShelter_CreatesNoQuestion(self):
-        pass
+        create_user('shelter_2', True)
+        shelter_2 = User.objects.get(username='shelter_2')
+        shelter_2_client = APIClient()
+        shelter_2_client.force_authenticate(shelter_2)
+        request_body = {
+            "question": "What is your name?",
+            "type": "NUMBER",
+        }
+        response = shelter_2_client.post(reverse('shelters:shelter-question-list-create',
+                                                 kwargs={'pk': self.shelter.id}),request_body)
+        self.assertEquals(response.status_code, 403)
 
-
-# class PetListingCreation(TestCase):
+# class PetListingCreation(APITestCase):
 
     # def setUp(self):

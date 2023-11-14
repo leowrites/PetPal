@@ -66,7 +66,6 @@ class UpdateOrGetPetApplicationDetails(generics.RetrieveUpdateAPIView):
         return obj
 
 
-
 class ListOrCreateShelterQuestion(generics.ListCreateAPIView):
     serializer_class = serializers.ShelterQuestionSerializer
     # only the owner of this shelter can get questions for this shelter, as well as make new ones
