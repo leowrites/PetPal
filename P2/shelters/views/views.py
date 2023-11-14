@@ -36,7 +36,7 @@ class ListOrCreateApplicationForListing(generics.ListCreateAPIView):
 
     def get_serializer_class(self):
         if self.request is None:
-            return serializers.PetApplicationSerializer
+            return serializers.PetApplicationGetOrUpdateSerializer
         if self.request.method == 'GET':
             return serializers.PetApplicationGetOrUpdateSerializer
         else:

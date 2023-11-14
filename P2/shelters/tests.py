@@ -92,13 +92,66 @@ class ShelterQuestionCreationTest(APITestCase):
         question = self.shelter.shelter_questions.get(id=response.data['id'])
         self.assertEquals(question.question, "What is your name?")
 
+    def test_CreateQuestion_AcceptedTypes_CreatesQuestion(self):
+        # supported types are defined in the API doc
+        # includes FILE, CHECKBOX, DATE, EMAIL, TEXT, NUMBER
+        question_ids = []
+        question_types = ['FILE', 'CHECKBOX', 'DATE', 'EMAIL', 'TEXT', 'NUMBER']
+        for question_type in question_types:
+            request_body = {
+                "question": f"This is a {question_type} test",
+                "type": question_type,
+            }
+            response = self.shelter_client.post(reverse('shelters:shelter-question-list-create',
+                                                        kwargs={'pk': self.shelter.id}), request_body)
+            self.assertEquals(response.status_code, 201)
+            question_ids.append(response.data.get('id'))
+        created_questions = ShelterQuestion.objects.filter(id__in=question_ids)
+        # check every type has exactly one question created
+        for question_type in question_types:
+            question = created_questions.get(type=question_type)
+            self.assertEquals(question.question, f"This is a {question_type} test")
+
+    def test_CreateQuestion_NotAcceptedType_CreatesNoQuestion(self):
+        question_type = 'hehe'
+        request_body = {
+            "question": f"This is a {question_type} test",
+            "type": question_type,
+        }
+        response = self.shelter_client.post(reverse('shelters:shelter-question-list-create',
+                                                    kwargs={'pk': self.shelter.id}), request_body)
+        self.assertEquals(response.status_code, 400)
+        self.assertEquals(str(response.data.get('type', [])[0]), f'"{question_type}" is not a valid choice.')
+        self.assertFalse(ShelterQuestion.objects.all().exists())
+
+    def test_CreateQuestion_QuestionTooLong_CreatesNoQuestion(self):
+        request_body = {
+            "question": "L" * 1001,
+            "type": "TEXT",
+        }
+        response = self.shelter_client.post(reverse('shelters:shelter-question-list-create',
+                                                    kwargs={'pk': self.shelter.id}), request_body)
+        self.assertEquals(response.status_code, 400)
+        self.assertFalse(ShelterQuestion.objects.all().exists())
+
+    def test_CreateQuestion_InvalidField_CreatesQuestion(self):
+        request_body = {
+            "question": "test",
+            "type": "TEXT",
+            "completely_random_field": "hmm"
+        }
+        response = self.shelter_client.post(reverse('shelters:shelter-question-list-create',
+                                                    kwargs={'pk': self.shelter.id}), request_body)
+        self.assertEquals(response.status_code, 201)
+        self.assertIsNotNone(ShelterQuestion.objects.get(id=response.data['id']))
+
     def test_CreateQuestion_UserIsNotShelter_CreatesNoQuestion(self):
         request_body = {
             "question": "What is your name?",
             "type": "NUMBER",
         }
         response = self.user_client.post(reverse('shelters:shelter-question-list-create',
-                                                 kwargs={'pk': self.shelter.id}),request_body)
+                                                 kwargs={'pk': self.shelter.id}), request_body)
         self.assertEquals(response.status_code, 403)
         self.assertFalse(ShelterQuestion.objects.exists())
 
@@ -118,9 +171,9 @@ class ShelterQuestionCreationTest(APITestCase):
             "type": "NUMBER",
         }
         response = shelter_2_client.post(reverse('shelters:shelter-question-list-create',
-                                                 kwargs={'pk': self.shelter.id}),request_body)
+                                                 kwargs={'pk': self.shelter.id}), request_body)
         self.assertEquals(response.status_code, 403)
 
 # class PetListingCreation(APITestCase):
 
-    # def setUp(self):
+# def setUp(self):
