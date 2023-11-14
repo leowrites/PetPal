@@ -143,7 +143,7 @@ class ListOrCreatePetListing(generics.ListCreateAPIView):
     queryset = PetListing.objects.all()
 
     def perform_create(self, serializer):
-        pet_listing = serializer.save()
+        pet_listing = serializer.save(shelter=self.request.user.shelter)
         for user in User.objects.all():
             if user != pet_listing.shelter.owner:
                 notification = Notification.objects.create(

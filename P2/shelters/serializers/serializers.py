@@ -163,57 +163,18 @@ class PetApplicationPostSerializer(serializers.Serializer):
 
 class PetListingSerializer(serializers.ModelSerializer):
     # questions = serializers.PrimaryKeyRelatedField(many=True, queryset=Question.objects.all(), write_only=True)
-    assigned_questions = AssignedQuestionSerializer(many=True, required=False)
+    assigned_questions = AssignedQuestionDetailsSerializer(many=True, required=False)
 
     # user can select the questions, which will create new rows in listing questions
     class Meta:
         # for listing or creating a serializer
         model = PetListing
         fields = ['id', 'name', 'shelter', 'status', 'assigned_questions', 'age', 'breed']
-        read_only_fields = ['shelter', 'id']
+        read_only_fields = ['shelter', 'id', 'application_questions']
 
     def create(self, validated_data):
-        questions_data = validated_data.pop('assigned_questions', [])
-        shelter = self.context.get('request').user.shelter
-        pet_listing = PetListing.objects.create(**validated_data, shelter=shelter)
-        for question in questions_data:
-            AssignedQuestion.objects.create(listing=pet_listing, **question)
+        pet_listing = PetListing.objects.create(**validated_data)
         return pet_listing
-
-    def update(self, instance, validated_data):
-        # if question is not already in the listing then update it
-        listing_questions_data = validated_data.pop('assigned_questions', [])
-        # remove the ones that no longer exist
-        new_question_ids = {q['question'].id: q for q in listing_questions_data}
-        # Get all questions that belong to this pet listing
-        existing_questions = AssignedQuestion.objects.filter(listing=instance)
-        existing_question_ids = {q.question.id: q for q in existing_questions}
-
-        existing_questions_to_update = []
-        new_questions = []
-
-        # add new ones
-        for question_id, question_data in new_question_ids.items():
-            if question_id in existing_question_ids:
-                existing_question = existing_question_ids[question_id]
-                existing_question.rank = question_data.get('rank', existing_question.rank)
-                existing_question.required = question_data.get('required', existing_question.required)
-                existing_questions_to_update.append(existing_question)
-            else:
-                new_questions.append(AssignedQuestion(listing=instance, **question_data))
-
-        AssignedQuestion.objects.bulk_create(new_questions)
-        AssignedQuestion.objects.bulk_update(existing_questions_to_update, ['rank', 'required'])
-
-        old_question_ids = set(existing_question_ids.keys()) - set(new_question_ids.keys())
-        AssignedQuestion.objects.filter(listing=instance, question_id__in=old_question_ids).delete()
-
-        # for question in questions_data:
-        return super().update(instance, validated_data)
-
-    def get_assigned_questions(self, obj):
-        assigned_questions = AssignedQuestion.objects.filter(listing=obj)
-        return AssignedQuestionSerializer(assigned_questions, many=True).data
 
 
 class ShelterSerializer(serializers.ModelSerializer):
