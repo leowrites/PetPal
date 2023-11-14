@@ -13,16 +13,22 @@ class ShelterQuestionSerializer(serializers.ModelSerializer):
         read_only_fields = ['id']
 
     def create(self, validated_data):
-        user = self.context['request'].user
-        # pretty sure this logic can be moved to the view, we can have a
-        # permission method for this
-        if not hasattr(user, 'shelter'):
-            raise serializers.ValidationError("You are not a shelter")
-        question = ShelterQuestion.objects.create(**validated_data, shelter=user.shelter)
-        return question
+        user = validated_data.pop('user')
+        return ShelterQuestion.objects.create(**validated_data, shelter=user.shelter)
+
+
+# only difference to the one above is that on GET methods, it returns a bit more information about the question
+class AssignedQuestionDetailsSerializer(serializers.ModelSerializer):
+    question = ShelterQuestionSerializer(read_only=True)
+
+    class Meta:
+        model = AssignedQuestion
+        fields = ['id', 'question', 'rank','required', 'listing']
 
 
 class ApplicationResponseSerializer(serializers.ModelSerializer):
+    question = AssignedQuestionDetailsSerializer(read_only=True)
+
     class Meta:
         model = ApplicationResponse
         fields = '__all__'
@@ -68,22 +74,11 @@ class PetApplicationGetOrUpdateSerializer(serializers.ModelSerializer):
 class AssignedQuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = AssignedQuestion
-        fields = ['id', 'question', 'rank', 'required']
-        read_only_fields = ['id']
+        fields = ['id', 'question', 'rank', 'required', 'listing']
+        read_only_fields = ['id', 'listing']
 
     def create(self, validated_data):
-        listing_id = self.context.get('request').parser_context.get('kwargs').get('listing_id')
-        assigned_question = AssignedQuestion.objects.create(**validated_data, listing_id=listing_id)
-        return assigned_question
-
-
-# only difference to the one above is that on GET methods, it returns a bit more information about the question
-class AssignedQuestionDetailsSerializer(serializers.ModelSerializer):
-    question = ShelterQuestionSerializer(read_only=True)
-
-    class Meta:
-        model = AssignedQuestion
-        fields = ['id', 'question', 'rank','required']
+        return AssignedQuestion.objects.create(**validated_data)
 
 
 def type_to_field(question_type, label, required):
@@ -104,8 +99,6 @@ def type_to_field(question_type, label, required):
 
 
 class PetApplicationPostSerializer(serializers.Serializer):
-    # on post, each question associated with the listing should be a field in the serializer
-    # listing_questions = ListingQuestionSerializer(many=True)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -123,19 +116,29 @@ class PetApplicationPostSerializer(serializers.Serializer):
                                                                     required=listing_question.required)
         self.fields.update(question_dict)
 
-    def create(self, validated_data):
+    def validate(self, data):
         # check listing is available
-        listing = PetListing.objects.get(id=self.listing_id)
+        validated_data = super().validate(data)
+        listing = get_object_or_404(PetListing, id=self.listing_id)
         if listing.status == 'not_available':
-            raise serializers.ValidationError("This listing is not available")
+            raise serializers.ValidationError({"not_available": "This listing is not available"})
 
-        # check if this user already has an application for this listing
         user = self.context['request'].user
+        # check if this user already has an application for this listing
         if PetApplication.objects.filter(applicant=user, listing_id=self.listing_id).exists():
-            raise serializers.ValidationError("You already applied to this listing")
-        application = PetApplication.objects.create(listing_id=self.listing_id, applicant=self.context['request'].user)
-        for key, value in validated_data.items():
-            ApplicationResponse.objects.create(answer=value, question_id=key, application=application)
+            raise serializers.ValidationError({"already_applied": "You already applied to this listing"})
+        return validated_data
+
+    def create(self, validated_data):
+        listing_id = validated_data.pop('listing_id')
+        applicant = validated_data.pop('applicant')
+        application = PetApplication.objects.create(listing_id=listing_id, applicant=applicant)
+        application_responses = []
+        for question_id, answer in validated_data.items():
+            application_responses.append(
+                ApplicationResponse(answer=answer, question_id=question_id, application=application)
+            )
+        ApplicationResponse.objects.bulk_create(application_responses)
         return application
 
     def to_representation(self, instance):

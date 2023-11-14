@@ -50,7 +50,7 @@ class ListOrCreateApplicationForListing(generics.ListCreateAPIView):
         return PetApplication.objects.filter(listing_id=self.kwargs['listing_id'])
     
     def perform_create(self, serializer):
-        return super().perform_create(serializer)
+        serializer.save(listing_id=self.kwargs['listing_id'], applicant=self.request.user)
 
 
 # GET /shelters/<shelter_id>/listings/<listing_id>/applications/<application_id>
@@ -80,7 +80,7 @@ class ListOrCreateShelterQuestion(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         shelter = get_object_or_404(models.Shelter, id=self.kwargs['pk'])
         self.check_object_permissions(self.request, shelter)
-        return super().perform_create(serializer)
+        serializer.save(user=self.request.user)
 
 
 class UpdateOrDestroyShelterQuestion(generics.RetrieveUpdateDestroyAPIView):
@@ -109,7 +109,7 @@ class ListOrCreateAssignedQuestion(generics.ListCreateAPIView):
         self.check_permissions(self.request)
         listing = get_object_or_404(PetListing, id=self.kwargs['listing_id'])
         self.check_object_permissions(self.request, listing.shelter)
-        return super().perform_create(serializer)
+        serializer.save(listing_id=listing.id)
 
 
 class RetrieveUpdateOrDestroyAssignedQuestion(generics.RetrieveUpdateDestroyAPIView):
