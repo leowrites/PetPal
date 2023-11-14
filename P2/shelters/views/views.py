@@ -5,15 +5,12 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import NotFound
 from django_filters.rest_framework import DjangoFilterBackend
-from django.db import transaction
 
 from shelters.filters import PetApplicationFilter
 from shelters.models.pet_application import PetApplication, PetListing
 from shelters.models.application_response import ShelterQuestion, AssignedQuestion
 from shelters import models
 from shelters.serializers import serializers
-from notifications.models import Notification
-from django.contrib.auth.models import User
 from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from shelters.permissions import permissions
@@ -49,16 +46,6 @@ class ListOrCreateApplicationForListing(generics.ListCreateAPIView):
         shelter = get_object_or_404(models.Shelter, id=self.kwargs['pk'])
         self.check_object_permissions(self.request, shelter)
         return PetApplication.objects.filter(listing_id=self.kwargs['listing_id'])
-    
-    def perform_create(self, serializer):
-        application = serializer.save()
-
-        shelter = application.listing.shelter
-        Notification.objects.create(
-            user=shelter.owner,
-            notification_type="application",
-            associated_model=application
-        )
 
 
 # GET /shelters/<shelter_id>/listings/<listing_id>/applications/<application_id>
@@ -74,20 +61,6 @@ class UpdateOrGetPetApplicationDetails(generics.RetrieveUpdateAPIView):
         self.check_object_permissions(self.request, obj)
         return obj
     
-    def perform_update(self, serializer):
-        application = serializer.save()
-        if self.request.user == application.applicant:
-            Notification.objects.create(
-                user=application.listing.shelter.owner,
-                notification_type="applicationStatusChange",
-                associated_model=application
-            )
-        elif self.request.user == application.listing.shelter.owner:
-            Notification.objects.create(
-                user=application.applicant,
-                notification_type="applicationStatusChange",
-                associated_model=application
-            )
 
 
 class ListOrCreateShelterQuestion(generics.ListCreateAPIView):
@@ -164,20 +137,6 @@ class RetrieveUpdateOrDestroyAssignedQuestion(generics.RetrieveUpdateDestroyAPIV
 class ListOrCreatePetListing(generics.ListCreateAPIView):
     serializer_class = serializers.PetListingSerializer
     queryset = PetListing.objects.all()
-
-    def perform_create(self, serializer):
-        pet_listing = serializer.save()
-
-        with transaction.atomic():
-            notifications = [
-                Notification(
-                    user=user,
-                    notification_type="petListing",
-                    associated_model=pet_listing
-                ) for user in User.objects.filter(shelter__isnull=True)
-            ]
-
-            Notification.objects.bulk_create(notifications)
 
 
 class RetrieveUpdateOrDeletePetListing(generics.RetrieveUpdateDestroyAPIView):
