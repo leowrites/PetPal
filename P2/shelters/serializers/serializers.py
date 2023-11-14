@@ -224,7 +224,7 @@ class PetListingSerializer(serializers.ModelSerializer):
 class ShelterSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Shelter
-        fields = ['name', 'owner']
+        fields = ['name', 'owner', 'contact_email', 'location', 'mission_statement']
         read_only_fields = ['owner']
 
 

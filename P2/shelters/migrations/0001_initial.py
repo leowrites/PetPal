@@ -20,6 +20,9 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(default='', max_length=200)),
                 ('owner', models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('contact_email', models.EmailField()),
+                ('location', models.CharField(max_length=200)),
+                ('mission_statement', models.TextField()),
             ],
         ),
         migrations.CreateModel(

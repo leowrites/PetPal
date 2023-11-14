@@ -1,4 +1,4 @@
-from rest_framework import generics
+from rest_framework import generics, views
 from rest_framework.generics import get_object_or_404
 from rest_framework import filters
 from rest_framework.pagination import PageNumberPagination
@@ -22,6 +22,55 @@ class ApplicationPagination(PageNumberPagination):
     page_size = 10
     page_size_query_param = 'page_size'
     max_page_size = 10
+
+# SHELTERS!!
+
+# POST /shelters
+# GET /shelters
+class ListOrCreateShelter(generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = serializers.ShelterSerializer
+    pagination_class = ApplicationPagination
+    ordering = ['name']
+    ordering_fields = ['name', 'location']
+    filter_backends = [filters.OrderingFilter, DjangoFilterBackend]
+    filterset_fields = ['name', 'location']
+    queryset = models.Shelter.objects.all()
+
+    def perform_create(self, serializer):
+        shelter = serializer.save(owner=self.request.user)
+
+class ViewShelter(generics.RetrieveAPIView):
+    serializer_class = serializers.ShelterSerializer
+    queryset = models.Shelter.objects.all()
+    permission_classes = [] # Any user can see the profile of a shelter
+
+    def get_object(self):
+        return get_object_or_404(models.Shelter, id=self.kwargs['pk'])
+
+class UpdateOrDestroyShelter(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = serializers.ShelterSerializer
+    queryset = models.Shelter.objects.all()
+    permission_classes = [IsAuthenticated, permissions.IsShelterOwner]
+
+    def get_object(self):
+        return get_object_or_404(models.Shelter, id=self.kwargs['pk'])
+
+# GET /shelters/{shelter_id}
+# PUT /shelters/{shelter_id}
+# DELETE /shelters/{shelter_id}
+class ShelterView(views.APIView):
+    def get(self, request, *args, **kwargs):
+        view = ViewShelter.as_view()
+        return view(request, *args, **kwargs)
+    
+    def put(self, request, *args, **kwargs):
+        view = UpdateOrDestroyShelter.as_view()
+        return view(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        view = UpdateOrDestroyShelter.as_view()
+        return view(request, *args, **kwargs)
 
 
 # POST /shelters/{shelter_id}/listings/{listing_id}/applications
