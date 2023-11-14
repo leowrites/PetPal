@@ -20,19 +20,20 @@ class UserCreationSerializer(serializers.ModelSerializer):
         }
 
     def validate(self, data):
-        if data.get('is_shelter'):
+        validated_data = super().validate(data)
+        if validated_data.get('is_shelter'):
             errors = {}
-            if not data.get('shelter_name'):
+            if not validated_data.get('shelter_name'):
                 errors['shelter_name'] = "Shelter name is required."
-            if not data.get('contact_email'):
+            if not validated_data.get('contact_email'):
                 errors['contact_email'] = "Contact email is required."
-            if not data.get('location'):
+            if not validated_data.get('location'):
                 errors['location'] = "Location is required."
-            if not data.get('mission_statement'):
+            if not validated_data.get('mission_statement'):
                 errors['mission_statement'] = "Mission statement is required."
             if errors:
                 raise serializers.ValidationError(errors)
-        return data
+        return validated_data
 
     def create(self, validated_data):
         # create a shelter if user is a shelter
