@@ -16,7 +16,7 @@ jobs:
         python-version: [3.7, 3.8, 3.9]
     defaults:
       run:
-        working-directory: p2
+        working-directory: P2
 
     steps:
     - uses: actions/checkout@v3
