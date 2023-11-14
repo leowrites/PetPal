@@ -26,7 +26,7 @@ class IsApplicationListingOwner(BasePermission):
     message = 'You must be the owner of the listing associated with this application'
 
     def has_object_permission(self, request, view, obj):
-        return request.user == obj.listing.shelter
+        return request.user == obj.listing.shelter.owner
 
 
 class IsCreateOnly(BasePermission):
