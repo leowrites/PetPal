@@ -36,27 +36,17 @@ class PetApplicationSerializer(serializers.ModelSerializer):
         model = PetApplication
         fields = ['status', 'listing', 'application_responses', 'applicant', 'id', 'application_time', 'last_updated']
         read_only_fields = ['listing', 'application_responses', 'applicant', 'id', 'application_time', 'last_updated']
+        extra_kwargs = {
+            'status': { 'required': True }
+        }
 
-    def update(self, instance, validated_data):
-        # Check if the 'status' field is included in the request data
-        if 'status' not in validated_data:
-            raise serializers.ValidationError("The status field is required.")
-
+    def validate_status(self, data):
+        new_status = super().validate(data)
         request = self.context.get('request')
-        new_status = validated_data['status']
-        # make sure the applicant can only update the status from pending -> withdrawn,
-        # or approved -> accepted, withdrawn
-        if request.user.is_anonymous:
-            raise serializers.ValidationError("You must be logged in!")
-
-        is_shelter = hasattr(request.user, 'shelter')
-        # check this user owns this shelter
-        if is_shelter and instance.listing.shelter.id != request.user.shelter.id:
-            raise serializers.ValidationError("You do not own this listing")
-        elif not is_shelter and request.user != instance.applicant:
-            # user does not own this application either
-            raise serializers.ValidationError("You do not own this application")
-
+        user = request.user
+        is_shelter = hasattr(user, 'shelter')
+        application_id = request.parser_context['kwargs'].get('application_id')
+        instance = PetApplication.objects.get(id=application_id)
         if is_shelter and new_status not in ['approved', 'denied', 'pending']:
             raise serializers.ValidationError("Shelter can only update status to pending, approved, and denied.")
         if not is_shelter:
@@ -67,7 +57,9 @@ class PetApplicationSerializer(serializers.ModelSerializer):
             elif instance.status == 'approved' and new_status not in ['accepted', 'withdrawn']:
                 raise serializers.ValidationError("Applicant can only update status from approved "
                                                   "to withdrawn or accepted.")
+        return new_status
 
+    def update(self, instance, validated_data):
         instance.status = validated_data['status']
         instance.save(update_fields=['status', 'last_updated'])
         return instance
