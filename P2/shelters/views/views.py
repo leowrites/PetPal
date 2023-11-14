@@ -39,9 +39,9 @@ class ListOrCreateApplicationForListing(generics.ListCreateAPIView):
     def get_serializer_class(self):
         print(self.request.method)
         if self.request.method == 'GET':
-            return serializers.PetApplicationSerializer
+            return serializers.PetApplicationGetOrUpdateSerializer
         else:
-            return serializers.PetApplicationFormSerializer
+            return serializers.PetApplicationPostSerializer
 
     def get_queryset(self):
         # make sure only owner of this shelter
@@ -56,7 +56,7 @@ class ListOrCreateApplicationForListing(generics.ListCreateAPIView):
 # GET /shelters/<shelter_id>/listings/<listing_id>/applications/<application_id>
 # PUT /shelters/<shelter_id>/listings/<listing_id>/applications/<application_id>
 class UpdateOrGetPetApplicationDetails(generics.RetrieveUpdateAPIView):
-    serializer_class = serializers.PetApplicationSerializer
+    serializer_class = serializers.PetApplicationGetOrUpdateSerializer
     # only the applicant of this application, or the owner of the listing associated with this application can get the
     # details or make changes to the application
     permission_classes = [IsAuthenticated, permissions.IsApplicationListingOwner | permissions.IsApplicationOwner]

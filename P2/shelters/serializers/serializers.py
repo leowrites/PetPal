@@ -28,7 +28,7 @@ class ApplicationResponseSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class PetApplicationSerializer(serializers.ModelSerializer):
+class PetApplicationGetOrUpdateSerializer(serializers.ModelSerializer):
     application_responses = ApplicationResponseSerializer(many=True, read_only=True)
     applicant = UserSerializer(read_only=True)
 
@@ -103,7 +103,7 @@ def type_to_field(question_type, label, required):
         return serializers.CharField(label=label, required=required)
 
 
-class PetApplicationFormSerializer(serializers.Serializer):
+class PetApplicationPostSerializer(serializers.Serializer):
     # on post, each question associated with the listing should be a field in the serializer
     # listing_questions = ListingQuestionSerializer(many=True)
 
