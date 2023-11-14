@@ -38,39 +38,24 @@ class ListOrCreateShelter(generics.ListCreateAPIView):
     queryset = models.Shelter.objects.all()
 
     def perform_create(self, serializer):
-        shelter = serializer.save(owner=self.request.user)
-
-class ViewShelter(generics.RetrieveAPIView):
-    serializer_class = serializers.ShelterSerializer
-    queryset = models.Shelter.objects.all()
-    permission_classes = [] # Any user can see the profile of a shelter
-
-    def get_object(self):
-        return get_object_or_404(models.Shelter, id=self.kwargs['pk'])
-
-class UpdateOrDestroyShelter(generics.RetrieveUpdateDestroyAPIView):
-    serializer_class = serializers.ShelterSerializer
-    queryset = models.Shelter.objects.all()
-    permission_classes = [IsAuthenticated, permissions.IsShelterOwner]
-
-    def get_object(self):
-        return get_object_or_404(models.Shelter, id=self.kwargs['pk'])
+        serializer.save(owner=self.request.user)
 
 # GET /shelters/{shelter_id}
 # PUT /shelters/{shelter_id}
 # DELETE /shelters/{shelter_id}
-class ShelterView(views.APIView):
-    def get(self, request, *args, **kwargs):
-        view = ViewShelter.as_view()
-        return view(request, *args, **kwargs)
-    
-    def put(self, request, *args, **kwargs):
-        view = UpdateOrDestroyShelter.as_view()
-        return view(request, *args, **kwargs)
+class ViewOrUpdateOrDestroyShelter(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = serializers.ShelterSerializer
+    queryset = models.Shelter.objects.all()
 
-    def delete(self, request, *args, **kwargs):
-        view = UpdateOrDestroyShelter.as_view()
-        return view(request, *args, **kwargs)
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            permission_classes = []
+        else:
+            permission_classes = [IsAuthenticated, permissions.IsShelterOwner]
+        return [permission() for permission in permission_classes]
+    
+    def get_object(self):
+        return get_object_or_404(models.Shelter, id=self.kwargs['pk'])
 
 
 # POST /shelters/{shelter_id}/listings/{listing_id}/applications
@@ -211,9 +196,9 @@ class RetrieveUpdateOrDeletePetListing(generics.RetrieveUpdateDestroyAPIView):
 
 
 # Shelter
-class ListShelter(generics.ListAPIView):
-    queryset = models.Shelter.objects.all()
-    serializer_class = serializers.ShelterSerializer
+# class ListShelter(generics.ListAPIView):
+#     queryset = models.Shelter.objects.all()
+#     serializer_class = serializers.ShelterSerializer
 
 
 # Shelter reviews
