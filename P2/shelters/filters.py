@@ -1,5 +1,5 @@
 import django_filters
-from .models import PetApplication
+from .models import PetApplication, PetListing
 
 
 class PetApplicationFilter(django_filters.FilterSet):
@@ -8,3 +8,10 @@ class PetApplicationFilter(django_filters.FilterSet):
     class Meta:
         model = PetApplication
         fields = ['status']
+
+
+class PetListingFilter(django_filters.FilterSet):
+    class Meta:
+        model = PetListing
+        fields = ['shelter__name', 'status', 'name', 'breed', 'age']
+        
