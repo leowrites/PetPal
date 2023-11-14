@@ -25,3 +25,11 @@ class Notification(models.Model):
     # notification details
     created = models.DateTimeField(auto_now_add=True)
     read = models.BooleanField(default=False)
+
+class NotificationPreferences(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='notification_preferences')
+    application_message = models.BooleanField(default=True)
+    application_status_change = models.BooleanField(default=True)
+    pet_listing = models.BooleanField(default=True)
+    application = models.BooleanField(default=True)
+    review = models.BooleanField(default=True)
