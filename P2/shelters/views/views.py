@@ -11,8 +11,6 @@ from shelters.models.pet_application import PetApplication, PetListing
 from shelters.models.application_response import ShelterQuestion, AssignedQuestion
 from shelters import models
 from shelters.serializers import serializers
-from notifications.models import Notification
-from django.contrib.auth.models import User
 from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from shelters.permissions import permissions
@@ -65,6 +63,7 @@ class UpdateOrGetPetApplicationDetails(generics.RetrieveUpdateAPIView):
         obj = get_object_or_404(PetApplication, id=self.kwargs['application_id'])
         self.check_object_permissions(self.request, obj)
         return obj
+
 
 
 class ListOrCreateShelterQuestion(generics.ListCreateAPIView):
@@ -143,14 +142,7 @@ class ListOrCreatePetListing(generics.ListCreateAPIView):
     queryset = PetListing.objects.all()
 
     def perform_create(self, serializer):
-        pet_listing = serializer.save(shelter=self.request.user.shelter)
-        for user in User.objects.all():
-            if user != pet_listing.shelter.owner:
-                notification = Notification.objects.create(
-                    user=user,
-                    notification_type="petListing",
-                    associated_model=pet_listing
-                )
+        serializer.save(shelter=self.request.user.shelter)
 
 
 class RetrieveUpdateOrDeletePetListing(generics.RetrieveUpdateDestroyAPIView):

@@ -4,7 +4,9 @@ from shelters.models.pet_application import PetApplication, PetListing
 from shelters.models.application_response import ShelterQuestion, AssignedQuestion, ApplicationResponse
 from shelters import models
 from users.serializers.serializers import UserSerializer
-
+from notifications.models import Notification
+from django.contrib.auth.models import User
+from django.db import transaction
 
 class ShelterQuestionSerializer(serializers.ModelSerializer):
     class Meta:
@@ -68,6 +70,21 @@ class PetApplicationGetOrUpdateSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         instance.status = validated_data['status']
         instance.save(update_fields=['status', 'last_updated'])
+
+        # send notification to the shelter owner or user
+        if request.user == instance.applicant:
+            Notification.objects.create(
+                user=instance.listing.shelter.owner,
+                notification_type="applicationStatusChange",
+                associated_model=instance
+            )
+        elif request.user == instance.listing.shelter.owner:
+            Notification.objects.create(
+                user=instance.applicant,
+                notification_type="applicationStatusChange",
+                associated_model=instance
+            )
+
         return instance
 
 
@@ -139,6 +156,12 @@ class PetApplicationPostSerializer(serializers.Serializer):
                 ApplicationResponse(answer=answer, question_id=question_id, application=application)
             )
         ApplicationResponse.objects.bulk_create(application_responses)
+        shelter = application.listing.shelter
+        Notification.objects.create(
+            user=shelter.owner,
+            notification_type="application",
+            associated_model=application
+        )
         return application
 
     def to_representation(self, instance):
@@ -174,6 +197,16 @@ class PetListingSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         pet_listing = PetListing.objects.create(**validated_data)
+        with transaction.atomic():
+            notifications = [
+                Notification(
+                    user=user,
+                    notification_type="petListing",
+                    associated_model=pet_listing
+                ) for user in User.objects.filter(shelter__isnull=True)
+            ]
+
+            Notification.objects.bulk_create(notifications)
         return pet_listing
 
 
