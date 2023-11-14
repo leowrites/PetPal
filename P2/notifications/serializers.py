@@ -12,13 +12,6 @@ class NotificationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Notification
         fields = ['id', 'user', 'notification_type', 'associated_model_type', 'associated_model_id', 'created', 'read']
-        extra_kwargs = {
-            'application_message': {'required': False},
-            'application_status_change': {'required': False},
-            'pet_listing': {'required': False},
-            'application': {'required': False},
-            'review': {'required': False},
-        }
     
 class NotificationPreferencesSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True)
@@ -36,9 +29,6 @@ class NotificationPreferencesSerializer(serializers.ModelSerializer):
     
     def update(self, instance, validated_data):
         request = self.context.get('request')
-
-        if request.user.is_anonymous:
-            raise serializers.ValidationError("User must be logged in to update notification preferences")
         
         if hasattr(request.user, 'shelter'):
             # Update shelter notification preferences - application_message, application_status_change, application, review
@@ -56,8 +46,6 @@ class NotificationPreferencesSerializer(serializers.ModelSerializer):
     
     def to_representation(self, instance):
         request = self.context.get('request')
-        if request.user.is_anonymous:
-            raise serializers.ValidationError("User must be logged in to view notification preferences")
         
         if hasattr(request.user, 'shelter'):
             return {
