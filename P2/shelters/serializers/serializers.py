@@ -36,8 +36,8 @@ class PetApplicationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = PetApplication
-        fields = ['status', 'listing', 'application_responses', 'applicant']
-        read_only_fields = ['listing']
+        fields = ['status', 'listing', 'application_responses', 'applicant', 'id', 'application_time', 'last_updated']
+        read_only_fields = ['listing', 'application_responses', 'applicant', 'id', 'application_time', 'last_updated']
 
     def update(self, instance, validated_data):
         # Check if the 'status' field is included in the request data
@@ -71,7 +71,7 @@ class PetApplicationSerializer(serializers.ModelSerializer):
                                                   "to withdrawn or accepted.")
 
         instance.status = validated_data['status']
-        instance.save(update_fields=['status'])
+        instance.save(update_fields=['status', 'last_updated'])
 
         # send notification to the shelter owner or user
         if request.user == instance.applicant:
@@ -199,7 +199,7 @@ class PetListingSerializer(serializers.ModelSerializer):
     class Meta:
         # for listing or creating a serializer
         model = PetListing
-        fields = ['id', 'name', 'shelter', 'status', 'assigned_questions']
+        fields = ['id', 'name', 'shelter', 'status', 'assigned_questions', 'age', 'breed']
         read_only_fields = ['shelter', 'id']
 
     def create(self, validated_data):
@@ -262,7 +262,7 @@ class ShelterSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Shelter
         fields = ['name', 'owner']
-        read_only_fields = ['owner']
+        read_only_fields = ['owner']    
 
 
 class ShelterReviewSerializer(serializers.ModelSerializer):
