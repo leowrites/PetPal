@@ -87,9 +87,4 @@ class NotificationPreferencesRetrieveOrUpdateAPIView(RetrieveUpdateAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_object(self):
-        if not NotificationPreferences.objects.filter(user=self.request.user).exists():
-            obj = NotificationPreferences.objects.create(user=self.request.user)
-            obj.save()
-            return obj
-        else:
-            return get_object_or_404(NotificationPreferences, user=self.request.user)
+        return get_object_or_404(NotificationPreferences, user=self.request.user)
