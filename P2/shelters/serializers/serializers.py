@@ -232,6 +232,15 @@ class ShelterReviewSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Shelter does not exist")
 
         review = models.ShelterReview.objects.create(**validated_data, user=user)
+
+        # create related notification
+        if shelter != user:
+            notification = Notification.objects.create(
+                user=shelter.owner,
+                notification_type="review",
+                associated_model=review
+            )
+
         return review
 
 
@@ -240,3 +249,24 @@ class ApplicationCommentSerializer(serializers.ModelSerializer):
         model = models.ApplicationComment
         fields = ['text', 'user', 'date_created']
         read_only_fields = ['user', 'date_created']
+    
+    def create(self, validated_data):
+        application_comment = super().create(validated_data)
+        application = application_comment.application
+        request = self.context.get('request')
+
+        # create related notification
+        if request.user == application.applicant:
+            notification = Notification.objects.create(
+                user = application.listing.shelter.owner,
+                notification_type = "applicationMessage",
+                associated_model = application_comment
+            )
+        elif request.user == application.listing.shelter.owner:
+            notification = Notification.objects.create(
+                user = application.applicant,
+                notification_type = "applicationMessage",
+                associated_model = application_comment
+            )
+
+        return application_comment

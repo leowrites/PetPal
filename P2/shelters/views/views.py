@@ -196,3 +196,4 @@ class ListOrCreateApplicationComment(generics.ListCreateAPIView):
             raise serializers.ValidationError("You do not have permission to comment on this application")
 
         serializer.save(user=user, application=application)
+        
