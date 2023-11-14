@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from users.views import views
-from shelters.models import Shelter, ShelterQuestion
+from shelters.models import Shelter, ShelterQuestion, PetListing
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
 )
@@ -26,6 +26,14 @@ def login(username='Leo', password='123123123a!'):
     })
     return TokenObtainPairView.as_view()(request)
 
+def create_question(client, shelter_id):
+    request_body = {
+        "question": "What is your name?",
+        "type": "NUMBER",
+    }
+    response = client.post(reverse('shelters:shelter-question-list-create',
+                                         kwargs={'pk': shelter_id}), request_body)
+    return response.data['id']
 
 class UserCreationTest(APITestCase):
     def setUp(self):
@@ -62,7 +70,7 @@ class ShelterUserCreationTest(APITestCase):
             Shelter.objects.get(owner=user)
 
 
-class ShelterQuestionCreationTest(APITestCase):
+class ShelterQuestionTestCase(APITestCase):
 
     def setUp(self):
         normal_user_username = 'Leo'
@@ -76,8 +84,12 @@ class ShelterQuestionCreationTest(APITestCase):
         shelter_user = User.objects.get(username=shelter_user_username)
         self.shelter_client = APIClient()
         self.shelter_client.force_authenticate(shelter_user)
-
         self.shelter = shelter_user.shelter
+
+        create_user('shelter_2', True)
+        self.shelter_2 = User.objects.get(username='shelter_2')
+        self.shelter_2_client = APIClient()
+        self.shelter_2_client.force_authenticate(self.shelter_2)
 
     def test_CreateQuestion_UserIsShelter_CreatesQuestion(self):
         request_body = {
@@ -162,18 +174,85 @@ class ShelterQuestionCreationTest(APITestCase):
         self.assertEquals(response.status_code, 401)
 
     def test_CreateQuestion_OwnerOfAnotherShelter_CreatesNoQuestion(self):
-        create_user('shelter_2', True)
-        shelter_2 = User.objects.get(username='shelter_2')
-        shelter_2_client = APIClient()
-        shelter_2_client.force_authenticate(shelter_2)
         request_body = {
             "question": "What is your name?",
             "type": "NUMBER",
         }
-        response = shelter_2_client.post(reverse('shelters:shelter-question-list-create',
+        response = self.shelter_2_client.post(reverse('shelters:shelter-question-list-create',
                                                  kwargs={'pk': self.shelter.id}), request_body)
         self.assertEquals(response.status_code, 403)
 
-# class PetListingCreation(APITestCase):
+    def test_ListQuestions_NotAuthenticated_Returns401(self):
+        client = APIClient()
+        response = client.get(reverse('shelters:shelter-question-list-create',  kwargs={'pk': self.shelter.id}))
+        self.assertEquals(response.status_code, 401)
 
-# def setUp(self):
+    def test_ListQuestions_OwnerOfAnotherShelter_Returns403(self):
+        response = self.shelter_2_client.get(reverse('shelters:shelter-question-list-create',
+                                                     kwargs={'pk': self.shelter.id}))
+        self.assertEquals(response.status_code, 403)
+
+    def test_ListQuestions_Owner_ReturnsQuestions(self):
+        create_question(self.shelter_client, self.shelter.id)
+        # add a question to the shelter
+        # retrieve the question
+        response = self.shelter_client.get(reverse('shelters:shelter-question-list-create', kwargs={'pk': self.shelter.id}))
+        self.assertEquals(response.status_code, 200)
+        data = response.data.get('results')
+        self.assertEquals(data[0].get('question', None), "What is your name?")
+        self.assertEquals(data[0].get('type', None), "NUMBER")
+        
+    def test_ListQuestions_UserClient_Returns403(self):
+        create_question(self.shelter_client, self.shelter.id)
+        response = self.user_client.get(reverse('shelters:shelter-question-list-create', kwargs={'pk': self.shelter.id}))
+        self.assertEquals(response.status_code, 403)
+
+    def test_DeleteQuestion_OwnerOfAnotherShelter_Returns403(self):
+        question_id = create_question(self.shelter_client, self.shelter.id)
+        response = self.shelter_2_client.delete(reverse('shelters:shelter-question-update-delete',
+                                                        kwargs={'pk': self.shelter.id, 'question_id': question_id}))
+        self.assertEquals(response.status_code, 403)
+
+    def test_DeleteQuestion_Owner_DeletesQuestion(self):
+        question_id = create_question(self.shelter_client, self.shelter.id)
+        response = self.shelter_client.delete(reverse('shelters:shelter-question-update-delete',
+                                                      kwargs={'pk': self.shelter.id, 'question_id': question_id}))
+        self.assertEquals(response.status_code, 204)
+        with self.assertRaises(ShelterQuestion.DoesNotExist):
+            ShelterQuestion.objects.get(id=question_id)
+
+    def test_DeleteQuestion_UserClient_Returns403(self):
+        question_id = create_question(self.shelter_client, self.shelter.id)
+        response = self.user_client.delete(reverse('shelters:shelter-question-update-delete',
+                                                   kwargs={'pk': self.shelter.id, 'question_id': question_id}))
+        self.assertEquals(response.status_code, 403)
+
+
+class AssignedQuestionTestCase(APITestCase):
+    def setUp(self):
+        owner_id = 'shelter_owner'
+        create_user(owner_id, True)
+        user = User.objects.get(username='shelter_owner')
+        self.shelter_client = APIClient()
+        self.shelter_client.force_authenticate(user)
+        self.shelter = Shelter.objects.get(owner__username=owner_id)
+        self.pet_listing = PetListing.objects.create(
+            name='test listing',
+            shelter=self.shelter,
+            status='available',
+            breed='breed',
+            age=1
+        )
+
+    def test_AssignQuestion_OwnerClient_Success(self):
+        question_id = create_question(self.shelter_client, self.shelter.id)
+        request_body = {
+            'question': question_id,
+            'rank': 0,
+            'required': False
+        }
+        response = self.shelter_client.post(reverse('shelters:assigned-question-list-create', kwargs={
+            'pk': self.shelter.id,
+            'listing_id': self.pet_listing.id
+        }), request_body)
+        self.assertEquals(response.status_code, 201)
