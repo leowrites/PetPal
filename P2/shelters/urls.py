@@ -25,4 +25,5 @@ urlpatterns = [
     path('<int:pk>/reviews', views.ListOrCreateShelterReview.as_view(), name='shelter-review-list-create'),
     path('<int:pk>/listings/<int:listing_id>/applications/<int:application_id>/comments', views.ListOrCreateApplicationComment.as_view(),
          name='application-comment-list-create'),
+     path('listings', views.ListPetListing.as_view(), name='pet-listing-list'),
 ]
