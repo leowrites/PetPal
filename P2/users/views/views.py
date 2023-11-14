@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from users.models import User
 from rest_framework import generics
 from users.serializers import serializers
 from rest_framework.permissions import IsAuthenticated, BasePermission
@@ -9,12 +9,15 @@ class IsOwner(BasePermission):
     def has_object_permission(self, request, view, obj):
         return request.user == obj
 
-
 # Create your views here.
-class CreateOrListUsers(generics.ListCreateAPIView):
+# class CreateOrListUsers(generics.ListCreateAPIView):
+#     serializer_class = serializers.UserSerializer
+#     queryset = User.objects.all()
+
+class CreateUser(generics.CreateAPIView):
+    permission_classes = []
     serializer_class = serializers.UserSerializer
     queryset = User.objects.all()
-
 
 class UserDetails(generics.RetrieveAPIView):
     serializer_class = serializers.UserSerializer

@@ -12,7 +12,7 @@ from shelters.models.application_response import ShelterQuestion, AssignedQuesti
 from shelters import models
 from shelters.serializers import serializers
 from notifications.models import Notification
-from django.contrib.auth.models import User
+from users.models import User
 from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from shelters.permissions import permissions
@@ -27,14 +27,15 @@ class ApplicationPagination(PageNumberPagination):
 
 # POST /shelters
 # GET /shelters
+# TODO: change to only a ListAPIView
 class ListOrCreateShelter(generics.ListCreateAPIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated] # TODO: don't think we need this, check
     serializer_class = serializers.ShelterSerializer
     pagination_class = ApplicationPagination
-    ordering = ['name']
-    ordering_fields = ['name', 'location']
+    ordering = ['shelter_name']
+    ordering_fields = ['shelter_name', 'location']
     filter_backends = [filters.OrderingFilter, DjangoFilterBackend]
-    filterset_fields = ['name', 'location']
+    filterset_fields = ['shelter_name', 'location']
     queryset = models.Shelter.objects.all()
 
     def perform_create(self, serializer):
@@ -52,7 +53,7 @@ class ViewOrUpdateOrDestroyShelter(generics.RetrieveUpdateDestroyAPIView):
             permission_classes = []
         else:
             permission_classes = [IsAuthenticated, permissions.IsShelterOwner]
-        return [permission() for permission in permission_classes]
+        return permission_classes
     
     def get_object(self):
         return get_object_or_404(models.Shelter, id=self.kwargs['pk'])
