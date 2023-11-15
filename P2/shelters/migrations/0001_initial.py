@@ -48,6 +48,8 @@ class Migration(migrations.Migration):
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=200)),
                 ('status', models.CharField(choices=[('available', 'Available'), ('not_available', 'Not Available')], default='available', max_length=15)),
+                ('breed', models.CharField(max_length=200)),
+                ('age', models.PositiveSmallIntegerField()),
                 ('shelter', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='listings', to='shelters.shelter')),
             ],
         ),
