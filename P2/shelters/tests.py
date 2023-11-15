@@ -14,24 +14,24 @@ def create_user(username='Leo', is_shelter=False):
     factory = APIRequestFactory()
     if is_shelter == True:
         request = factory.post('/shelters', {
-          'username': username,
-          'password': '123123123a!',
-          'password2': '123123123a!',
-          'email': 'leo@gmail.com',
-          'is_shelter': is_shelter,
+          'user_data': {
+            'username': username,
+            'password': '123123123a!',
+            'password2': '123123123a!',
+            'email': 'leo@gmail.com'
+          },
           'shelter_name': 'Leo Shelter',
           'contact_email': 'leo@gmail.com',
           'location': 'Toronto',
           'mission_statement': 'We are a shelter'
-        })
+        }, format='json')
         return shelter_views.ListOrCreateShelter.as_view()(request)
     else:
       request = factory.post('/users', {
           'username': username,
           'password': '123123123a!',
           'password2': '123123123a!',
-          'email': 'leo@gmail.com',
-          'is_shelter': is_shelter
+          'email': 'leo@gmail.com'
       })
       return views.CreateUser.as_view()(request)
     
