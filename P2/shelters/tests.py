@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from users.models import User
 from users.views import views
 from shelters.models import Shelter, ShelterQuestion, PetListing
 from rest_framework_simplejwt.views import (
