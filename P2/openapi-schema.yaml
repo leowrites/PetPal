@@ -8,16 +8,10 @@ paths:
       operationId: listUsers
       description: ''
       parameters:
-      - name: limit
+      - name: page
         required: false
         in: query
-        description: Number of results to return per page.
-        schema:
-          type: integer
-      - name: offset
-        required: false
-        in: query
-        description: The initial index from which to return the results.
+        description: A page number within the paginated result set.
         schema:
           type: integer
       responses:
@@ -34,12 +28,12 @@ paths:
                     type: string
                     nullable: true
                     format: uri
-                    example: http://api.example.org/accounts/?offset=400&limit=100
+                    example: http://api.example.org/accounts/?page=4
                   previous:
                     type: string
                     nullable: true
                     format: uri
-                    example: http://api.example.org/accounts/?offset=200&limit=100
+                    example: http://api.example.org/accounts/?page=2
                   results:
                     type: array
                     items:
@@ -102,16 +96,10 @@ paths:
         description: ''
         schema:
           type: string
-      - name: limit
+      - name: page
         required: false
         in: query
-        description: Number of results to return per page.
-        schema:
-          type: integer
-      - name: offset
-        required: false
-        in: query
-        description: The initial index from which to return the results.
+        description: A page number within the paginated result set.
         schema:
           type: integer
       responses:
@@ -128,12 +116,12 @@ paths:
                     type: string
                     nullable: true
                     format: uri
-                    example: http://api.example.org/accounts/?offset=400&limit=100
+                    example: http://api.example.org/accounts/?page=4
                   previous:
                     type: string
                     nullable: true
                     format: uri
-                    example: http://api.example.org/accounts/?offset=200&limit=100
+                    example: http://api.example.org/accounts/?page=2
                   results:
                     type: array
                     items:
@@ -307,16 +295,10 @@ paths:
         description: ''
         schema:
           type: string
-      - name: limit
+      - name: page
         required: false
         in: query
-        description: Number of results to return per page.
-        schema:
-          type: integer
-      - name: offset
-        required: false
-        in: query
-        description: The initial index from which to return the results.
+        description: A page number within the paginated result set.
         schema:
           type: integer
       responses:
@@ -333,12 +315,12 @@ paths:
                     type: string
                     nullable: true
                     format: uri
-                    example: http://api.example.org/accounts/?offset=400&limit=100
+                    example: http://api.example.org/accounts/?page=4
                   previous:
                     type: string
                     nullable: true
                     format: uri
-                    example: http://api.example.org/accounts/?offset=200&limit=100
+                    example: http://api.example.org/accounts/?page=2
                   results:
                     type: array
                     items:
@@ -382,9 +364,9 @@ paths:
           description: ''
       tags:
       - shelters
-  /shelters/{id}/listings/{listing_id}/applications/{application_id}:
+  /shelters/{id}/listings/{listing_id}/questions/{question_id}:
     get:
-      operationId: retrievePetApplication
+      operationId: retrieveAssignedQuestion
       description: ''
       parameters:
       - name: id
@@ -399,7 +381,7 @@ paths:
         description: ''
         schema:
           type: string
-      - name: application_id
+      - name: question_id
         in: path
         required: true
         description: ''
@@ -410,12 +392,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PetApplication'
+                $ref: '#/components/schemas/AssignedQuestion'
           description: ''
       tags:
       - shelters
     put:
-      operationId: updatePetApplication
+      operationId: updateAssignedQuestion
       description: ''
       parameters:
       - name: id
@@ -430,7 +412,7 @@ paths:
         description: ''
         schema:
           type: string
-      - name: application_id
+      - name: question_id
         in: path
         required: true
         description: ''
@@ -440,24 +422,125 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PetApplication'
+              $ref: '#/components/schemas/AssignedQuestion'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PetApplication'
+              $ref: '#/components/schemas/AssignedQuestion'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PetApplication'
+              $ref: '#/components/schemas/AssignedQuestion'
       responses:
         '200':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PetApplication'
+                $ref: '#/components/schemas/AssignedQuestion'
           description: ''
       tags:
       - shelters
     patch:
-      operationId: partialUpdatePetApplication
+      operationId: partialUpdateAssignedQuestion
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: listing_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: question_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssignedQuestion'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AssignedQuestion'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AssignedQuestion'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssignedQuestion'
+          description: ''
+      tags:
+      - shelters
+    delete:
+      operationId: destroyAssignedQuestion
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: listing_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: question_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - shelters
+  /shelters/{id}/listings/{listing_id}/applications/{application_id}:
+    get:
+      operationId: retrievePetApplicationGetOrUpdate
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: listing_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: application_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PetApplicationGetOrUpdate'
+          description: ''
+      tags:
+      - shelters
+    put:
+      operationId: updatePetApplicationGetOrUpdate
       description: ''
       parameters:
       - name: id
@@ -482,25 +565,67 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PetApplication'
+              $ref: '#/components/schemas/PetApplicationGetOrUpdate'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PetApplication'
+              $ref: '#/components/schemas/PetApplicationGetOrUpdate'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PetApplication'
+              $ref: '#/components/schemas/PetApplicationGetOrUpdate'
       responses:
         '200':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PetApplication'
+                $ref: '#/components/schemas/PetApplicationGetOrUpdate'
+          description: ''
+      tags:
+      - shelters
+    patch:
+      operationId: partialUpdatePetApplicationGetOrUpdate
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: listing_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: application_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PetApplicationGetOrUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PetApplicationGetOrUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PetApplicationGetOrUpdate'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PetApplicationGetOrUpdate'
           description: ''
       tags:
       - shelters
   /shelters/{id}/listings/{listing_id}/applications:
     get:
-      operationId: listPetApplications
+      operationId: listPetApplicationGetOrUpdates
       description: ''
       parameters:
       - name: id
@@ -568,12 +693,12 @@ paths:
                   results:
                     type: array
                     items:
-                      $ref: '#/components/schemas/PetApplication'
+                      $ref: '#/components/schemas/PetApplicationGetOrUpdate'
           description: ''
       tags:
       - shelters
     post:
-      operationId: createPetApplication
+      operationId: createPetApplicationGetOrUpdate
       description: ''
       parameters:
       - name: id
@@ -592,19 +717,19 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PetApplication'
+              $ref: '#/components/schemas/PetApplicationGetOrUpdate'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/PetApplication'
+              $ref: '#/components/schemas/PetApplicationGetOrUpdate'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/PetApplication'
+              $ref: '#/components/schemas/PetApplicationGetOrUpdate'
       responses:
         '201':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PetApplication'
+                $ref: '#/components/schemas/PetApplicationGetOrUpdate'
           description: ''
       tags:
       - shelters
@@ -619,16 +744,10 @@ paths:
         description: A unique integer value identifying this pet listing.
         schema:
           type: string
-      - name: limit
+      - name: page
         required: false
         in: query
-        description: Number of results to return per page.
-        schema:
-          type: integer
-      - name: offset
-        required: false
-        in: query
-        description: The initial index from which to return the results.
+        description: A page number within the paginated result set.
         schema:
           type: integer
       responses:
@@ -645,12 +764,12 @@ paths:
                     type: string
                     nullable: true
                     format: uri
-                    example: http://api.example.org/accounts/?offset=400&limit=100
+                    example: http://api.example.org/accounts/?page=4
                   previous:
                     type: string
                     nullable: true
                     format: uri
-                    example: http://api.example.org/accounts/?offset=200&limit=100
+                    example: http://api.example.org/accounts/?page=2
                   results:
                     type: array
                     items:
@@ -689,11 +808,9 @@ paths:
       tags:
       - shelters
   /shelters/{id}/listings/{listing_id}:
-
     get:
       operationId: retrievePetListing
       description: ''
-      summary: "Get listing details"
       parameters:
       - name: id
         in: path
@@ -719,7 +836,6 @@ paths:
     put:
       operationId: updatePetListing
       description: ''
-      summary: 'Update a listing'
       parameters:
       - name: id
         in: path
@@ -815,16 +931,10 @@ paths:
       operationId: listShelters
       description: ''
       parameters:
-      - name: limit
+      - name: page
         required: false
         in: query
-        description: Number of results to return per page.
-        schema:
-          type: integer
-      - name: offset
-        required: false
-        in: query
-        description: The initial index from which to return the results.
+        description: A page number within the paginated result set.
         schema:
           type: integer
       responses:
@@ -841,12 +951,12 @@ paths:
                     type: string
                     nullable: true
                     format: uri
-                    example: http://api.example.org/accounts/?offset=400&limit=100
+                    example: http://api.example.org/accounts/?page=4
                   previous:
                     type: string
                     nullable: true
                     format: uri
-                    example: http://api.example.org/accounts/?offset=200&limit=100
+                    example: http://api.example.org/accounts/?page=2
                   results:
                     type: array
                     items:
@@ -854,30 +964,325 @@ paths:
           description: ''
       tags:
       - shelters
+  /shelters/{id}/reviews:
+    get:
+      operationId: listShelterReviews
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 123
+                  next:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=4
+                  previous:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=2
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ShelterReview'
+          description: ''
+      tags:
+      - shelters
     post:
-      operationId: createShelter
+      operationId: createShelterReview
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShelterReview'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ShelterReview'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ShelterReview'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShelterReview'
+          description: ''
+      tags:
+      - shelters
+  /shelters/{id}/listings/{listing_id}/applications/{application_id}/comments:
+    get:
+      operationId: listApplicationComments
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: listing_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: application_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 123
+                  next:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=4
+                  previous:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=2
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ApplicationComment'
+          description: ''
+      tags:
+      - shelters
+    post:
+      operationId: createApplicationComment
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: listing_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: application_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicationComment'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ApplicationComment'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ApplicationComment'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationComment'
+          description: ''
+      tags:
+      - shelters
+  /notifications/:
+    get:
+      operationId: listNotifications
+      description: ''
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 123
+                  next:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=4
+                  previous:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=2
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Notification'
+          description: ''
+      tags:
+      - notifications
+  /notifications/{notification_id}:
+    get:
+      operationId: retrieveNotification
+      description: ''
+      parameters:
+      - name: notification_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
+          description: ''
+      tags:
+      - notifications
+    delete:
+      operationId: destroyNotification
+      description: ''
+      parameters:
+      - name: notification_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - notifications
+  /notifications/preferences:
+    get:
+      operationId: retrieveNotificationPreferences
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationPreferences'
+          description: ''
+      tags:
+      - notifications
+    put:
+      operationId: updateNotificationPreferences
       description: ''
       parameters: []
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Shelter'
+              $ref: '#/components/schemas/NotificationPreferences'
           application/x-www-form-urlencoded:
             schema:
-              $ref: '#/components/schemas/Shelter'
+              $ref: '#/components/schemas/NotificationPreferences'
           multipart/form-data:
             schema:
-              $ref: '#/components/schemas/Shelter'
+              $ref: '#/components/schemas/NotificationPreferences'
       responses:
-        '201':
+        '200':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Shelter'
+                $ref: '#/components/schemas/NotificationPreferences'
           description: ''
       tags:
-      - shelters
+      - notifications
+    patch:
+      operationId: partialUpdateNotificationPreferences
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationPreferences'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NotificationPreferences'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NotificationPreferences'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationPreferences'
+          description: ''
+      tags:
+      - notifications
   /api/token/:
     post:
       operationId: createTokenObtainPair
@@ -934,34 +1339,6 @@ paths:
           description: ''
       tags:
       - api
-  /shelters/{id}/listings/{listing_id}/questions/{question_id}:
-    delete:
-      operationId: destroyAssignedQuestion
-      description: ''
-      parameters:
-      - name: id
-        in: path
-        required: true
-        description: ''
-        schema:
-          type: string
-      - name: listing_id
-        in: path
-        required: true
-        description: ''
-        schema:
-          type: string
-      - name: question_id
-        in: path
-        required: true
-        description: ''
-        schema:
-          type: string
-      responses:
-        '204':
-          description: ''
-      tags:
-      - shelters
 components:
   schemas:
     User:
@@ -1005,8 +1382,6 @@ components:
           - TEXT
           - NUMBER
           type: string
-        required:
-          type: boolean
       required:
       - question
     AssignedQuestion:
@@ -1019,13 +1394,26 @@ components:
           type: integer
         rank:
           type: integer
+        required:
+          type: boolean
+        listing:
+          type: string
+          readOnly: true
       required:
       - question
-    PetApplication:
+    PetApplicationGetOrUpdate:
       type: object
       properties:
-        id:
-          type: integer
+        status:
+          enum:
+          - pending
+          - accepted
+          - denied
+          - withdrawn
+          - approved
+          type: string
+        listing:
+          type: string
           readOnly: true
         application_responses:
           type: array
@@ -1035,16 +1423,49 @@ components:
               id:
                 type: integer
                 readOnly: true
+              question:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    readOnly: true
+                  question:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        readOnly: true
+                      question:
+                        type: string
+                        maxLength: 1000
+                      type:
+                        enum:
+                        - FILE
+                        - CHECKBOX
+                        - DATE
+                        - EMAIL
+                        - TEXT
+                        - NUMBER
+                        type: string
+                    required:
+                    - question
+                    readOnly: true
+                  rank:
+                    type: integer
+                  required:
+                    type: boolean
+                  listing:
+                    type: integer
+                required:
+                - listing
+                readOnly: true
               answer:
                 type: string
                 maxLength: 3000
-              question:
-                type: integer
               application:
                 type: integer
             required:
             - answer
-            - question
             - application
           readOnly: true
         applicant:
@@ -1071,14 +1492,9 @@ components:
           - password
           - is_shelter
           readOnly: true
-        status:
-          enum:
-          - pending
-          - accepted
-          - denied
-          - withdrawn
-          - approved
-          type: string
+        id:
+          type: integer
+          readOnly: true
         application_time:
           type: string
           format: date-time
@@ -1087,14 +1503,25 @@ components:
           type: string
           format: date-time
           readOnly: true
-        listing:
-          type: integer
+      required:
+      - status
     PetListing:
       type: object
       properties:
         id:
           type: integer
           readOnly: true
+        name:
+          type: string
+          maxLength: 200
+        shelter:
+          type: string
+          readOnly: true
+        status:
+          enum:
+          - available
+          - not_available
+          type: string
         assigned_questions:
           type: array
           items:
@@ -1104,37 +1531,165 @@ components:
                 type: integer
                 readOnly: true
               question:
-                type: integer
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    readOnly: true
+                  question:
+                    type: string
+                    maxLength: 1000
+                  type:
+                    enum:
+                    - FILE
+                    - CHECKBOX
+                    - DATE
+                    - EMAIL
+                    - TEXT
+                    - NUMBER
+                    type: string
+                required:
+                - question
+                readOnly: true
               rank:
                 type: integer
+              required:
+                type: boolean
+              listing:
+                type: integer
             required:
-            - question
+            - listing
+        age:
+          type: integer
+        breed:
+          type: string
+          maxLength: 200
+      required:
+      - name
+      - age
+      - breed
+    Shelter:
+      type: object
+      properties:
         name:
           type: string
           maxLength: 200
-        status:
-          enum:
-          - available
-          - not_available
+        owner:
           type: string
+          readOnly: true
+    ShelterReview:
+      type: object
+      properties:
+        text:
+          type: string
+        user:
+          type: string
+          readOnly: true
+        date_created:
+          type: string
+          format: date-time
+          readOnly: true
+        rating:
+          enum:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          type: integer
         shelter:
           type: integer
       required:
-      - name
+      - text
+      - rating
       - shelter
-    Shelter:
+    ApplicationComment:
+      type: object
+      properties:
+        text:
+          type: string
+        user:
+          type: string
+          readOnly: true
+        date_created:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - text
+    Notification:
       type: object
       properties:
         id:
           type: integer
           readOnly: true
-        name:
-          type: string
-          maxLength: 200
-        owner:
+        user:
           type: integer
+        notification_type:
+          enum:
+          - applicationMessage
+          - applicationSatusChange
+          - petListing
+          - application
+          - review
+          type: string
+        associated_model_type:
+          type: string
+          readOnly: true
+        associated_model_id:
+          type: integer
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        read:
+          type: boolean
       required:
-      - owner
+      - user
+      - notification_type
+      - associated_model_id
+    NotificationPreferences:
+      type: object
+      properties:
+        user:
+          type: object
+          properties:
+            id:
+              type: integer
+              readOnly: true
+            username:
+              type: string
+              description: Required. 150 characters or fewer. Letters, digits and
+                @/./+/-/_ only.
+              pattern: ^[\w.@+-]+\z
+              maxLength: 150
+            password:
+              type: string
+              writeOnly: true
+              maxLength: 128
+            is_shelter:
+              type: boolean
+              writeOnly: true
+          required:
+          - username
+          - password
+          - is_shelter
+          readOnly: true
+        application_message:
+          type: boolean
+          nullable: true
+        application_status_change:
+          type: boolean
+          nullable: true
+        pet_listing:
+          type: boolean
+          nullable: true
+        application:
+          type: boolean
+          nullable: true
+        review:
+          type: boolean
+          nullable: true
     TokenObtainPair:
       type: object
       properties:
