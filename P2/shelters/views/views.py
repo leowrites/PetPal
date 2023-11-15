@@ -36,7 +36,7 @@ class ListOrCreateShelter(generics.ListCreateAPIView):
     filterset_fields = ['shelter_name', 'location']
 
     def get_serializer_class(self):
-        if self.request.method == 'GET':
+        if not self.request or self.request.method == 'GET':
             return serializers.ShelterSerializer
         return serializers.ShelterCreationSerializer
 

@@ -3,68 +3,6 @@ info:
   title: ''
   version: ''
 paths:
-  /users/:
-    get:
-      operationId: listUsers
-      description: ''
-      parameters:
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  count:
-                    type: integer
-                    example: 123
-                  next:
-                    type: string
-                    nullable: true
-                    format: uri
-                    example: http://api.example.org/accounts/?page=4
-                  previous:
-                    type: string
-                    nullable: true
-                    format: uri
-                    example: http://api.example.org/accounts/?page=2
-                  results:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/User'
-          description: ''
-      tags:
-      - users
-    post:
-      operationId: createUser
-      description: ''
-      parameters: []
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
-          application/x-www-form-urlencoded:
-            schema:
-              $ref: '#/components/schemas/User'
-          multipart/form-data:
-            schema:
-              $ref: '#/components/schemas/User'
-      responses:
-        '201':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/User'
-          description: ''
-      tags:
-      - users
   /users/{id}:
     get:
       operationId: retrieveUser
@@ -73,7 +11,7 @@ paths:
       - name: id
         in: path
         required: true
-        description: ''
+        description: A unique integer value identifying this user.
         schema:
           type: string
       responses:
@@ -81,7 +19,76 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/UserProfile'
+          description: ''
+      tags:
+      - users
+    put:
+      operationId: updateUser
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this user.
+        schema:
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserProfile'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserProfile'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+          description: ''
+      tags:
+      - users
+    patch:
+      operationId: partialUpdateUser
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this user.
+        schema:
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserProfile'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserProfile'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+          description: ''
+      tags:
+      - users
+    delete:
+      operationId: destroyUser
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this user.
+        schema:
+          type: string
+      responses:
+        '204':
           description: ''
       tags:
       - users
@@ -926,44 +933,6 @@ paths:
           description: ''
       tags:
       - shelters
-  /shelters/:
-    get:
-      operationId: listShelters
-      description: ''
-      parameters:
-      - name: page
-        required: false
-        in: query
-        description: A page number within the paginated result set.
-        schema:
-          type: integer
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                type: object
-                properties:
-                  count:
-                    type: integer
-                    example: 123
-                  next:
-                    type: string
-                    nullable: true
-                    format: uri
-                    example: http://api.example.org/accounts/?page=4
-                  previous:
-                    type: string
-                    nullable: true
-                    format: uri
-                    example: http://api.example.org/accounts/?page=2
-                  results:
-                    type: array
-                    items:
-                      $ref: '#/components/schemas/Shelter'
-          description: ''
-      tags:
-      - shelters
   /shelters/{id}/reviews:
     get:
       operationId: listShelterReviews
@@ -1148,6 +1117,181 @@ paths:
           description: ''
       tags:
       - shelters
+  /shelters/:
+    get:
+      operationId: listShelters
+      description: ''
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: shelter_name
+        required: false
+        in: query
+        description: shelter_name
+        schema:
+          type: string
+      - name: location
+        required: false
+        in: query
+        description: location
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 123
+                  next:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=4
+                  previous:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=2
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Shelter'
+          description: ''
+      tags:
+      - shelters
+    post:
+      operationId: createShelter
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Shelter'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Shelter'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Shelter'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Shelter'
+          description: ''
+      tags:
+      - shelters
+  /shelters/{id}:
+    get:
+      operationId: retrieveShelter
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this shelter.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Shelter'
+          description: ''
+      tags:
+      - shelters
+    put:
+      operationId: updateShelter
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this shelter.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Shelter'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Shelter'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Shelter'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Shelter'
+          description: ''
+      tags:
+      - shelters
+    patch:
+      operationId: partialUpdateShelter
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this shelter.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Shelter'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Shelter'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Shelter'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Shelter'
+          description: ''
+      tags:
+      - shelters
+    delete:
+      operationId: destroyShelter
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this shelter.
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - shelters
   /notifications/:
     get:
       operationId: listNotifications
@@ -1283,6 +1427,83 @@ paths:
           description: ''
       tags:
       - notifications
+  /listings/:
+    get:
+      operationId: listPetListings
+      description: ''
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: shelter
+        required: false
+        in: query
+        description: shelter
+        schema:
+          type: string
+      - name: status
+        required: false
+        in: query
+        description: status
+        schema:
+          type: string
+          enum:
+          - available
+          - not_available
+      - name: name
+        required: false
+        in: query
+        description: name
+        schema:
+          type: string
+      - name: breed
+        required: false
+        in: query
+        description: breed
+        schema:
+          type: string
+      - name: age
+        required: false
+        in: query
+        description: age
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 123
+                  next:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=4
+                  previous:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=2
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PetListing'
+          description: ''
+      tags:
+      - listings
   /api/token/:
     post:
       operationId: createTokenObtainPair
@@ -1339,9 +1560,31 @@ paths:
           description: ''
       tags:
       - api
+  /users/:
+    post:
+      operationId: createUser
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserCreation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserCreation'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCreation'
+          description: ''
+      tags:
+      - users
 components:
   schemas:
-    User:
+    UserProfile:
       type: object
       properties:
         id:
@@ -1353,17 +1596,19 @@ components:
             only.
           pattern: ^[\w.@+-]+\z
           maxLength: 150
-        password:
+        email:
           type: string
-          writeOnly: true
-          maxLength: 128
+          format: email
+          maxLength: 254
+        avatar:
+          type: string
+          format: binary
+          nullable: true
         is_shelter:
           type: boolean
-          writeOnly: true
+          readOnly: true
       required:
       - username
-      - password
-      - is_shelter
     ShelterQuestion:
       type: object
       properties:
@@ -1480,17 +1725,19 @@ components:
                 @/./+/-/_ only.
               pattern: ^[\w.@+-]+\z
               maxLength: 150
-            password:
+            email:
               type: string
-              writeOnly: true
-              maxLength: 128
+              format: email
+              maxLength: 254
+            avatar:
+              type: string
+              format: binary
+              nullable: true
             is_shelter:
               type: boolean
-              writeOnly: true
+              readOnly: true
           required:
           - username
-          - password
-          - is_shelter
           readOnly: true
         id:
           type: integer
@@ -1568,15 +1815,6 @@ components:
       - name
       - age
       - breed
-    Shelter:
-      type: object
-      properties:
-        name:
-          type: string
-          maxLength: 200
-        owner:
-          type: string
-          readOnly: true
     ShelterReview:
       type: object
       properties:
@@ -1617,6 +1855,28 @@ components:
           readOnly: true
       required:
       - text
+    Shelter:
+      type: object
+      properties:
+        shelter_name:
+          type: string
+          maxLength: 200
+        owner:
+          type: string
+          readOnly: true
+        contact_email:
+          type: string
+          format: email
+          maxLength: 254
+        location:
+          type: string
+          maxLength: 200
+        mission_statement:
+          type: string
+      required:
+      - contact_email
+      - location
+      - mission_statement
     Notification:
       type: object
       properties:
@@ -1663,17 +1923,19 @@ components:
                 @/./+/-/_ only.
               pattern: ^[\w.@+-]+\z
               maxLength: 150
-            password:
+            email:
               type: string
-              writeOnly: true
-              maxLength: 128
+              format: email
+              maxLength: 254
+            avatar:
+              type: string
+              format: binary
+              nullable: true
             is_shelter:
               type: boolean
-              writeOnly: true
+              readOnly: true
           required:
           - username
-          - password
-          - is_shelter
           readOnly: true
         application_message:
           type: boolean
@@ -1712,3 +1974,37 @@ components:
           readOnly: true
       required:
       - refresh
+    UserCreation:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+\z
+          maxLength: 150
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 128
+        password2:
+          type: string
+          writeOnly: true
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        avatar:
+          type: string
+          format: binary
+        is_shelter:
+          type: boolean
+          readOnly: true
+      required:
+      - username
+      - password
+      - password2
+      - email
