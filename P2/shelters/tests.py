@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from users.models import User
 from users.views import views
 from shelters.models import Shelter, ShelterQuestion, PetListing
 from rest_framework_simplejwt.views import (
@@ -10,13 +10,25 @@ from django.urls import reverse
 
 def create_user(username='Leo', is_shelter=False):
     factory = APIRequestFactory()
-    request = factory.post('/users', {
-        'username': username,
-        'password': '123123123a!',
-        'is_shelter': is_shelter
-    })
-    return views.CreateOrListUsers.as_view()(request)
-
+    if is_shelter == False:
+      request = factory.post('/users', {
+          'username': username,
+          'password': '123123123a!',
+          'email': 'leo@gmail.com',
+          'is_shelter': is_shelter
+      })
+    else:
+      request = factory.post('/users', {
+          'username': username,
+          'password': '123123123a!',
+          'email': 'leo@gmail.com',
+          'is_shelter': is_shelter,
+          'shelter_name': 'justin\'s shelter',
+          'contact_email': 'contact@gmail.com',
+          'location': 'toronto',
+          'mission_statement': 'we are a shelter'
+      })  
+    return views.CreateUser.as_view()(request)
 
 def login(username='Leo', password='123123123a!'):
     factory = APIRequestFactory()
