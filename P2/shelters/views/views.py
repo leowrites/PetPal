@@ -35,7 +35,8 @@ class ListOrCreateApplicationForListing(generics.ListCreateAPIView):
     pagination_class = ApplicationPagination
 
     def get_serializer_class(self):
-        print(self.request.method)
+        if self.request is None:
+            return serializers.PetApplicationGetOrUpdateSerializer
         if self.request.method == 'GET':
             return serializers.PetApplicationGetOrUpdateSerializer
         else:
@@ -63,7 +64,6 @@ class UpdateOrGetPetApplicationDetails(generics.RetrieveUpdateAPIView):
         obj = get_object_or_404(PetApplication, id=self.kwargs['application_id'])
         self.check_object_permissions(self.request, obj)
         return obj
-
 
 
 class ListOrCreateShelterQuestion(generics.ListCreateAPIView):
