@@ -14,7 +14,6 @@ class CreateUser(generics.CreateAPIView):
     serializer_class = serializers.UserCreationSerializer
     queryset = User.objects.all()
 
-
 # GET /users/<pk>
 # PUT /users/<pk>
 # DELETE /users/<pk>

@@ -5,7 +5,7 @@ from shelters.models.application_response import ShelterQuestion, AssignedQuesti
 from shelters import models
 from users.serializers.serializers import UserProfileSerializer
 from notifications.models import Notification
-from django.contrib.auth.models import User
+from users.models import User
 from django.db import transaction
 
 
