@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'users',
     'django_filters',
     'notifications',
+    'listings',
 ]
 
 MIDDLEWARE = [

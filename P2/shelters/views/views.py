@@ -7,7 +7,8 @@ from rest_framework.exceptions import NotFound
 from django_filters.rest_framework import DjangoFilterBackend
 
 from shelters.filters import PetApplicationFilter, PetListingFilter
-from shelters.models.pet_application import PetApplication, PetListing
+from shelters.models.pet_application import PetApplication
+from listings.models import PetListing
 from shelters.models.application_response import ShelterQuestion, AssignedQuestion
 from shelters import models
 from shelters.serializers import serializers
@@ -182,23 +183,12 @@ class ListOrCreatePetListing(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(shelter=self.request.user.shelter)
 
-class ListPetListing(generics.ListAPIView):
-    serializer_class = serializers.PetListingSerializer
-    queryset = PetListing.objects.all()
-    filter_backends = [filters.OrderingFilter, DjangoFilterBackend]
-    filterset_class = PetListingFilter
-    ordering_fields = ['name', 'age']
-    ordering = ['name']
-    pagination_class = PageNumberPagination
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        status = self.request.query_params.get('status', None)
-        if status in map(lambda x: x[0], PetListing.STATUS_CHOICES):
-            queryset = queryset.filter(status=status)
-        elif status != "":
-            queryset = queryset.filter(status="available")
-        return queryset
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            permission_classes = [IsAuthenticated]
+        else:
+            permission_classes = [IsAuthenticated, permissions.IsShelterOwner]
+        return [permission() for permission in permission_classes]
     
 
 class RetrieveUpdateOrDeletePetListing(generics.RetrieveUpdateDestroyAPIView):
@@ -207,6 +197,17 @@ class RetrieveUpdateOrDeletePetListing(generics.RetrieveUpdateDestroyAPIView):
 
     def get_object(self):
         return get_object_or_404(PetListing, shelter=self.kwargs['pk'], id=self.kwargs['listing_id'])
+    
+    def update(self, request, *args, **kwargs):
+        kwargs['partial'] = True
+        return super().update(request, *args, **kwargs)
+    
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            permission_classes = [IsAuthenticated]
+        else:
+            permission_classes = [IsAuthenticated, permissions.IsShelterOwner]
+        return [permission() for permission in permission_classes]
 
 
 # Shelter reviews
