@@ -4,10 +4,12 @@ from shelters.models.pet_application import PetApplication
 from listings.models import PetListing
 from shelters.models.application_response import ShelterQuestion, AssignedQuestion, ApplicationResponse
 from shelters import models
-from users.serializers.serializers import UserProfileSerializer
-from notifications.models import Notification
+from users.serializers.serializers import UserProfileSerializer, UserCreationSerializer
+from notifications.models import Notification, NotificationPreferences
 from users.models import User
 from django.db import transaction
+from django.contrib.auth.password_validation import validate_password
+from django.contrib.auth.hashers import make_password
 
 
 class ShelterQuestionSerializer(serializers.ModelSerializer):
@@ -214,6 +216,21 @@ class PetListingSerializer(serializers.ModelSerializer):
             ])
         
         return pet_listing
+
+class ShelterCreationSerializer(serializers.ModelSerializer):
+    user_data = UserCreationSerializer(write_only=True)
+
+    class Meta:
+        model = models.Shelter
+        fields = ['id', 'user_data', 'shelter_name', 'contact_email', 'location', 'mission_statement']
+
+    def create(self, validated_data):
+        user_data = validated_data.pop('user_data')
+        user_data.pop('password2')
+        user = User.objects.create_user(**user_data, is_shelter=True)
+        NotificationPreferences.objects.create(user=user)
+        shelter = models.Shelter.objects.create(owner=user, **validated_data)
+        return shelter
 
 
 class ShelterSerializer(serializers.ModelSerializer):

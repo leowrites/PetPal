@@ -1,5 +1,6 @@
 from users.models import User
 from users.views import views
+from shelters.views import views as shelter_views
 from shelters.models import Shelter, ShelterQuestion
 from listings.models import PetListing
 from rest_framework_simplejwt.views import (
@@ -11,25 +12,29 @@ from django.urls import reverse
 
 def create_user(username='Leo', is_shelter=False):
     factory = APIRequestFactory()
-    if is_shelter == False:
-      request = factory.post('/users', {
-          'username': username,
-          'password': '123123123a!',
-          'email': 'leo@gmail.com',
-          'is_shelter': is_shelter
-      })
+    if is_shelter == True:
+        request = factory.post('/shelters', {
+          'user_data': {
+            'username': username,
+            'password': '123123123a!',
+            'password2': '123123123a!',
+            'email': 'leo@gmail.com'
+          },
+          'shelter_name': 'Leo Shelter',
+          'contact_email': 'leo@gmail.com',
+          'location': 'Toronto',
+          'mission_statement': 'We are a shelter'
+        }, format='json')
+        return shelter_views.ListOrCreateShelter.as_view()(request)
     else:
       request = factory.post('/users', {
           'username': username,
           'password': '123123123a!',
-          'email': 'leo@gmail.com',
-          'is_shelter': is_shelter,
-          'shelter_name': 'justin\'s shelter',
-          'contact_email': 'contact@gmail.com',
-          'location': 'toronto',
-          'mission_statement': 'we are a shelter'
-      })  
-    return views.CreateUser.as_view()(request)
+          'password2': '123123123a!',
+          'email': 'leo@gmail.com'
+      })
+      return views.CreateUser.as_view()(request)
+    
 
 def login(username='Leo', password='123123123a!'):
     factory = APIRequestFactory()
