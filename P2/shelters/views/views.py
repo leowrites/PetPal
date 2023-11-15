@@ -180,6 +180,9 @@ class ListOrCreatePetListing(generics.ListCreateAPIView):
     queryset = PetListing.objects.all()
 
     def perform_create(self, serializer):
+        shelter = get_object_or_404(models.Shelter, id=self.kwargs['pk'])
+        if shelter.owner != self.request.user:
+            raise PermissionDenied("You do not have permission to create a listing for this shelter")
         serializer.save(shelter=self.request.user.shelter)
 
     def get_permissions(self):
@@ -198,8 +201,19 @@ class RetrieveUpdateOrDeletePetListing(generics.RetrieveUpdateDestroyAPIView):
         return get_object_or_404(PetListing, shelter=self.kwargs['pk'], id=self.kwargs['listing_id'])
     
     def update(self, request, *args, **kwargs):
+        listing = self.get_object()
+        user = request.user
+        if user != listing.shelter.owner:
+            raise PermissionDenied("You do not have permission to update this listing")
         kwargs['partial'] = True
         return super().update(request, *args, **kwargs)
+    
+    def destroy(self, request, *args, **kwargs):
+        listing = self.get_object()
+        user = request.user
+        if user != listing.shelter.owner:
+            raise PermissionDenied("You do not have permission to update this listing")
+        return super().destroy(request, *args, **kwargs)
     
     def get_permissions(self):
         if self.request.method == 'GET':
