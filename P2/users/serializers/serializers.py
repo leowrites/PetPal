@@ -6,6 +6,7 @@ from notifications.models import NotificationPreferences
 
 class UserCreationSerializer(serializers.ModelSerializer):
     is_shelter = serializers.BooleanField(label="Are you a shelter?")
+    avatar = serializers.ImageField(label="Upload an avatar", required=False)
     shelter_name = serializers.CharField(write_only=True, required=False)
     contact_email = serializers.EmailField(write_only=True, required=False)
     location = serializers.CharField(write_only=True, required=False)
@@ -13,7 +14,7 @@ class UserCreationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'username', 'password', 'email', 'is_shelter', 'shelter_name', 'contact_email', 'location', 'mission_statement']
+        fields = ['id', 'username', 'password', 'email', 'avatar', 'is_shelter', 'shelter_name', 'contact_email', 'location', 'mission_statement']
         extra_kwargs = {
             'email': {'required': True},
             'password': {'write_only': True}
@@ -57,4 +58,4 @@ class UserCreationSerializer(serializers.ModelSerializer):
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'is_shelter']
+        fields = ['id', 'username', 'email', 'avatar', 'is_shelter']
