@@ -10,6 +10,7 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
+        ('listings', '0002_initial'),
         ('shelters', '0001_initial'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
@@ -31,11 +32,6 @@ class Migration(migrations.Migration):
             field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
         ),
         migrations.AddField(
-            model_name='petlisting',
-            name='shelter',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='listings', to='shelters.shelter'),
-        ),
-        migrations.AddField(
             model_name='petapplication',
             name='applicant',
             field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='applications', to=settings.AUTH_USER_MODEL),
@@ -43,12 +39,12 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='petapplication',
             name='listing',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='applications', to='shelters.petlisting'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='applications', to='listings.petlisting'),
         ),
         migrations.AddField(
             model_name='assignedquestion',
             name='listing',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='assigned_questions', to='shelters.petlisting'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='assigned_questions', to='listings.petlisting'),
         ),
         migrations.AddField(
             model_name='assignedquestion',

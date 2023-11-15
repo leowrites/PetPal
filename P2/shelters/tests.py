@@ -1,7 +1,8 @@
 from users.models import User
 from users.views import views
 from shelters.views import views as shelter_views
-from shelters.models import Shelter, ShelterQuestion, PetListing
+from shelters.models import Shelter, ShelterQuestion
+from listings.models import PetListing
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
 )

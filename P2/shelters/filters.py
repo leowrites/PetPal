@@ -1,5 +1,6 @@
 import django_filters
-from .models import PetApplication, PetListing
+from .models import PetApplication
+from listings.models import PetListing
 
 
 class PetApplicationFilter(django_filters.FilterSet):

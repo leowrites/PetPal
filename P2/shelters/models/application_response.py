@@ -1,6 +1,7 @@
 from django.db import models
-from .pet_application import PetApplication, PetListing
+from .pet_application import PetApplication
 from .shelter import Shelter
+from listings.models import PetListing
 
 
 # each question is owned by a shelter
