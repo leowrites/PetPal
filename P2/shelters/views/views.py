@@ -6,7 +6,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import NotFound
 from django_filters.rest_framework import DjangoFilterBackend
 
-from shelters.filters import PetApplicationFilter
+from shelters.filters import PetApplicationFilter, PetListingFilter
 from shelters.models.pet_application import PetApplication, PetListing
 from shelters.models.application_response import ShelterQuestion, AssignedQuestion
 from shelters import models
@@ -76,9 +76,9 @@ class ListOrCreateApplicationForListing(generics.ListCreateAPIView):
     def get_serializer_class(self):
         print(self.request.method)
         if self.request.method == 'GET':
-            return serializers.PetApplicationSerializer
+            return serializers.PetApplicationGetOrUpdateSerializer
         else:
-            return serializers.PetApplicationFormSerializer
+            return serializers.PetApplicationPostSerializer
 
     def get_queryset(self):
         # make sure only owner of this shelter
@@ -87,13 +87,13 @@ class ListOrCreateApplicationForListing(generics.ListCreateAPIView):
         return PetApplication.objects.filter(listing_id=self.kwargs['listing_id'])
     
     def perform_create(self, serializer):
-        return super().perform_create(serializer)
+        serializer.save(listing_id=self.kwargs['listing_id'], applicant=self.request.user)
 
 
 # GET /shelters/<shelter_id>/listings/<listing_id>/applications/<application_id>
 # PUT /shelters/<shelter_id>/listings/<listing_id>/applications/<application_id>
 class UpdateOrGetPetApplicationDetails(generics.RetrieveUpdateAPIView):
-    serializer_class = serializers.PetApplicationSerializer
+    serializer_class = serializers.PetApplicationGetOrUpdateSerializer
     # only the applicant of this application, or the owner of the listing associated with this application can get the
     # details or make changes to the application
     permission_classes = [IsAuthenticated, permissions.IsApplicationListingOwner | permissions.IsApplicationOwner]
@@ -102,6 +102,7 @@ class UpdateOrGetPetApplicationDetails(generics.RetrieveUpdateAPIView):
         obj = get_object_or_404(PetApplication, id=self.kwargs['application_id'])
         self.check_object_permissions(self.request, obj)
         return obj
+
 
 
 class ListOrCreateShelterQuestion(generics.ListCreateAPIView):
@@ -117,7 +118,7 @@ class ListOrCreateShelterQuestion(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         shelter = get_object_or_404(models.Shelter, id=self.kwargs['pk'])
         self.check_object_permissions(self.request, shelter)
-        return super().perform_create(serializer)
+        serializer.save(user=self.request.user)
 
 
 class UpdateOrDestroyShelterQuestion(generics.RetrieveUpdateDestroyAPIView):
@@ -146,7 +147,7 @@ class ListOrCreateAssignedQuestion(generics.ListCreateAPIView):
         self.check_permissions(self.request)
         listing = get_object_or_404(PetListing, id=self.kwargs['listing_id'])
         self.check_object_permissions(self.request, listing.shelter)
-        return super().perform_create(serializer)
+        serializer.save(listing_id=listing.id)
 
 
 class RetrieveUpdateOrDestroyAssignedQuestion(generics.RetrieveUpdateDestroyAPIView):
@@ -180,15 +181,26 @@ class ListOrCreatePetListing(generics.ListCreateAPIView):
     queryset = PetListing.objects.all()
 
     def perform_create(self, serializer):
-        pet_listing = serializer.save()
-        for user in User.objects.all():
-            if user != pet_listing.shelter.owner:
-                notification = Notification.objects.create(
-                    user=user,
-                    notification_type="petListing",
-                    associated_model=pet_listing
-                )
+        serializer.save(shelter=self.request.user.shelter)
 
+class ListPetListing(generics.ListAPIView):
+    serializer_class = serializers.PetListingSerializer
+    queryset = PetListing.objects.all()
+    filter_backends = [filters.OrderingFilter, DjangoFilterBackend]
+    filterset_class = PetListingFilter
+    ordering_fields = ['name', 'age']
+    ordering = ['name']
+    pagination_class = PageNumberPagination
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        status = self.request.query_params.get('status', None)
+        if status in map(lambda x: x[0], PetListing.STATUS_CHOICES):
+            queryset = queryset.filter(status=status)
+        elif status != "":
+            queryset = queryset.filter(status="available")
+        return queryset
+    
 
 class RetrieveUpdateOrDeletePetListing(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = serializers.PetListingSerializer
@@ -235,3 +247,4 @@ class ListOrCreateApplicationComment(generics.ListCreateAPIView):
             raise serializers.ValidationError("You do not have permission to comment on this application")
 
         serializer.save(user=user, application=application)
+        

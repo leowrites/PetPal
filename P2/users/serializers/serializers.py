@@ -2,7 +2,7 @@ from users.models import User
 from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
 from shelters.models.shelter import Shelter
-
+from notifications.models import NotificationPreferences
 
 class UserCreationSerializer(serializers.ModelSerializer):
     is_shelter = serializers.BooleanField(label="Are you a shelter?")
@@ -47,6 +47,7 @@ class UserCreationSerializer(serializers.ModelSerializer):
         user = User.objects.create_user(**validated_data)
         if is_shelter:
             Shelter.objects.create(owner=user, **shelter_data)
+        NotificationPreferences.objects.create(user=user)
         return user
 
     def validate_password(self, password):

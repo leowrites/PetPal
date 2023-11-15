@@ -1,4 +1,4 @@
-from rest_framework.generics import RetrieveDestroyAPIView, ListAPIView
+from rest_framework.generics import RetrieveDestroyAPIView, ListAPIView, RetrieveUpdateAPIView
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -6,8 +6,8 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.exceptions import PermissionDenied, ValidationError
 from django.urls import reverse_lazy
 
-from notifications.models import Notification
-from notifications.serializers import NotificationSerializer
+from notifications.models import Notification, NotificationPreferences
+from notifications.serializers import NotificationSerializer, NotificationPreferencesSerializer
 
 class NotificationDeleteOrRetrieveAPIView(RetrieveDestroyAPIView):
     queryset = Notification.objects.all()
@@ -81,3 +81,10 @@ class NotificationListAPIView(ListAPIView):
                 raise ValidationError('Invalid read status value')
             query_set = query_set.filter(read=(read_status.lower() == 'true'))
         return query_set
+
+class NotificationPreferencesRetrieveOrUpdateAPIView(RetrieveUpdateAPIView):
+    serializer_class = NotificationPreferencesSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_object(self):
+        return get_object_or_404(NotificationPreferences, user=self.request.user)
