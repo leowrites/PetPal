@@ -8,6 +8,7 @@ from notifications.models import Notification
 from django.contrib.auth.models import User
 from django.db import transaction
 
+
 class ShelterQuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = ShelterQuestion
