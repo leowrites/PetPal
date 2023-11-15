@@ -215,8 +215,13 @@ class ListOrCreateShelterReview(generics.ListCreateAPIView):
     pagination_class = ApplicationPagination
 
     def get_queryset(self):
+        get_object_or_404(models.Shelter, id=self.kwargs['pk'])
         return models.ShelterReview.objects.filter(shelter_id=self.kwargs['pk'])\
                                             .order_by('-date_created')
+    
+    def perform_create(self, serializer):
+        get_object_or_404(models.Shelter, id=self.kwargs['pk'])
+        serializer.save()
 
 
 # Pet application comments
