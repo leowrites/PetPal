@@ -1,6 +1,7 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
-from shelters.models.pet_application import PetApplication, PetListing
+from shelters.models.pet_application import PetApplication
+from listings.models import PetListing
 from shelters.models.application_response import ShelterQuestion, AssignedQuestion, ApplicationResponse
 from shelters import models
 from users.serializers.serializers import UserProfileSerializer

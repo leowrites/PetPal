@@ -7,7 +7,8 @@ from rest_framework.exceptions import NotFound
 from django_filters.rest_framework import DjangoFilterBackend
 
 from shelters.filters import PetApplicationFilter, PetListingFilter
-from shelters.models.pet_application import PetApplication, PetListing
+from shelters.models.pet_application import PetApplication
+from listings.models import PetListing
 from shelters.models.application_response import ShelterQuestion, AssignedQuestion
 from shelters import models
 from shelters.serializers import serializers

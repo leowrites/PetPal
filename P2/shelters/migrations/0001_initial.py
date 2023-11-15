@@ -9,6 +9,8 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+        ('listings', '0001_initial'),
     ]
 
     operations = [
@@ -45,31 +47,24 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='PetListing',
+            name='PetApplication',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=200)),
-                ('status', models.CharField(choices=[('available', 'Available'), ('not_available', 'Not Available')], default='available', max_length=15)),
-                ('breed', models.CharField(max_length=200)),
-                ('age', models.PositiveSmallIntegerField()),
-            ],
-        ),
-        migrations.CreateModel(
-            name='Shelter',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('shelter_name', models.CharField(default='', max_length=200)),
-                ('contact_email', models.EmailField(max_length=254)),
-                ('location', models.CharField(max_length=200)),
-                ('mission_statement', models.TextField()),
+                ('status', models.CharField(choices=[('pending', 'Pending'), ('accepted', 'Accepted'), ('denied', 'Denied'), ('withdrawn', 'Withdrawn'), ('approved', 'Approved')], default='pending', max_length=15)),
+                ('application_time', models.DateTimeField(auto_now_add=True)),
+                ('last_updated', models.DateTimeField(auto_now=True)),
+                ('applicant', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='applications', to=settings.AUTH_USER_MODEL)),
+                ('listing', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='applications', to='listings.petlisting')),
             ],
         ),
         migrations.CreateModel(
             name='ShelterQuestion',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('question', models.CharField(max_length=1000)),
-                ('type', models.CharField(choices=[('FILE', 'File'), ('CHECKBOX', 'Checkbox'), ('DATE', 'Date'), ('EMAIL', 'Email'), ('TEXT', 'Text'), ('NUMBER', 'Number')], default='TEXT', max_length=100)),
+                ('rank', models.PositiveSmallIntegerField(blank=True, default=0)),
+                ('required', models.BooleanField(default=True)),
+                ('listing', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='assigned_questions', to='listings.petlisting')),
+                ('question', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='shelters.shelterquestion')),
             ],
         ),
         migrations.CreateModel(
