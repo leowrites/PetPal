@@ -29,7 +29,6 @@ class ApplicationPagination(PageNumberPagination):
 class ListShelter(generics.ListAPIView):
     queryset = models.Shelter.objects.all()
     serializer_class = serializers.ShelterSerializer
-    pagination_class = ApplicationPagination
     ordering = ['shelter_name']
     ordering_fields = ['shelter_name', 'location']
     filter_backends = [filters.OrderingFilter, DjangoFilterBackend]
