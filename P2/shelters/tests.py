@@ -13,9 +13,10 @@ def create_user(username='Leo', is_shelter=False):
     request = factory.post('/users', {
         'username': username,
         'password': '123123123a!',
+        'email': 'leo@gmail.com',
         'is_shelter': is_shelter
     })
-    return views.CreateOrListUsers.as_view()(request)
+    return views.CreateUser.as_view()(request)
 
 
 def login(username='Leo', password='123123123a!'):
