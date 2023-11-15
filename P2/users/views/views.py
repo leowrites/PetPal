@@ -1,26 +1,34 @@
-from django.contrib.auth.models import User
+from users.models import User
 from rest_framework import generics
 from users.serializers import serializers
-from rest_framework.permissions import IsAuthenticated, BasePermission
+from rest_framework.permissions import IsAuthenticated
+from users.permissions import permissions
 from django.shortcuts import get_object_or_404
 
 
-class IsOwner(BasePermission):
-    def has_object_permission(self, request, view, obj):
-        return request.user == obj
-
-
 # Create your views here.
-class CreateOrListUsers(generics.ListCreateAPIView):
-    serializer_class = serializers.UserSerializer
+
+# POST /users/
+class CreateUser(generics.CreateAPIView):
+    permission_classes = [permissions.IsNotAuthenticated]
+    serializer_class = serializers.UserCreationSerializer
     queryset = User.objects.all()
 
+# GET /users/<pk>
+# PUT /users/<pk>
+# DELETE /users/<pk>
+class RetrieveOrUpdateOrDestroyUser(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = serializers.UserProfileSerializer
+    queryset = User.objects.all()
 
-class UserDetails(generics.RetrieveAPIView):
-    serializer_class = serializers.UserSerializer
-    permission_classes = [IsOwner]
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            permission_classes = [IsAuthenticated, permissions.IsOwnerOrUserHasApplicationWithShelter]
+        else:
+            permission_classes = [IsAuthenticated, permissions.IsOwner]
+        return [permission() for permission in permission_classes]
 
     def get_object(self):
-        user = get_object_or_404(User, pk=self.kwargs['pk'])
+        user = get_object_or_404(User, id=self.kwargs['pk'])
         self.check_object_permissions(self.request, user)
         return user

@@ -1,4 +1,4 @@
-from rest_framework import generics
+from rest_framework import generics, views
 from rest_framework.generics import get_object_or_404
 from rest_framework import filters
 from rest_framework.pagination import PageNumberPagination
@@ -11,6 +11,8 @@ from shelters.models.pet_application import PetApplication, PetListing
 from shelters.models.application_response import ShelterQuestion, AssignedQuestion
 from shelters import models
 from shelters.serializers import serializers
+from notifications.models import Notification
+from users.models import User
 from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from shelters.permissions import permissions
@@ -20,6 +22,42 @@ class ApplicationPagination(PageNumberPagination):
     page_size = 10
     page_size_query_param = 'page_size'
     max_page_size = 10
+
+# SHELTERS!!
+
+# GET /shelters
+class ListShelter(generics.ListAPIView):
+    queryset = models.Shelter.objects.all()
+    serializer_class = serializers.ShelterSerializer
+    ordering = ['shelter_name']
+    ordering_fields = ['shelter_name', 'location']
+    filter_backends = [filters.OrderingFilter, DjangoFilterBackend]
+    filterset_fields = ['shelter_name', 'location']
+
+# GET /shelters/{shelter_id}
+# PUT /shelters/{shelter_id}
+# DELETE /shelters/{shelter_id}
+class ViewOrUpdateOrDestroyShelter(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = serializers.ShelterSerializer
+    queryset = models.Shelter.objects.all()
+
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            permission_classes = []
+        else:
+            permission_classes = [IsAuthenticated, permissions.IsShelterOwner]
+        return [permission() for permission in permission_classes]
+
+    def get_object(self):
+        shelter = get_object_or_404(models.Shelter, id=self.kwargs['pk'])
+        self.check_object_permissions(self.request, shelter)
+        return shelter
+    
+    def perform_destroy(self, instance):
+        owner = instance.owner
+        owner.is_shelter = False
+        owner.save()
+        instance.delete()
 
 
 # POST /shelters/{shelter_id}/listings/{listing_id}/applications
@@ -169,12 +207,6 @@ class RetrieveUpdateOrDeletePetListing(generics.RetrieveUpdateDestroyAPIView):
 
     def get_object(self):
         return get_object_or_404(PetListing, shelter=self.kwargs['pk'], id=self.kwargs['listing_id'])
-
-
-# Shelter
-class ListShelter(generics.ListAPIView):
-    queryset = models.Shelter.objects.all()
-    serializer_class = serializers.ShelterSerializer
 
 
 # Shelter reviews
