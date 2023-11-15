@@ -3,19 +3,20 @@ from rest_framework.generics import get_object_or_404
 from rest_framework import filters
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.exceptions import NotFound
+from rest_framework.exceptions import NotFound, PermissionDenied
 from django_filters.rest_framework import DjangoFilterBackend
 
 from shelters.filters import PetApplicationFilter, PetListingFilter
-from shelters.models.pet_application import PetApplication, PetListing
+from shelters.models.pet_application import PetApplication
+from listings.models import PetListing
 from shelters.models.application_response import ShelterQuestion, AssignedQuestion
 from shelters import models
 from shelters.serializers import serializers
 from notifications.models import Notification
 from users.models import User
-from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from shelters.permissions import permissions
+from users.permissions import permissions as user_permissions
 
 
 class ApplicationPagination(PageNumberPagination):
@@ -25,14 +26,26 @@ class ApplicationPagination(PageNumberPagination):
 
 # SHELTERS!!
 
+# POST /shelters
 # GET /shelters
-class ListShelter(generics.ListAPIView):
+class ListOrCreateShelter(generics.ListCreateAPIView):
     queryset = models.Shelter.objects.all()
-    serializer_class = serializers.ShelterSerializer
     ordering = ['shelter_name']
     ordering_fields = ['shelter_name', 'location']
     filter_backends = [filters.OrderingFilter, DjangoFilterBackend]
     filterset_fields = ['shelter_name', 'location']
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return serializers.ShelterSerializer
+        return serializers.ShelterCreationSerializer
+
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            permission_classes = []
+        else:
+            permission_classes = [user_permissions.IsNotAuthenticated]
+        return [permission() for permission in permission_classes]
 
 # GET /shelters/{shelter_id}
 # PUT /shelters/{shelter_id}
@@ -182,23 +195,12 @@ class ListOrCreatePetListing(generics.ListCreateAPIView):
     def perform_create(self, serializer):
         serializer.save(shelter=self.request.user.shelter)
 
-class ListPetListing(generics.ListAPIView):
-    serializer_class = serializers.PetListingSerializer
-    queryset = PetListing.objects.all()
-    filter_backends = [filters.OrderingFilter, DjangoFilterBackend]
-    filterset_class = PetListingFilter
-    ordering_fields = ['name', 'age']
-    ordering = ['name']
-    pagination_class = PageNumberPagination
-
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        status = self.request.query_params.get('status', None)
-        if status in map(lambda x: x[0], PetListing.STATUS_CHOICES):
-            queryset = queryset.filter(status=status)
-        elif status != "":
-            queryset = queryset.filter(status="available")
-        return queryset
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            permission_classes = [IsAuthenticated]
+        else:
+            permission_classes = [IsAuthenticated, permissions.IsShelterOwner]
+        return [permission() for permission in permission_classes]
     
 
 class RetrieveUpdateOrDeletePetListing(generics.RetrieveUpdateDestroyAPIView):
@@ -207,6 +209,17 @@ class RetrieveUpdateOrDeletePetListing(generics.RetrieveUpdateDestroyAPIView):
 
     def get_object(self):
         return get_object_or_404(PetListing, shelter=self.kwargs['pk'], id=self.kwargs['listing_id'])
+    
+    def update(self, request, *args, **kwargs):
+        kwargs['partial'] = True
+        return super().update(request, *args, **kwargs)
+    
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            permission_classes = [IsAuthenticated]
+        else:
+            permission_classes = [IsAuthenticated, permissions.IsShelterOwner]
+        return [permission() for permission in permission_classes]
 
 
 # Shelter reviews
@@ -216,8 +229,13 @@ class ListOrCreateShelterReview(generics.ListCreateAPIView):
     pagination_class = ApplicationPagination
 
     def get_queryset(self):
+        get_object_or_404(models.Shelter, id=self.kwargs['pk'])
         return models.ShelterReview.objects.filter(shelter_id=self.kwargs['pk'])\
                                             .order_by('-date_created')
+    
+    def perform_create(self, serializer):
+        get_object_or_404(models.Shelter, id=self.kwargs['pk'])
+        serializer.save()
 
 
 # Pet application comments
@@ -227,11 +245,17 @@ class ListOrCreateApplicationComment(generics.ListCreateAPIView):
     pagination_class = ApplicationPagination
 
     def get_queryset(self):
-        get_object_or_404(models.Shelter, id=self.kwargs['pk'])
+        shelter = get_object_or_404(models.Shelter, id=self.kwargs['pk'])
         if get_object_or_404(models.PetListing, id=self.kwargs['listing_id']).shelter.id != self.kwargs['pk']:
             raise NotFound("Listing does not belong to shelter")
-        if get_object_or_404(models.PetApplication, id=self.kwargs['application_id']).listing.id != self.kwargs['listing_id']:
+        application = get_object_or_404(models.PetApplication, id=self.kwargs['application_id'])
+        if application.listing.id != self.kwargs['listing_id']:
             raise NotFound("Application does not belong to listing")
+        
+        user = self.request.user
+        if user != application.applicant and user != shelter.owner:
+            raise PermissionDenied("You do not have permission to view these comments.")
+        
         return models.ApplicationComment.objects.filter(application_id=self.kwargs['application_id'])\
                                                 .order_by('-date_created')
 
@@ -239,11 +263,11 @@ class ListOrCreateApplicationComment(generics.ListCreateAPIView):
         get_object_or_404(models.Shelter, id=self.kwargs['pk'])
         application = get_object_or_404(PetApplication, id=self.kwargs['application_id'])
         application.save()
-        listing = get_object_or_404(PetListing, id=self.kwargs['listing_id'])
+        get_object_or_404(PetListing, id=self.kwargs['listing_id'])
         user = self.request.user
 
         if not (user == application.applicant or user == application.listing.shelter.owner):
-            raise serializers.ValidationError("You do not have permission to comment on this application")
+            raise PermissionDenied("You do not have permission to comment on this application")
 
         serializer.save(user=user, application=application)
         

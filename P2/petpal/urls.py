@@ -30,6 +30,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('shelters/', include('shelters.urls', namespace='shelters')),
     path('notifications/', include('notifications.urls', namespace='notifications')),
+    path('listings/', include('listings.urls', namespace='listings')),
 ]
 
 if settings.DEBUG:
