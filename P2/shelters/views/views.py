@@ -182,6 +182,13 @@ class ListOrCreatePetListing(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(shelter=self.request.user.shelter)
+
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            permission_classes = [IsAuthenticated]
+        else:
+            permission_classes = [IsAuthenticated, permissions.IsShelterOwner]
+        return [permission() for permission in permission_classes]
     
 
 class RetrieveUpdateOrDeletePetListing(generics.RetrieveUpdateDestroyAPIView):
@@ -194,6 +201,13 @@ class RetrieveUpdateOrDeletePetListing(generics.RetrieveUpdateDestroyAPIView):
     def update(self, request, *args, **kwargs):
         kwargs['partial'] = True
         return super().update(request, *args, **kwargs)
+    
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            permission_classes = [IsAuthenticated]
+        else:
+            permission_classes = [IsAuthenticated, permissions.IsShelterOwner]
+        return [permission() for permission in permission_classes]
 
 
 # Shelter reviews
