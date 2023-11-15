@@ -3,9 +3,9 @@ from rest_framework import serializers
 from shelters.models.pet_application import PetApplication, PetListing
 from shelters.models.application_response import ShelterQuestion, AssignedQuestion, ApplicationResponse
 from shelters import models
-from users.serializers.serializers import UserProfileSerializer
+from users.serializers.serializers import UserSerializer
 from notifications.models import Notification
-from users.models import User
+from django.contrib.auth.models import User
 from django.db import transaction
 
 
@@ -39,7 +39,7 @@ class ApplicationResponseSerializer(serializers.ModelSerializer):
 
 class PetApplicationGetOrUpdateSerializer(serializers.ModelSerializer):
     application_responses = ApplicationResponseSerializer(many=True, read_only=True)
-    applicant = UserProfileSerializer(read_only=True)
+    applicant = UserSerializer(read_only=True)
 
     class Meta:
         model = PetApplication
@@ -218,8 +218,8 @@ class PetListingSerializer(serializers.ModelSerializer):
 class ShelterSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Shelter
-        fields = ['shelter_name', 'owner', 'contact_email', 'location', 'mission_statement']
-        read_only_fields = ['owner']
+        fields = ['name', 'owner']
+        read_only_fields = ['owner']    
 
 
 class ShelterReviewSerializer(serializers.ModelSerializer):

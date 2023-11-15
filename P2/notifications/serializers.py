@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from notifications.models import Notification, NotificationPreferences
-from users.serializers.serializers import UserProfileSerializer
+from users.serializers.serializers import UserSerializer
 
 class AssociatedModelTypeSerializer(serializers.SlugRelatedField):
     def to_representation(self, value):
@@ -14,7 +14,7 @@ class NotificationSerializer(serializers.ModelSerializer):
         fields = ['id', 'user', 'notification_type', 'associated_model_type', 'associated_model_id', 'created', 'read']
     
 class NotificationPreferencesSerializer(serializers.ModelSerializer):
-    user = UserProfileSerializer(read_only=True)
+    user = UserSerializer(read_only=True)
 
     class Meta:
         model = NotificationPreferences

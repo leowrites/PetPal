@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes.fields import GenericForeignKey
-from users.models import User
+from django.contrib.auth.models import User
 
 class Notification(models.Model):
     # associated user
