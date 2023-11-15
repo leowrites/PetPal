@@ -74,13 +74,13 @@ class PetApplicationGetOrUpdateSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
 
         # send notification to the shelter owner or user
-        if request.user == instance.applicant:
+        if request.user == instance.applicant and instance.listing.shelter.owner.notification_preferences.application_status_change:
             Notification.objects.create(
                 user=instance.listing.shelter.owner,
                 notification_type="applicationStatusChange",
                 associated_model=instance
             )
-        elif request.user == instance.listing.shelter.owner:
+        elif request.user == instance.listing.shelter.owner and instance.applicant.notification_preferences.application_status_change:
             Notification.objects.create(
                 user=instance.applicant,
                 notification_type="applicationStatusChange",
@@ -158,12 +158,15 @@ class PetApplicationPostSerializer(serializers.Serializer):
                 ApplicationResponse(answer=answer, question_id=question_id, application=application)
             )
         ApplicationResponse.objects.bulk_create(application_responses)
+
         shelter = application.listing.shelter
-        Notification.objects.create(
-            user=shelter.owner,
-            notification_type="application",
-            associated_model=application
-        )
+        if shelter.owner.notification_preferences.application:
+            Notification.objects.create(
+                user=shelter.owner,
+                notification_type="application",
+                associated_model=application
+            )
+        
         return application
 
     def to_representation(self, instance):
@@ -200,15 +203,15 @@ class PetListingSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         pet_listing = PetListing.objects.create(**validated_data)
         with transaction.atomic():
-            notifications = [
+            Notification.objects.bulk_create([
                 Notification(
                     user=user,
                     notification_type="petListing",
                     associated_model=pet_listing
                 ) for user in User.objects.filter(shelter__isnull=True)
-            ]
-
-            Notification.objects.bulk_create(notifications)
+                if user.notification_preferences.pet_listing
+            ])
+        
         return pet_listing
 
 
@@ -236,7 +239,7 @@ class ShelterReviewSerializer(serializers.ModelSerializer):
         review = models.ShelterReview.objects.create(**validated_data, user=user)
 
         # create related notification
-        if shelter != user:
+        if shelter != user and shelter.owner.notification_preferences.review:
             notification = Notification.objects.create(
                 user=shelter.owner,
                 notification_type="review",
@@ -257,14 +260,13 @@ class ApplicationCommentSerializer(serializers.ModelSerializer):
         application = application_comment.application
         request = self.context.get('request')
 
-        # create related notification
-        if request.user == application.applicant:
+        if request.user == application.applicant and application.listing.shelter.owner.notification_preferences.application_message:
             notification = Notification.objects.create(
                 user = application.listing.shelter.owner,
                 notification_type = "applicationMessage",
                 associated_model = application_comment
             )
-        elif request.user == application.listing.shelter.owner:
+        elif request.user == application.listing.shelter.owner and application.applicant.notification_preferences.application_message:
             notification = Notification.objects.create(
                 user = application.applicant,
                 notification_type = "applicationMessage",
