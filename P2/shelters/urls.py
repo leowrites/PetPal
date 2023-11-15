@@ -23,6 +23,6 @@ urlpatterns = [
     path('<int:pk>/reviews', views.ListOrCreateShelterReview.as_view(), name='shelter-review-list-create'),
     path('<int:pk>/listings/<int:listing_id>/applications/<int:application_id>/comments', views.ListOrCreateApplicationComment.as_view(),
         name='application-comment-list-create'),
-    path('', views.ListShelter.as_view(), name='shelter-list-create'),
+    path('', views.ListOrCreateShelter.as_view(), name='shelter-list-create'),
     path('<int:pk>', views.ViewOrUpdateOrDestroyShelter.as_view(), name='shelter-read-update-delete'),
 ]

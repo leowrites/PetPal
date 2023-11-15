@@ -16,6 +16,7 @@ from users.models import User
 from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from shelters.permissions import permissions
+from users.permissions import permissions as user_permissions
 
 
 class ApplicationPagination(PageNumberPagination):
@@ -25,14 +26,26 @@ class ApplicationPagination(PageNumberPagination):
 
 # SHELTERS!!
 
+# POST /shelters
 # GET /shelters
-class ListShelter(generics.ListAPIView):
+class ListOrCreateShelter(generics.ListCreateAPIView):
     queryset = models.Shelter.objects.all()
-    serializer_class = serializers.ShelterSerializer
     ordering = ['shelter_name']
     ordering_fields = ['shelter_name', 'location']
     filter_backends = [filters.OrderingFilter, DjangoFilterBackend]
     filterset_fields = ['shelter_name', 'location']
+
+    def get_serializer_class(self):
+        if self.request.method == 'GET':
+            return serializers.ShelterSerializer
+        return serializers.ShelterCreationSerializer
+
+    def get_permissions(self):
+        if self.request.method == 'GET':
+            permission_classes = []
+        else:
+            permission_classes = [user_permissions.IsNotAuthenticated]
+        return [permission() for permission in permission_classes]
 
 # GET /shelters/{shelter_id}
 # PUT /shelters/{shelter_id}
@@ -181,6 +194,7 @@ class ListOrCreatePetListing(generics.ListCreateAPIView):
 
     def perform_create(self, serializer):
         serializer.save(shelter=self.request.user.shelter)
+
 
 class ListPetListing(generics.ListAPIView):
     serializer_class = serializers.PetListingSerializer
