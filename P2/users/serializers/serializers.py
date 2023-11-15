@@ -11,6 +11,7 @@ class UserCreationSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'password', 'password2', 'email', 'avatar', 'is_shelter']
+        read_only_fields = ['is_shelter']
         extra_kwargs = {
             'email': {'required': True},
             'password': {'write_only': True},
@@ -29,7 +30,6 @@ class UserCreationSerializer(serializers.ModelSerializer):
         return username
 
     def create(self, validated_data):
-        validated_data['is_shelter'] = False
         validated_data.pop('password2', None)
         user = User.objects.create_user(**validated_data)
         NotificationPreferences.objects.create(user=user)
@@ -43,7 +43,4 @@ class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'avatar', 'is_shelter']
-    
-    def update(self, instance, validated_data):
-        validated_data.pop('is_shelter', None)
-        return super().update(instance, validated_data)
+        read_only_fields = ['is_shelter']

@@ -3,7 +3,7 @@ from rest_framework import serializers
 from shelters.models.pet_application import PetApplication, PetListing
 from shelters.models.application_response import ShelterQuestion, AssignedQuestion, ApplicationResponse
 from shelters import models
-from users.serializers.serializers import UserProfileSerializer
+from users.serializers.serializers import UserProfileSerializer, UserCreationSerializer
 from notifications.models import Notification, NotificationPreferences
 from users.models import User
 from django.db import transaction
@@ -217,38 +217,16 @@ class PetListingSerializer(serializers.ModelSerializer):
         return pet_listing
 
 class ShelterCreationSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(write_only=True)
-    password = serializers.CharField(write_only=True)
-    password2 = serializers.CharField(write_only=True, label="Confirm Password")
-    email = serializers.EmailField(write_only=True)
-    is_shelter = serializers.BooleanField(default=True, write_only=True)
+    user_data = UserCreationSerializer(write_only=True)
 
     class Meta:
         model = models.Shelter
-        fields = ['id', 'username', 'password', 'password2', 'email', 'is_shelter', 'shelter_name', 'contact_email', 'location', 'mission_statement']
-
-    def validate(self, data):
-        validated_data = super().validate(data)
-        if validated_data['password'] != validated_data['password2']:
-            raise serializers.ValidationError("Passwords must match")
-        return validated_data
-    
-    def validate_username(self, username):
-        if User.objects.filter(username=username).exists():
-            raise serializers.ValidationError("Username already exists")
-        return username
-
-    def validate_password(self, password):
-        validate_password(password)
-        return password
+        fields = ['id', 'user_data', 'shelter_name', 'contact_email', 'location', 'mission_statement']
 
     def create(self, validated_data):
-        username = validated_data.pop('username')
-        password = validated_data.pop('password')
-        email = validated_data.pop('email')
-        validated_data.pop('is_shelter')
-        validated_data.pop('password2')
-        user = User.objects.create_user(username=username, password=password, email=email, is_shelter=True)
+        user_data = validated_data.pop('user_data')
+        user_data.pop('password2')
+        user = User.objects.create_user(**user_data, is_shelter=True)
         NotificationPreferences.objects.create(user=user)
         shelter = models.Shelter.objects.create(owner=user, **validated_data)
         return shelter
