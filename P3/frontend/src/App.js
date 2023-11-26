@@ -4,9 +4,9 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
 import { Landing } from './pages/landing'
 import { Search } from './pages/search'
 import Layout from './components/layout/Layout';
-import { Login } from './pages/login'
-import { Signup } from './pages/signup'
-import NotFound from './pages/notFound'
+import { Login } from './pages/Login'
+import { Signup } from './pages/Signup'
+import NotFound from './pages/NotFound'
 
 function App() {
   return (
