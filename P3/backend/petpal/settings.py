@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+import json
+from django.core.exceptions import ImproperlyConfigured
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -81,13 +83,16 @@ WSGI_APPLICATION = 'petpal.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
+json_file_path = './db.json'
+def load_json_settings(file_path):
+    with open(file_path) as f:
+        try:
+            return json.load(f)
+        except ValueError as e:
+            raise ImproperlyConfigured("Error loading JSON file: {0}".format(e))
+db_settings = load_json_settings(json_file_path)
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+DATABASES = db_settings
 
 
 # Password validation
