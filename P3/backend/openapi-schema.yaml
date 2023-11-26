@@ -1,0 +1,2010 @@
+openapi: 3.0.2
+info:
+  title: ''
+  version: ''
+paths:
+  /users/{id}:
+    get:
+      operationId: retrieveUser
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this user.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+          description: ''
+      tags:
+      - users
+    put:
+      operationId: updateUser
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this user.
+        schema:
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserProfile'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserProfile'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+          description: ''
+      tags:
+      - users
+    patch:
+      operationId: partialUpdateUser
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this user.
+        schema:
+          type: string
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserProfile'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserProfile'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserProfile'
+          description: ''
+      tags:
+      - users
+    delete:
+      operationId: destroyUser
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this user.
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - users
+  /shelters/{id}/questions:
+    get:
+      operationId: listShelterQuestions
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 123
+                  next:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=4
+                  previous:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=2
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ShelterQuestion'
+          description: ''
+      tags:
+      - shelters
+    post:
+      operationId: createShelterQuestion
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShelterQuestion'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ShelterQuestion'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ShelterQuestion'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShelterQuestion'
+          description: ''
+      tags:
+      - shelters
+  /shelters/{id}/questions/{question_id}:
+    get:
+      operationId: retrieveShelterQuestion
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: question_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShelterQuestion'
+          description: ''
+      tags:
+      - shelters
+    put:
+      operationId: updateShelterQuestion
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: question_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShelterQuestion'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ShelterQuestion'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ShelterQuestion'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShelterQuestion'
+          description: ''
+      tags:
+      - shelters
+    patch:
+      operationId: partialUpdateShelterQuestion
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: question_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShelterQuestion'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ShelterQuestion'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ShelterQuestion'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShelterQuestion'
+          description: ''
+      tags:
+      - shelters
+    delete:
+      operationId: destroyShelterQuestion
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: question_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - shelters
+  /shelters/{id}/listings/{listing_id}/questions:
+    get:
+      operationId: listAssignedQuestions
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: listing_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 123
+                  next:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=4
+                  previous:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=2
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/AssignedQuestion'
+          description: ''
+      tags:
+      - shelters
+    post:
+      operationId: createAssignedQuestion
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: listing_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssignedQuestion'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AssignedQuestion'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AssignedQuestion'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssignedQuestion'
+          description: ''
+      tags:
+      - shelters
+  /shelters/{id}/listings/{listing_id}/questions/{question_id}:
+    get:
+      operationId: retrieveAssignedQuestion
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: listing_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: question_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssignedQuestion'
+          description: ''
+      tags:
+      - shelters
+    put:
+      operationId: updateAssignedQuestion
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: listing_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: question_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssignedQuestion'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AssignedQuestion'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AssignedQuestion'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssignedQuestion'
+          description: ''
+      tags:
+      - shelters
+    patch:
+      operationId: partialUpdateAssignedQuestion
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: listing_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: question_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AssignedQuestion'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/AssignedQuestion'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/AssignedQuestion'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AssignedQuestion'
+          description: ''
+      tags:
+      - shelters
+    delete:
+      operationId: destroyAssignedQuestion
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: listing_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: question_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - shelters
+  /shelters/{id}/listings/{listing_id}/applications/{application_id}:
+    get:
+      operationId: retrievePetApplicationGetOrUpdate
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: listing_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: application_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PetApplicationGetOrUpdate'
+          description: ''
+      tags:
+      - shelters
+    put:
+      operationId: updatePetApplicationGetOrUpdate
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: listing_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: application_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PetApplicationGetOrUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PetApplicationGetOrUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PetApplicationGetOrUpdate'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PetApplicationGetOrUpdate'
+          description: ''
+      tags:
+      - shelters
+    patch:
+      operationId: partialUpdatePetApplicationGetOrUpdate
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: listing_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: application_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PetApplicationGetOrUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PetApplicationGetOrUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PetApplicationGetOrUpdate'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PetApplicationGetOrUpdate'
+          description: ''
+      tags:
+      - shelters
+  /shelters/{id}/listings/{listing_id}/applications:
+    get:
+      operationId: listPetApplicationGetOrUpdates
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: listing_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: status
+        required: false
+        in: query
+        description: status
+        schema:
+          type: string
+          enum:
+          - pending
+          - accepted
+          - denied
+          - withdrawn
+          - approved
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 123
+                  next:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=4
+                  previous:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=2
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PetApplicationGetOrUpdate'
+          description: ''
+      tags:
+      - shelters
+    post:
+      operationId: createPetApplicationGetOrUpdate
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: listing_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PetApplicationGetOrUpdate'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PetApplicationGetOrUpdate'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PetApplicationGetOrUpdate'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PetApplicationGetOrUpdate'
+          description: ''
+      tags:
+      - shelters
+  /shelters/{id}/listings:
+    get:
+      operationId: listPetListings
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this pet listing.
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 123
+                  next:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=4
+                  previous:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=2
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PetListing'
+          description: ''
+      tags:
+      - shelters
+    post:
+      operationId: createPetListing
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this pet listing.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PetListing'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PetListing'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PetListing'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PetListing'
+          description: ''
+      tags:
+      - shelters
+  /shelters/{id}/listings/{listing_id}:
+    get:
+      operationId: retrievePetListing
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this pet listing.
+        schema:
+          type: string
+      - name: listing_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PetListing'
+          description: ''
+      tags:
+      - shelters
+    put:
+      operationId: updatePetListing
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this pet listing.
+        schema:
+          type: string
+      - name: listing_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PetListing'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PetListing'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PetListing'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PetListing'
+          description: ''
+      tags:
+      - shelters
+    patch:
+      operationId: partialUpdatePetListing
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this pet listing.
+        schema:
+          type: string
+      - name: listing_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PetListing'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PetListing'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PetListing'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PetListing'
+          description: ''
+      tags:
+      - shelters
+    delete:
+      operationId: destroyPetListing
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this pet listing.
+        schema:
+          type: string
+      - name: listing_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - shelters
+  /shelters/{id}/reviews:
+    get:
+      operationId: listShelterReviews
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 123
+                  next:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=4
+                  previous:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=2
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ShelterReview'
+          description: ''
+      tags:
+      - shelters
+    post:
+      operationId: createShelterReview
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShelterReview'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ShelterReview'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ShelterReview'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShelterReview'
+          description: ''
+      tags:
+      - shelters
+  /shelters/{id}/listings/{listing_id}/applications/{application_id}/comments:
+    get:
+      operationId: listApplicationComments
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: listing_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: application_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Number of results to return per page.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 123
+                  next:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=4
+                  previous:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=2
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ApplicationComment'
+          description: ''
+      tags:
+      - shelters
+    post:
+      operationId: createApplicationComment
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: listing_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      - name: application_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ApplicationComment'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ApplicationComment'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ApplicationComment'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApplicationComment'
+          description: ''
+      tags:
+      - shelters
+  /shelters/:
+    get:
+      operationId: listShelters
+      description: ''
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: shelter_name
+        required: false
+        in: query
+        description: shelter_name
+        schema:
+          type: string
+      - name: location
+        required: false
+        in: query
+        description: location
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 123
+                  next:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=4
+                  previous:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=2
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Shelter'
+          description: ''
+      tags:
+      - shelters
+    post:
+      operationId: createShelter
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Shelter'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Shelter'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Shelter'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Shelter'
+          description: ''
+      tags:
+      - shelters
+  /shelters/{id}:
+    get:
+      operationId: retrieveShelter
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this shelter.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Shelter'
+          description: ''
+      tags:
+      - shelters
+    put:
+      operationId: updateShelter
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this shelter.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Shelter'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Shelter'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Shelter'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Shelter'
+          description: ''
+      tags:
+      - shelters
+    patch:
+      operationId: partialUpdateShelter
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this shelter.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Shelter'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Shelter'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Shelter'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Shelter'
+          description: ''
+      tags:
+      - shelters
+    delete:
+      operationId: destroyShelter
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this shelter.
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - shelters
+  /notifications/:
+    get:
+      operationId: listNotifications
+      description: ''
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 123
+                  next:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=4
+                  previous:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=2
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/Notification'
+          description: ''
+      tags:
+      - notifications
+  /notifications/{notification_id}:
+    get:
+      operationId: retrieveNotification
+      description: ''
+      parameters:
+      - name: notification_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Notification'
+          description: ''
+      tags:
+      - notifications
+    delete:
+      operationId: destroyNotification
+      description: ''
+      parameters:
+      - name: notification_id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
+      tags:
+      - notifications
+  /notifications/preferences:
+    get:
+      operationId: retrieveNotificationPreferences
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationPreferences'
+          description: ''
+      tags:
+      - notifications
+    put:
+      operationId: updateNotificationPreferences
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationPreferences'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NotificationPreferences'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NotificationPreferences'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationPreferences'
+          description: ''
+      tags:
+      - notifications
+    patch:
+      operationId: partialUpdateNotificationPreferences
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NotificationPreferences'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/NotificationPreferences'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/NotificationPreferences'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotificationPreferences'
+          description: ''
+      tags:
+      - notifications
+  /listings/:
+    get:
+      operationId: listPetListings
+      description: ''
+      parameters:
+      - name: page
+        required: false
+        in: query
+        description: A page number within the paginated result set.
+        schema:
+          type: integer
+      - name: ordering
+        required: false
+        in: query
+        description: Which field to use when ordering the results.
+        schema:
+          type: string
+      - name: shelter
+        required: false
+        in: query
+        description: shelter
+        schema:
+          type: string
+      - name: status
+        required: false
+        in: query
+        description: status
+        schema:
+          type: string
+          enum:
+          - available
+          - not_available
+      - name: name
+        required: false
+        in: query
+        description: name
+        schema:
+          type: string
+      - name: breed
+        required: false
+        in: query
+        description: breed
+        schema:
+          type: string
+      - name: age
+        required: false
+        in: query
+        description: age
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  count:
+                    type: integer
+                    example: 123
+                  next:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=4
+                  previous:
+                    type: string
+                    nullable: true
+                    format: uri
+                    example: http://api.example.org/accounts/?page=2
+                  results:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/PetListing'
+          description: ''
+      tags:
+      - listings
+  /api/token/:
+    post:
+      operationId: createTokenObtainPair
+      description: 'Takes a set of user credentials and returns an access and refresh
+        JSON web
+
+        token pair to prove the authentication of those credentials.'
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenObtainPair'
+          description: ''
+      tags:
+      - api
+  /api/token/refresh/:
+    post:
+      operationId: createTokenRefresh
+      description: 'Takes a refresh type JSON web token and returns an access type
+        JSON web
+
+        token if the refresh token is valid.'
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+      tags:
+      - api
+  /users/:
+    post:
+      operationId: createUser
+      description: ''
+      parameters: []
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/UserCreation'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserCreation'
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserCreation'
+          description: ''
+      tags:
+      - users
+components:
+  schemas:
+    UserProfile:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+\z
+          maxLength: 150
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        avatar:
+          type: string
+          format: binary
+          nullable: true
+        is_shelter:
+          type: boolean
+          readOnly: true
+      required:
+      - username
+    ShelterQuestion:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        question:
+          type: string
+          maxLength: 1000
+        type:
+          enum:
+          - FILE
+          - CHECKBOX
+          - DATE
+          - EMAIL
+          - TEXT
+          - NUMBER
+          type: string
+      required:
+      - question
+    AssignedQuestion:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        question:
+          type: integer
+        rank:
+          type: integer
+        required:
+          type: boolean
+        listing:
+          type: string
+          readOnly: true
+      required:
+      - question
+    PetApplicationGetOrUpdate:
+      type: object
+      properties:
+        status:
+          enum:
+          - pending
+          - accepted
+          - denied
+          - withdrawn
+          - approved
+          type: string
+        listing:
+          type: string
+          readOnly: true
+        application_responses:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                readOnly: true
+              question:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    readOnly: true
+                  question:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        readOnly: true
+                      question:
+                        type: string
+                        maxLength: 1000
+                      type:
+                        enum:
+                        - FILE
+                        - CHECKBOX
+                        - DATE
+                        - EMAIL
+                        - TEXT
+                        - NUMBER
+                        type: string
+                    required:
+                    - question
+                    readOnly: true
+                  rank:
+                    type: integer
+                  required:
+                    type: boolean
+                  listing:
+                    type: integer
+                required:
+                - listing
+                readOnly: true
+              answer:
+                type: string
+                maxLength: 3000
+              application:
+                type: integer
+            required:
+            - answer
+            - application
+          readOnly: true
+        applicant:
+          type: object
+          properties:
+            id:
+              type: integer
+              readOnly: true
+            username:
+              type: string
+              description: Required. 150 characters or fewer. Letters, digits and
+                @/./+/-/_ only.
+              pattern: ^[\w.@+-]+\z
+              maxLength: 150
+            email:
+              type: string
+              format: email
+              maxLength: 254
+            avatar:
+              type: string
+              format: binary
+              nullable: true
+            is_shelter:
+              type: boolean
+              readOnly: true
+          required:
+          - username
+          readOnly: true
+        id:
+          type: integer
+          readOnly: true
+        application_time:
+          type: string
+          format: date-time
+          readOnly: true
+        last_updated:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - status
+    PetListing:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 200
+        shelter:
+          type: string
+          readOnly: true
+        status:
+          enum:
+          - available
+          - not_available
+          type: string
+        assigned_questions:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                readOnly: true
+              question:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    readOnly: true
+                  question:
+                    type: string
+                    maxLength: 1000
+                  type:
+                    enum:
+                    - FILE
+                    - CHECKBOX
+                    - DATE
+                    - EMAIL
+                    - TEXT
+                    - NUMBER
+                    type: string
+                required:
+                - question
+                readOnly: true
+              rank:
+                type: integer
+              required:
+                type: boolean
+              listing:
+                type: integer
+            required:
+            - listing
+        age:
+          type: integer
+        breed:
+          type: string
+          maxLength: 200
+      required:
+      - name
+      - age
+      - breed
+    ShelterReview:
+      type: object
+      properties:
+        text:
+          type: string
+        user:
+          type: string
+          readOnly: true
+        date_created:
+          type: string
+          format: date-time
+          readOnly: true
+        rating:
+          enum:
+          - 1
+          - 2
+          - 3
+          - 4
+          - 5
+          type: integer
+        shelter:
+          type: integer
+      required:
+      - text
+      - rating
+      - shelter
+    ApplicationComment:
+      type: object
+      properties:
+        text:
+          type: string
+        user:
+          type: string
+          readOnly: true
+        date_created:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - text
+    Shelter:
+      type: object
+      properties:
+        shelter_name:
+          type: string
+          maxLength: 200
+        owner:
+          type: string
+          readOnly: true
+        contact_email:
+          type: string
+          format: email
+          maxLength: 254
+        location:
+          type: string
+          maxLength: 200
+        mission_statement:
+          type: string
+      required:
+      - contact_email
+      - location
+      - mission_statement
+    Notification:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user:
+          type: integer
+        notification_type:
+          enum:
+          - applicationMessage
+          - applicationSatusChange
+          - petListing
+          - application
+          - review
+          type: string
+        associated_model_type:
+          type: string
+          readOnly: true
+        associated_model_id:
+          type: integer
+        created:
+          type: string
+          format: date-time
+          readOnly: true
+        read:
+          type: boolean
+      required:
+      - user
+      - notification_type
+      - associated_model_id
+    NotificationPreferences:
+      type: object
+      properties:
+        user:
+          type: object
+          properties:
+            id:
+              type: integer
+              readOnly: true
+            username:
+              type: string
+              description: Required. 150 characters or fewer. Letters, digits and
+                @/./+/-/_ only.
+              pattern: ^[\w.@+-]+\z
+              maxLength: 150
+            email:
+              type: string
+              format: email
+              maxLength: 254
+            avatar:
+              type: string
+              format: binary
+              nullable: true
+            is_shelter:
+              type: boolean
+              readOnly: true
+          required:
+          - username
+          readOnly: true
+        application_message:
+          type: boolean
+          nullable: true
+        application_status_change:
+          type: boolean
+          nullable: true
+        pet_listing:
+          type: boolean
+          nullable: true
+        application:
+          type: boolean
+          nullable: true
+        review:
+          type: boolean
+          nullable: true
+    TokenObtainPair:
+      type: object
+      properties:
+        username:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+      required:
+      - username
+      - password
+    TokenRefresh:
+      type: object
+      properties:
+        refresh:
+          type: string
+        access:
+          type: string
+          readOnly: true
+      required:
+      - refresh
+    UserCreation:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+\z
+          maxLength: 150
+        password:
+          type: string
+          writeOnly: true
+          maxLength: 128
+        password2:
+          type: string
+          writeOnly: true
+        email:
+          type: string
+          format: email
+          maxLength: 254
+        avatar:
+          type: string
+          format: binary
+        is_shelter:
+          type: boolean
+          readOnly: true
+      required:
+      - username
+      - password
+      - password2
+      - email
