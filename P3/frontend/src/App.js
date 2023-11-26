@@ -6,6 +6,7 @@ import { Search } from './pages/search'
 import Layout from './components/layout/Layout';
 import { Login } from './pages/login'
 import { Signup } from './pages/signup'
+import NotFound from './pages/notFound'
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
           <Route path="/search" element={<Search />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path='*' element={<NotFound />}/>
         </Route>
       </Routes>
     </Router>
