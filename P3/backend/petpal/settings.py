@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django_filters',
     'notifications',
     'listings',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -58,6 +59,11 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
+]
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # React app's address
 ]
 
 ROOT_URLCONF = 'petpal.urls'
