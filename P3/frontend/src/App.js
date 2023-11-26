@@ -1,12 +1,18 @@
-import logo from './logo.svg';
+
 import './App.css';
-import Footer from './component/Footer'
+import React from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import { Landing } from './pages/landing'
+import { Search } from './pages/search'
 
 function App() {
   return (
-    <h1 className="text-3xl font-bold underline">
-      Hello world!
-    </h1>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Landing />} />
+        <Route path="/search" element={<Search />} />
+      </Routes>
+    </Router>
   );
 }
 
