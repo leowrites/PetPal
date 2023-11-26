@@ -1,10 +1,12 @@
 import React from 'react';
 
-const Page = ({children}) => {
+const Page = ({ children }) => {
     return (
-        <div className={'container mx-auto px-5 pt-10'}>
-            {children}
-        </div>
+        <main>
+            <div className={'container mx-auto px-5 pt-10'}>
+                {children}
+            </div>
+        </main>
     );
 };
 
