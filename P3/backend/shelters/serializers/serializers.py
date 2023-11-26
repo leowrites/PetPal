@@ -200,8 +200,9 @@ class PetListingSerializer(serializers.ModelSerializer):
     class Meta:
         # for listing or creating a serializer
         model = PetListing
-        fields = ['id', 'name', 'shelter', 'status', 'assigned_questions', 'age', 'breed']
-        read_only_fields = ['shelter', 'id', 'application_questions']
+        fields = ['id', 'name', 'shelter', 'status', 'assigned_questions', 'age', 'breed', 'image', 'bio', 'medical_history', 
+                  'behavior', 'other_notes', 'listed_date']
+        read_only_fields = ['shelter', 'id', 'application_questions', 'listed_date']
 
     def create(self, validated_data):
         pet_listing = PetListing.objects.create(**validated_data)
@@ -211,7 +212,7 @@ class PetListingSerializer(serializers.ModelSerializer):
                     user=user,
                     notification_type="petListing",
                     associated_model=pet_listing
-                ) for user in User.objects.filter(shelter__isnull=True)
+                ) for user in User.objects.filter(shelter__isnull=True, is_superuser=False)
                 if user.notification_preferences.pet_listing
             ])
         
