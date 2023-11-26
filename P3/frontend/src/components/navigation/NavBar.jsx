@@ -1,7 +1,7 @@
 import React from "react";
 import { LogoToLandingButton } from "./LogoToLandingButton";
 import { useState, useRef, useContext } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 export function NavBar({}) {
     // const location = useLocation();
@@ -30,12 +30,12 @@ export function NavBar({}) {
                 {/* <!-- normal navbar start --> */}
                 <div className=" flex flex-row text-[2rem] items-center pl-[1.5rem]">
                     <LogoToLandingButton/>
-                    <a href="/" className={`hover:border-b-[1rem] hover:border-[#290005] hover:pb-[1.65rem] hover:self-end text-[1rem] font-medium px-[2rem] ml-[1rem] hover:cursor-pointer` + ((selectedTab === "home") ? " border-[#290005] border-b-[1rem] self-end pb-[1.65rem]" : "self-center")}>
+                    <Link to="/" className={`hover:border-b-[1rem] hover:border-[#290005] hover:pb-[1.65rem] self-end text-[1rem] font-medium px-[2rem] ml-[1rem] hover:cursor-pointer` + ((selectedTab === "home") ? " border-[#290005] border-b-[1.65rem] pb-[1.65rem]" : " pb-[2.65rem]")}>
                         Home
-                    </a>
-                    <a href="/search" className={"hover:border-b-[1rem] hover:border-[#290005] hover:pb-[1.65rem] hover:self-end text-[1rem] font-medium px-[2rem] hover:cursor-pointer" + ((selectedTab === "search") ? " border-[#290005] border-b-[1rem] self-end pb-[1.65rem]" : "self-center")}>
+                    </Link>
+                    <Link to="/search" className={"hover:border-b-[1rem] hover:border-[#290005] hover:pb-[1.65rem] self-end text-[1rem] font-medium px-[2rem] hover:cursor-pointer" + ((selectedTab === "search") ? " border-[#290005] border-b-[1rem] self-end pb-[1.65rem]" : " pb-[2.65rem]")}>
                         Adopt
-                    </a>
+                    </Link>
                     
                 </div>
 
@@ -43,31 +43,31 @@ export function NavBar({}) {
                 { (isAuthenticated) ? (
                     <div className="self-center flex flex-row gap-[1rem] pr-[1.5rem] font-semibold items-center">
                         {((isShelter) ? (
-                            <a href="/listings">
+                            <Link to="/listings">
                                 <div class="mx-[1rem] font-medium hover:cursor-pointer border-b-[3px] border-[#FF9447] hover:border-[#290005]">My Listings</div>
-                            </a>
+                            </Link>
                         ) : (null))}
                         {((hasNotification) ? (
-                            <a href='/notifications' class="bg-[#FF9447] hover:opacity-[80%] transition duration-300 py-[.5rem] rounded-full px-[.5rem]" id="notificationButton">
+                            <Link to='/notifications' class="bg-[#FF9447] hover:opacity-[80%] transition duration-300 py-[.5rem] rounded-full px-[.5rem]" id="notificationButton">
                                 <img class="w-[2rem] h-[2rem]" src="/notification.svg"/>
-                            </a>
+                            </Link>
                         ) : (null))}
-                        <a href="/profile"
+                        <Link to="/profile"
                             className="hover:opacity-[80%] transition bg-[#FF9447] py-[1.2rem] px-[1rem] w-[10rem] text-center text-[#FFF8F4] hover:cursor-pointer rounded-full flex flex-nowrap justify-center items-center space-x-2">
                             <img src="/profile_icon.svg" alt="profile_icon.svg" className="h-6 w-6"/>
                             <span>My Profile</span>
-                        </a>
+                        </Link>
                     </div>
                 ) : (
                     <div class="self-center flex flex-row gap-[1rem] pr-[1.5rem] font-semibold">
-                        <a href="/signup">
+                        <Link to="/signup">
                             <div class="bg-[#FF9447] py-[.75rem] w-[8rem] text-center text-[#FFF8F4] hover:opacity-[85%] transition">
                                 Sign Up
                             </div>
-                        </a>
-                        <a href="/login" class="border-[#290005] border-[1px] py-[.75rem] w-[8rem] text-center text-[#290005] hover:cursor-pointer hover:bg-[#290005] hover:text-white transition duration-300">
+                        </Link>
+                        <Link to="/login" class="border-[#290005] border-[1px] py-[.75rem] w-[8rem] text-center text-[#290005] hover:cursor-pointer hover:bg-[#290005] hover:text-white transition duration-300">
                             Log In
-                        </a>
+                        </Link>
                     </div>
                 )
                 }
@@ -98,16 +98,16 @@ export function NavBar({}) {
                 <div id="navBarCollapsibleContent" ref={contentRef} className="overflow-hidden flex flex-col items-end"
                     style={{boxShadow: "0px 0px 18px 0px rgba(0, 0, 0, 0.1) inset", maxHeight: contentMaxHeight}}>
                     <div className="flex flex-col text-[1rem] w-[100%] font-semibold text-[290005]">
-                        <a href="/" className="border-b-[.05rem] border-[#6C6866] py-[1rem] mx-[1.5rem] grow">
+                        <Link to="/" className="border-b-[.05rem] border-[#6C6866] py-[1rem] mx-[1.5rem] grow">
                             <div className="px-[2rem] hover:cursor-pointer w-[100%] text-end">Home</div>
-                        </a>
-                        <a href="/search" className="border-b-[.05rem] border-[#6C6866] py-[1rem] mx-[1.5rem] grow">
+                        </Link>
+                        <Link to="/search" className="border-b-[.05rem] border-[#6C6866] py-[1rem] mx-[1.5rem] grow">
                             <div className="px-[2rem] hover:cursor-pointer w-[100%] text-end">Adopt</div>
-                        </a>
+                        </Link>
                         {(isShelter) ? (
-                            <a href="/listings" class="border-b-[.05rem] border-[#6C6866] py-[1rem] mx-[1.5rem] grow">
+                            <Link to="/listings" class="border-b-[.05rem] border-[#6C6866] py-[1rem] mx-[1.5rem] grow">
                                 <div class="px-[2rem] hover:cursor-pointer w-[100%] text-end hover:decoration-black">My Listings</div>
-                            </a>
+                            </Link>
                         ) : (
                             null
                         )}
@@ -115,24 +115,24 @@ export function NavBar({}) {
                     { (isAuthenticated) ? (
                         <div className="flex flex-row justify-end gap-[1rem] mr-[1.5rem] w-[100%] py-[1rem] font-semibold">
                             {(hasNotification) ? (
-                                <a href="/notifications" class="bg-[#FF9447] hover:opacity-[80%] transition duration-300 py-[.5rem] rounded-full px-[.5rem]" id="notificationaMobile">
+                                <Link to="/notifications" class="bg-[#FF9447] hover:opacity-[80%] transition duration-300 py-[.5rem] rounded-full px-[.5rem]" id="notificationaMobile">
                                     <img class="w-[2rem] h-[2rem]" src="notification.svg"/>
-                                </a>
+                                </Link>
                             ) : (null)}
-                            <a href="/profile" className="bg-[#FF9447] py-[.75rem] w-[10rem] text-center text-[#FFF8F4] rounded-full flex flex-row gap-[.5rem] justify-center hover:opacity-[85%] transition duration-300">
+                            <Link to="/profile" className="bg-[#FF9447] py-[.75rem] w-[10rem] text-center text-[#FFF8F4] rounded-full flex flex-row gap-[.5rem] justify-center hover:opacity-[85%] transition duration-300">
                                 <img src="profile_icon.svg" alt="profile_icon.svg" className="h-6 w-6"/>
                                 My Profile
-                            </a>
+                            </Link>
                         </div>) : (
                         <div class="flex flex-row justify-end gap-[1rem] mr-[1.5rem] w-[100%] py-[1rem] font-semibold">
-                            <a href="/signup">
+                            <Link to="/signup">
                                 <div class="bg-[#FF9447] py-[.75rem] w-[8rem] text-center text-[#FFF8F4] hover:opacity-[85%] transition">
                                     Sign Up
                                 </div>
-                            </a>
-                            <a href="/login" class="border-[#290005] border-[1px] py-[.75rem] w-[8rem] text-center text-[#290005] hover:bg-[#290005] hover:text-white transition duration-300">
+                            </Link>
+                            <Link to="/login" class="border-[#290005] border-[1px] py-[.75rem] w-[8rem] text-center text-[#290005] hover:bg-[#290005] hover:text-white transition duration-300">
                                 Log In
-                            </a>
+                            </Link>
                         </div>
                     )
                     }
