@@ -5,8 +5,9 @@ import { Landing } from './pages/landing'
 import { Search } from './pages/search'
 import Layout from './components/layout/Layout';
 import PetDetail from './pages/PetDetail';
-import { Login } from './pages/login'
-import { Signup } from './pages/signup'
+// import { Login } from './pages/login'
+// import { Signup } from './pages/signup'
+
 
 function App() {
   return (
@@ -18,8 +19,8 @@ function App() {
             <Route path=":petId" element={<PetDetail />} />
           </Route>
           <Route path="search" element={<Search />} />
-          <Route path="login" element={<Login />} />
-          <Route path="signup" element={<Signup />} />
+          {/* <Route path="login" element={<Login />} /> */}
+          {/* <Route path="signup" element={<Signup />} /> */}
         </Route>
       </Routes>
     </Router>
