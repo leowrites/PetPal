@@ -3,7 +3,7 @@ import { LogoToLandingButton } from "./LogoToLandingButton";
 import { useState, useRef, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 
-export function NavBar({}) {
+export default function NavBar({}) {
     // const location = useLocation();
 
     const isAuthenticated = true;
