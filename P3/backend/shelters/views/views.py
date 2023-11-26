@@ -198,6 +198,10 @@ class ListOrCreatePetListing(generics.ListCreateAPIView):
             raise PermissionDenied("You do not have permission to create a listing for this shelter")
         serializer.save(shelter=self.request.user.shelter)
 
+    def get_queryset(self):
+        shelter = get_object_or_404(models.Shelter, id=self.kwargs['pk'])
+        return PetListing.objects.filter(shelter=shelter)
+
     def get_permissions(self):
         if self.request.method == 'GET':
             permission_classes = [IsAuthenticated]
