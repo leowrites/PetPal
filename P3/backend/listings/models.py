@@ -1,4 +1,5 @@
 from django.db import models
+from cloudinary.models import CloudinaryField
 
 
 class PetListing(models.Model):
@@ -8,7 +9,7 @@ class PetListing(models.Model):
     status = models.CharField(max_length=15, choices=STATUS_CHOICES, default="available")
     breed = models.CharField(max_length=200)
     age = models.PositiveSmallIntegerField()
-    image = models.ImageField(upload_to='listings/')
+    image = CloudinaryField('image')
     bio = models.TextField()
     medical_history = models.TextField()
     behavior = models.TextField()

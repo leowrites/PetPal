@@ -195,6 +195,7 @@ class PetApplicationPostSerializer(serializers.Serializer):
 class PetListingSerializer(serializers.ModelSerializer):
     # questions = serializers.PrimaryKeyRelatedField(many=True, queryset=Question.objects.all(), write_only=True)
     assigned_questions = AssignedQuestionDetailsSerializer(many=True, required=False)
+    image = serializers.ImageField()
 
     # user can select the questions, which will create new rows in listing questions
     class Meta:
