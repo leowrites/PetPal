@@ -1,12 +1,12 @@
 import './App.css';
 import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
-import { Landing } from './pages/landing'
-import { Search } from './pages/search'
+import { Landing } from './pages/Landing'
+import { Search } from './pages/Search'
 import Layout from './components/layout/Layout';
 import { setAuthToken } from './services/ApiService';
-import { Login } from './pages/login'
-import { Signup } from './pages/signup'
+import { Login } from './pages/Login'
+import { Signup } from './pages/Signup'
 import NotFound from './pages/NotFound'
 
 function App() {
