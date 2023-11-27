@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Button = ({ className, onClick, buttonType, children, type}) => {
+const Button = ({ className, onClick, buttonType, children, type, disabled, ...rest}) => {
     let buttonClass = ''
     switch (buttonType) {
         case 'primary':
@@ -12,7 +12,7 @@ const Button = ({ className, onClick, buttonType, children, type}) => {
     }
 
     return (
-        <button className={`text-white hover:opacity-[80%] transition duration-300 ${className} ${buttonClass}`} onClick={onClick} type={type}>
+        <button className={`text-white hover:opacity-[80%] transition duration-300 ${className} ${buttonClass} ${disabled ? 'disabled-button' : null }`} disabled={disabled} onClick={onClick} type={type} {...rest}>
             {children}
         </button>
     );
