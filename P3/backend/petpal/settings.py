@@ -53,6 +53,8 @@ INSTALLED_APPS = [
     'django_filters',
     'notifications',
     'listings',
+    'questions',
+    'applications',
     'corsheaders',
     'cloudinary',
     'cloudinary_storage'
