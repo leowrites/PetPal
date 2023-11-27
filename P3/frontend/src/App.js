@@ -5,7 +5,7 @@ import { Landing } from './pages/landing'
 import { Search } from './pages/search'
 import Layout from './components/layout/Layout';
 import PetDetail from './pages/PetDetail';
-// import { setAuthToken } from './services/ApiService';
+import { setAuthToken } from './services/ApiService';
 // import { Login } from './pages/login'
 // import { Signup } from './pages/signup'
 import NotFound from './pages/NotFound'

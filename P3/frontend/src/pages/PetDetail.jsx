@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import Button from '../components/inputs/Button'
 
 const DescriptionSection = ({ sectionTitle, sectionDetails }) => {
@@ -65,6 +65,7 @@ const PetDetailRightPanel = ({ petListingOverview }) => {
 export default function PetDetail() {
     const { petId } = useParams()
     const [petDetail, setPetDetail] = useState({})
+    const navigate = useNavigate()
     useEffect(() => {
         // fetch pet details
         fetch(`http://localhost:8000/shelters/1/listings/${petId}`, {
@@ -72,9 +73,14 @@ export default function PetDetail() {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
             }
         })
-            .then(res => res.json())
+            .then(res => {
+                if (res.status === 404) {
+                    console.log("Navigating")
+                    navigate('/404')
+                }
+                return res.json()
+            })
             .then(data => setPetDetail(data))
-            .catch(err => console.log(err))
     }, [])
     console.log(petDetail)
     const petListingIDetails = [
