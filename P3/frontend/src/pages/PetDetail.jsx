@@ -2,6 +2,8 @@ import { useState, useEffect } from "react"
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import Button from '../components/inputs/Button'
 import { PetOverviewPanel } from "../components/pet/common"
+import PetDetailService from "../services/PetDetailService"
+import { setAuthToken } from "../services/ApiService"
 
 const DescriptionSection = ({ sectionTitle, sectionDetails }) => {
     return (<div>
@@ -52,21 +54,18 @@ export default function PetDetail() {
     const navigate = useNavigate()
     useEffect(() => {
         // fetch pet details
-        fetch(`http://localhost:8000/shelters/1/listings/${listingId}`, {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`
-            }
-        })
+        setAuthToken(localStorage.getItem('token'))
+        PetDetailService.get(listingId)
             .then(res => {
-                if (res.status === 404) {
-                    console.log("Navigating")
+                setPetDetail(res.data)
+            })
+            .catch(err => {
+                if (err.response.status === 404) {
                     navigate('/404')
                 }
-                return res.json()
+                console.error(err)
             })
-            .then(data => setPetDetail(data))
     }, [])
-    console.log(petDetail)
     const petListingIDetails = [
         {
             sectionTitle: 'Medical History',
