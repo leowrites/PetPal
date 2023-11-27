@@ -14,7 +14,13 @@ from pathlib import Path
 from datetime import timedelta
 import json
 from django.core.exceptions import ImproperlyConfigured
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -24,8 +30,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-&f-ulg#izgs#geegnwd$!j4^q0t9ktps6doin3qk#9&5s)+y@4'
-
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -48,7 +53,11 @@ INSTALLED_APPS = [
     'django_filters',
     'notifications',
     'listings',
+    'questions',
+    'applications',
     'corsheaders',
+    'cloudinary',
+    'cloudinary_storage'
 ]
 
 MIDDLEWARE = [
@@ -160,5 +169,8 @@ SIMPLE_JWT = {
 
 AUTH_USER_MODEL = 'users.User'
 
-MEDIA_ROOT = BASE_DIR / "media"
-MEDIA_URL = "media/"
+cloudinary.config( 
+  cloud_name = os.environ.get("CLOUDINARY_CLOUD_NAME"), 
+  api_key = os.environ.get("CLOUDINARY_API_KEY"), 
+  api_secret = os.environ.get("CLOUDINARY_API_SECRET") 
+)

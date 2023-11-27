@@ -31,7 +31,8 @@ urlpatterns = [
     path('shelters/', include('shelters.urls', namespace='shelters')),
     path('notifications/', include('notifications.urls', namespace='notifications')),
     path('listings/', include('listings.urls', namespace='listings')),
+    path('questions/', include('questions.urls', namespace='questions')),
+    path('applications/', include('applications.urls', namespace='applications'))
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
