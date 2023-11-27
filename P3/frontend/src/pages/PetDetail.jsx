@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react"
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, Link } from 'react-router-dom'
 import Button from '../components/inputs/Button'
+import { PetOverviewPanel } from "../components/pet/common"
 
 const DescriptionSection = ({ sectionTitle, sectionDetails }) => {
     return (<div>
@@ -45,30 +46,13 @@ const PetDetailLeftPanel = ({ petListingIDetails }) => {
     </div>
 }
 
-const PetDetailRightPanel = ({ petListingOverview }) => {
-    return (<div
-        className="col-span-1 md:col-span-2 p-5 py-10 rounded-xl pet-overview-box order-first md:order-last"
-    >
-        <div className="flex flex-col gap-1">
-            <p className="text-lg font-bold">{petListingOverview.name}</p>
-            <p className="text-sm">{petListingOverview.listingTime}</p>
-            <p className="text-sm pet-overview-box-status">Status: {petListingOverview.status}</p>
-            <a className="text-sm underline pet-overview-box-shelter" href="../shelter/shelter.html">{petListingOverview.shelter}</a>
-            <p className="text-sm pet-overview-box-breed">{petListingOverview.breed}</p>
-            <p className="text-sm pet-overview-box-breed">Age {petListingOverview.age}</p>
-            <p className="text-sm"> {petListingOverview.description}</p>
-            <Button text={"Adopt"} />
-        </div>
-    </div>)
-}
-
 export default function PetDetail() {
-    const { petId } = useParams()
+    const { listingId } = useParams()
     const [petDetail, setPetDetail] = useState({})
     const navigate = useNavigate()
     useEffect(() => {
         // fetch pet details
-        fetch(`http://localhost:8000/shelters/1/listings/${petId}`, {
+        fetch(`http://localhost:8000/shelters/1/listings/${listingId}`, {
             headers: {
                 Authorization: `Bearer ${localStorage.getItem('token')}`
             }
@@ -111,7 +95,11 @@ export default function PetDetail() {
             <PetImages imagePath={"/dog_photo1.png"} />
             <div className="grid grid-cols-1 my-5 gap-5 md:grid-cols-5">
                 <PetDetailLeftPanel petListingIDetails={petListingIDetails} />
-                <PetDetailRightPanel petListingOverview={petListingOverview} />
+                <div
+                    className="col-span-1 md:col-span-2 p-5 py-10 rounded-xl pet-overview-box order-first md:order-last"
+                >
+                    <PetOverviewPanel petListingOverview={petListingOverview} />
+                </div>
             </div>
         </div>
     )
