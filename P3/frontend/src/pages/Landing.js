@@ -37,11 +37,11 @@ export const Landing = () => {
       </div>
 
       {/* Main Content */}
-      <div class="px-[1rem] text-[#290005] mb-[5rem]">
+      <div class="px-[1rem] text-[#290005] pb-[1rem]">
         <div class="flex flex-col items-center justify-center gap-[.25rem] pb-[3rem]">
 
           {/* Spacing container */}
-          <div className='flex flex-wrap justify-start sm:max-w-[310px] md:max-w-[650px] lg:max-w-[996px] xl:max-w-[1000px]'>
+          <div className='flex flex-wrap justify-start max-w-[310px] gap-[1rem] md:max-w-[650px] lg:max-w-[996px] xl:max-w-[1000px]'>
             {/* Example Pets */}
             <div className='flex flex-row items-center gap-[.5rem]'>
               <div class="text-[1.5rem] pb-[4px] font-semibold">Latest in Ontario</div>
