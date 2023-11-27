@@ -84,20 +84,20 @@ export default function PetDetail() {
         name: petDetail.name,
         listingTime: petDetail.listed_date,
         status: petDetail.status,
-        shelter: petDetail.shelter,
+        shelter: petDetail.shelter?.shelter_name,
         breed: petDetail.breed,
         age: petDetail.age,
         description: petDetail.bio
     }
     return (
         <div>
-            <PetImages imagePath={"/dog_photo1.png"} />
+            <PetImages imagePath={petDetail.image} />
             <div className="grid grid-cols-1 my-5 gap-5 md:grid-cols-5">
                 <PetDetailLeftPanel petListingIDetails={petListingIDetails} />
                 <div
                     className="col-span-1 md:col-span-2 p-5 py-10 rounded-xl pet-overview-box order-first md:order-last"
                 >
-                    <PetOverviewPanel petListingOverview={petListingOverview} />
+                    <PetOverviewPanel petListingOverview={petListingOverview} detailsView={true}/>
                 </div>
             </div>
         </div>

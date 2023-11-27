@@ -192,9 +192,17 @@ class PetApplicationPostSerializer(serializers.Serializer):
         }
 
 
+class ShelterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Shelter
+        fields = ['shelter_name', 'owner', 'contact_email', 'location', 'mission_statement']
+        read_only_fields = ['owner']
+
+
 class PetListingSerializer(serializers.ModelSerializer):
     # questions = serializers.PrimaryKeyRelatedField(many=True, queryset=Question.objects.all(), write_only=True)
     assigned_questions = AssignedQuestionDetailsSerializer(many=True, required=False)
+    shelter = ShelterSerializer(read_only=True)
     image = serializers.ImageField()
 
     # user can select the questions, which will create new rows in listing questions
@@ -233,14 +241,6 @@ class ShelterCreationSerializer(serializers.ModelSerializer):
         NotificationPreferences.objects.create(user=user)
         shelter = models.Shelter.objects.create(owner=user, **validated_data)
         return shelter
-
-
-class ShelterSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Shelter
-        fields = ['shelter_name', 'owner', 'contact_email', 'location', 'mission_statement']
-        read_only_fields = ['owner']
-
 
 class ShelterReviewSerializer(serializers.ModelSerializer):
     class Meta:

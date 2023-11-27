@@ -129,7 +129,7 @@ export default function PetApplication() {
         name: petDetail.name,
         listingTime: petDetail.listed_date,
         status: petDetail.status,
-        shelter: petDetail.shelter,
+        shelter: petDetail.shelter?.shelter_name,
         breed: petDetail.breed,
         age: petDetail.age,
         description: petDetail.bio
