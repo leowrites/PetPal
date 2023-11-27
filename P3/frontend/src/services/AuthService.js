@@ -13,7 +13,37 @@ class AuthService {
                 setAuthToken(token)
             })
             .catch(err => {
-                console.log(err)
+                throw err
+            })
+    }
+
+    static async signup(username, password, email) {
+        await ApiService.post("/users/", {
+            username,
+            password,
+            password2: password,
+            email
+        })
+            .catch(err => {
+                throw err
+            })
+    }
+
+    static async signupShelter(username, password, email, shelterName, contactEmail, location, missionStatement) {
+        await ApiService.post("/shelters/", {
+            "user_data": {
+                "username": username,
+                "password": password,
+                "password2": password,
+                "email": email
+            },
+            "shelter_name": shelterName,
+            "contact_email": contactEmail,
+            location,
+            "mission_statement": missionStatement,
+        })
+            .catch(err => {
+                throw err
             })
     }
 }
