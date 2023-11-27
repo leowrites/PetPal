@@ -7,6 +7,7 @@ import Layout from './components/layout/Layout';
 import { setAuthToken } from './services/ApiService';
 import { Login } from './pages/login'
 import { Signup } from './pages/signup'
+import NotFound from './pages/NotFound'
 
 function App() {
     
@@ -25,6 +26,7 @@ function App() {
                     <Route path="/search" element={<Search />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Signup />} />
+                    <Route path='*' element={<NotFound />}/>
                 </Route>
             </Routes>
         </Router>
