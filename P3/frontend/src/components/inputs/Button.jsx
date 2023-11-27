@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Button = ({ className, onClick, buttonType, children}) => {
+const Button = ({ className, onClick, buttonType, children, type}) => {
     let buttonClass = ''
     switch (buttonType) {
         case 'primary':
@@ -12,7 +12,7 @@ const Button = ({ className, onClick, buttonType, children}) => {
     }
 
     return (
-        <button className={`text-white hover:opacity-[80%] transition duration-300 ${className} ${buttonClass}`} onClick={onClick}>
+        <button className={`text-white hover:opacity-[80%] transition duration-300 ${className} ${buttonClass}`} onClick={onClick} type={type}>
             {children}
         </button>
     );
