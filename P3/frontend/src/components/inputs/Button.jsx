@@ -4,10 +4,10 @@ const Button = ({ className, onClick, buttonType, children}) => {
     let buttonClass = ''
     switch (buttonType) {
         case 'primary':
-            buttonClass = 'px-3 py-2 w-9/12 rounded-lg border-2 border-[#290005] font-semibold bg-[#290005] mx-4 sm:mx-8';
+            buttonClass = 'px-3 py-2 w-9/12 rounded-lg border-2 border-[#290005] font-semibold bg-[#290005] sm:mx-8';
             break;
         default:
-            buttonClass = 'py-2 px-10 rounded-full enabled-button mt-5 w-fit';
+            buttonClass = 'py-2 px-[1rem] rounded-full enabled-button w-fit';
             break;
     }
 

@@ -52,7 +52,7 @@ export default function NavBar({}) {
                             </Link>
                         ) : (null))}
                         <Link to="/profile"
-                            className="hover:opacity-[80%] transition bg-[#FF9447] py-[.6rem] px-[1rem] w-[9rem] text-center text-[#FFF8F4] hover:cursor-pointer rounded-full flex flex-nowrap justify-center items-center space-x-2">
+                            className="hover:opacity-[80%] transition bg-[#FF9447] py-[.6rem] px-[1rem] w-[10rem] text-center text-[#FFF8F4] hover:cursor-pointer rounded-full flex flex-nowrap justify-center items-center space-x-2">
                             <img src="/profile_icon.svg" alt="profile_icon.svg" className="h-6 w-6"/>
                             <span>My Profile</span>
                         </Link>
