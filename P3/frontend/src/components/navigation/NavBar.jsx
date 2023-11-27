@@ -4,12 +4,11 @@ import { useState, useRef, useContext } from "react";
 import { Link, useLocation } from "react-router-dom";
 
 export default function NavBar({}) {
-    // const location = useLocation();
 
     const isAuthenticated = true;
     const isShelter = true;
     const hasNotification = true;
-    const selectedTab = "";
+    const selectedTab = useLocation().pathname.split('/')[1];
 
     let contentRef = useRef(null);
     let iconOpenRef = useRef(null);
@@ -30,10 +29,10 @@ export default function NavBar({}) {
                 {/* <!-- normal navbar start --> */}
                 <div className=" flex flex-row text-[2rem] items-center pl-[1.5rem]">
                     <LogoToLandingButton/>
-                    <Link to="/" className={`hover:border-b-[1rem] hover:border-[#290005] hover:pb-[1.65rem] self-end text-[1rem] font-medium px-[2rem] ml-[1rem] hover:cursor-pointer` + ((selectedTab === "home") ? " border-[#290005] border-b-[1.65rem] pb-[1.65rem]" : " pb-[2.65rem]")}>
+                    <Link to="/" className={`hover:border-b-[.5rem] hover:border-[#290005] hover:pb-[.6rem] self-end text-[1rem] font-medium px-[2rem] ml-[1rem] hover:cursor-pointer` + ((selectedTab === "") ? " border-[#290005] border-b-[.5rem] pb-[.6rem]" : " pb-[1.1rem]")}>
                         Home
                     </Link>
-                    <Link to="/search" className={"hover:border-b-[1rem] hover:border-[#290005] hover:pb-[1.65rem] self-end text-[1rem] font-medium px-[2rem] hover:cursor-pointer" + ((selectedTab === "search") ? " border-[#290005] border-b-[1rem] self-end pb-[1.65rem]" : " pb-[2.65rem]")}>
+                    <Link to="/search" className={"hover:border-b-[.5rem] hover:border-[#290005] hover:pb-[.6rem] self-end text-[1rem] font-medium px-[2rem] hover:cursor-pointer" + ((selectedTab === "search") ? " border-[#290005] border-b-[.5rem] self-end pb-[.6rem]" : " pb-[1.1rem]")}>
                         Adopt
                     </Link>
                     
@@ -53,7 +52,7 @@ export default function NavBar({}) {
                             </Link>
                         ) : (null))}
                         <Link to="/profile"
-                            className="hover:opacity-[80%] transition bg-[#FF9447] py-[1.2rem] px-[1rem] w-[10rem] text-center text-[#FFF8F4] hover:cursor-pointer rounded-full flex flex-nowrap justify-center items-center space-x-2">
+                            className="hover:opacity-[80%] transition bg-[#FF9447] py-[.6rem] px-[1rem] w-[9rem] text-center text-[#FFF8F4] hover:cursor-pointer rounded-full flex flex-nowrap justify-center items-center space-x-2">
                             <img src="/profile_icon.svg" alt="profile_icon.svg" className="h-6 w-6"/>
                             <span>My Profile</span>
                         </Link>
