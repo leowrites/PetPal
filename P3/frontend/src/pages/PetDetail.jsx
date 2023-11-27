@@ -74,6 +74,7 @@ export default function PetDetail() {
         })
             .then(res => res.json())
             .then(data => setPetDetail(data))
+            .catch(err => console.log(err))
     }, [])
     console.log(petDetail)
     const petListingIDetails = [
