@@ -97,10 +97,14 @@ const ReadOnlyQuestions = ({ petName, completed, answers }) => {
                 <p className="text-2xl min-w-full font-semibold">Adopt {petName}</p>
                 <div className="grid md:grid-cols-6 w-full gap-3">
                     {
-                        answers?.map((answer) => {
-                            const assignedQuestion = answer.question
-                            return PreconfiguredQuestions(assignedQuestion.question, assignedQuestion.required, completed, answer)
-                        })
+                        answers.length === 0 ?
+                            <div className="col-span-6 mt-3">
+                                <p className="text-lg">No questions answered for {petName}!</p>
+                            </div>
+                            : answers?.map((answer) => {
+                                const assignedQuestion = answer.question
+                                return PreconfiguredQuestions(assignedQuestion.question, assignedQuestion.required, completed, answer)
+                            })
                     }
                 </div>
             </Form>
@@ -162,9 +166,15 @@ const WriteOnlyQuestions = ({ petName, assignedQuestions, listingId, completed }
                                 <p className="text-2xl min-w-full font-semibold">Adopt {petName}</p>
                                 <div className="grid md:grid-cols-6 w-full gap-3">
                                     {
-                                        assignedQuestions?.map((assignedQuestion) => {
-                                            return PreconfiguredQuestions(assignedQuestion.question, assignedQuestion.required, completed)
-                                        })
+                                        // if there are no questions, display a message
+                                        assignedQuestions?.length === 0
+                                            ?
+                                            <div className="col-span-6 mt-3">
+                                                <p className="text-lg">No questions to answer for {petName}!</p>
+                                            </div>
+                                            : assignedQuestions?.map((assignedQuestion) => {
+                                                return PreconfiguredQuestions(assignedQuestion.question, assignedQuestion.required, completed)
+                                            })
                                     }
                                 </div>
                                 {
