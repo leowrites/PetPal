@@ -13,7 +13,6 @@ import { useNavigate } from 'react-router-dom';
 const Signup = () => {
     const navigate = useNavigate();
     const [isShelter, setIsShelter] = useState(false);
-    const [formError, setFormError] = useState('')
 
     useEffect(() => {
         // TODO: replace with check using context
@@ -38,30 +37,36 @@ const Signup = () => {
                         location: '',
                         missionStatement: '',
                     }}
-                    onSubmit={async (values) => {
-                        if (isShelter) {
-                            await AuthService.signupShelter(values.username, values.password, values.email, values.shelterName, values.contactEmail, values.location, values.missionStatement)
-                                .then(() => {
-                                    navigate('/login')
-                                })
-                                .catch((err) => {
-                                    setFormError('Could not sign up')
-                                })
-                        } else {
-                            await AuthService.signup(values.username, values.password, values.email)
-                                .then(() => {
-                                    navigate('/login')
-                                })
-                                .catch((err) => {
-                                    setFormError('Could not sign up')
-                                })
+                    onSubmit={async (values, { setFieldError }) => {
+                        const action = isShelter ? AuthService.signupShelter : AuthService.signup;
+                        const args = isShelter ? [
+                            values.username,
+                            values.password,
+                            values.email,
+                            values.shelterName,
+                            values.contactEmail,
+                            values.location,
+                            values.missionStatement
+                        ] : [
+                            values.username,
+                            values.password,
+                            values.email
+                        ];
+                        try {
+                            await action(...args);
+                            navigate("/login");
+                        } catch (err) {
+                            if (err.response && err.response.data) {
+                                Object.keys(err.response.data).forEach((key) => {
+                                setFieldError(key, err.response.data[key][0]);
+                                });
+                            }
                         }
                     }}
                 >
                     {({errors, values}) => (
                         <Form>
                             <div className="flex flex-col justify-center items-center w-full mb-4 gap-4 mt-4">
-                                {formError && <Text color='text-red-500'>{formError}</Text>}
 
                                 <div className='flex flex-row gap-4'>
                                     <label htmlFor="isShelter">Are you a shelter?</label>
