@@ -1,6 +1,19 @@
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import Button from '../inputs/Button'
-export const PetOverviewPanel = ({ petListingOverview, detailsView }) => {
+export const PetOverviewPanel = ({ petListingOverview, detailsView, applicationId }) => {
+    const ActionButton = () => {
+        return (
+            applicationId ?
+                <Link to={`/applications/${applicationId}`}>
+                    <Button>View Application</Button>
+                </Link>
+                : detailsView ?
+                <Link to='applications'>
+                    <Button>Adopt</Button>
+                </Link>
+                : null
+        )
+    }
     return (
         <div className="flex flex-col gap-1">
             <p className="text-lg font-bold">{petListingOverview.name}</p>
@@ -10,14 +23,7 @@ export const PetOverviewPanel = ({ petListingOverview, detailsView }) => {
             <p className="text-sm pet-overview-box-breed">{petListingOverview.breed}</p>
             <p className="text-sm pet-overview-box-breed">Age {petListingOverview.age}</p>
             <p className="text-sm"> {petListingOverview.description}</p>
-            {
-                detailsView
-                    ?
-                    <Link to='applications'>
-                        <Button>Adopt</Button>
-                    </Link>
-                    : null
-            }
+            <ActionButton />
         </div>
     )
 }

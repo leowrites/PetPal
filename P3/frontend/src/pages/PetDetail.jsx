@@ -4,6 +4,7 @@ import Button from '../components/inputs/Button'
 import { PetOverviewPanel } from "../components/pet/common"
 import PetDetailService from "../services/PetDetailService"
 import { setAuthToken } from "../services/ApiService"
+import PetApplicationService from "../services/PetApplicationService"
 
 const DescriptionSection = ({ sectionTitle, sectionDetails }) => {
     return (<div>
@@ -51,6 +52,7 @@ const PetDetailLeftPanel = ({ petListingIDetails }) => {
 export default function PetDetail() {
     const { listingId } = useParams()
     const [petDetail, setPetDetail] = useState({})
+    const [applicationId, setApplicationId] = useState(null)
     const navigate = useNavigate()
     useEffect(() => {
         // fetch pet details
@@ -68,6 +70,15 @@ export default function PetDetail() {
                 }
                 console.error(err)
             })
+        // check if user already applied for this pet
+        PetApplicationService.list()
+        .then(res => {
+            res.data.results.forEach(application => {
+                if (application.listing.id === parseInt(listingId)) {
+                    setApplicationId(application.id)
+                }
+            })
+        })
     }, [])
     const petListingIDetails = [
         {
@@ -90,8 +101,10 @@ export default function PetDetail() {
         shelter: petDetail.shelter?.shelter_name,
         breed: petDetail.breed,
         age: petDetail.age,
-        description: petDetail.bio
+        description: petDetail.bio,
     }
+
+    
     return (
         <div>
             <PetImages imagePath={petDetail.image} />
@@ -100,7 +113,7 @@ export default function PetDetail() {
                 <div
                     className="col-span-1 md:col-span-2 p-5 py-10 rounded-xl pet-overview-box order-first md:order-last"
                 >
-                    <PetOverviewPanel petListingOverview={petListingOverview} detailsView={true}/>
+                    <PetOverviewPanel petListingOverview={petListingOverview} detailsView={true} applicationId={applicationId}/>
                 </div>
             </div>
         </div>
