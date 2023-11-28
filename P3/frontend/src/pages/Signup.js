@@ -42,6 +42,7 @@ const Signup = () => {
                         const args = isShelter ? [
                             values.username,
                             values.password,
+                            values.password2,
                             values.email,
                             values.shelterName,
                             values.contactEmail,
@@ -50,6 +51,7 @@ const Signup = () => {
                         ] : [
                             values.username,
                             values.password,
+                            values.password2,
                             values.email
                         ];
                         try {

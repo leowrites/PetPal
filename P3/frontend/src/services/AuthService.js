@@ -17,11 +17,11 @@ class AuthService {
             })
     }
 
-    static async signup(username, password, email) {
+    static async signup(username, password, password2, email) {
         await ApiService.post("/users/", {
             username,
             password,
-            password2: password,
+            password2,
             email
         })
             .catch(err => {
@@ -29,12 +29,12 @@ class AuthService {
             })
     }
 
-    static async signupShelter(username, password, email, shelterName, contactEmail, location, missionStatement) {
+    static async signupShelter(username, password, password2, email, shelterName, contactEmail, location, missionStatement) {
         await ApiService.post("/shelters/", {
             "user_data": {
                 "username": username,
                 "password": password,
-                "password2": password,
+                "password2": password2,
                 "email": email
             },
             "shelter_name": shelterName,
