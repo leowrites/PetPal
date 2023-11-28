@@ -35,17 +35,19 @@ const NewQuestionModal = ({ open, handleOpen, handleAddQuestion }) => {
             <Formik initialValues={initialValues}
                 onSubmit={onSubmit}
             >
-                <Form>
-                    <label htmlFor="question">Question</label>
-                    <TextInput label="Question" id="question" name="question" placeholder="Enter the question here..." required />
-                    <div className='pt-3'>
-                        <label htmlFor="type">Type</label>
-                        <div>
-                            <SelectInput name='type' options={options} />
+                {({ isSubmitting }) => (
+                    <Form>
+                        <label htmlFor="question">Question</label>
+                        <TextInput label="Question" id="question" name="question" placeholder="Enter the question here..." required />
+                        <div className='pt-3'>
+                            <label htmlFor="type">Type</label>
+                            <div>
+                                <SelectInput name='type' options={options} />
+                            </div>
                         </div>
-                    </div>
-                    <Button type="submit">Submit</Button>
-                </Form>
+                        <Button type="submit" disabled={isSubmitting}>Submit</Button>
+                    </Form>
+                )}
             </Formik>
         </QuestionModal>
     )
@@ -71,12 +73,12 @@ export default function () {
     return (
         <div>
             <Heading>
-                Your Question Repository
+                    Your Question Repository
             </Heading>
             <Button onClick={() => handleOpen(true)}>
             Add
-            </Button>
-            <div className='flex flex-wrap gap-4 justify-between'>
+            </Button> 
+            <div className='flex flex-wrap gap-4'>
                 {
                     questions?.map(questionObj => <QuestionCard key={questionObj.id} questionObj={questionObj} handleDelete={handleDelete}/>)
                 }

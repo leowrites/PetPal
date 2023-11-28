@@ -26,7 +26,7 @@ export default function ({ questionObj, handleDelete }) {
 
     return (
         <>
-            <Card className="mt-6">
+            <Card className="mt-6 w-full md:w-auto">
                 <CardBody className='mb-0 pb-4'>
                     <Subheading>
                         {questionObj.question}
