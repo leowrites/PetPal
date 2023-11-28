@@ -89,22 +89,6 @@ class UpdateOrGetPetApplicationDetails(generics.RetrieveUpdateAPIView):
         return obj
 
 
-class ListOrCreateShelterQuestion(generics.ListCreateAPIView):
-    serializer_class = serializers.ShelterQuestionSerializer
-    # only the owner of this shelter can get questions for this shelter, as well as make new ones
-    permission_classes = [IsAuthenticated, permissions.IsAnyShelterOwner, permissions.IsShelterOwner]
-
-    def get_queryset(self):
-        shelter = get_object_or_404(models.Shelter, id=self.kwargs['pk'])
-        self.check_object_permissions(self.request, shelter)
-        return ShelterQuestion.objects.filter(shelter=shelter)
-
-    def perform_create(self, serializer):
-        shelter = get_object_or_404(models.Shelter, id=self.kwargs['pk'])
-        self.check_object_permissions(self.request, shelter)
-        serializer.save(user=self.request.user)
-
-
 class ListOrCreatePetListing(generics.ListCreateAPIView):
     serializer_class = serializers.PetListingSerializer
     queryset = PetListing.objects.all()
