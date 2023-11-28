@@ -168,7 +168,7 @@ const WriteOnlyQuestions = ({ petName, assignedQuestions, listingId, completed }
                                     }
                                 </div>
                                 {
-                                    <Button type='submit' disabled={isSubmitting}>
+                                    <Button type='submit' disabled={isSubmitting} className='mt-4'>
                                         <p className="font-bold">
                                             Submit
                                         </p>
