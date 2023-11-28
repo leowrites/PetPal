@@ -176,6 +176,9 @@ export default function PetApplication({ completed }) {
     useEffect(() => {
         // fetch pet details
         setAuthToken(localStorage.getItem('token'))
+        if (!localStorage.getItem('token')) {
+            navigate('/login')
+        }
         if (completed) {
             // retrieve completed pet application
             PetApplicationService.get(applicationId)

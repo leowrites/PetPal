@@ -55,6 +55,9 @@ export default function PetDetail() {
     useEffect(() => {
         // fetch pet details
         setAuthToken(localStorage.getItem('token'))
+        if (!localStorage.getItem('token')) {
+            navigate('/login')
+        }
         PetDetailService.get(listingId)
             .then(res => {
                 setPetDetail(res.data)
