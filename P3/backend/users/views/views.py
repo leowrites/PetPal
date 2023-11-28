@@ -10,7 +10,6 @@ class CreateUser(generics.CreateAPIView):
     permission_classes = [permissions.IsNotAuthenticated]
     serializer_class = serializers.UserCreationSerializer
     queryset = User.objects.all()
-    parser_classes = [parsers.MultiPartParser, parsers.FormParser]
 
 # GET /users/<pk>
 # PUT /users/<pk>
@@ -18,7 +17,6 @@ class CreateUser(generics.CreateAPIView):
 class RetrieveOrUpdateOrDestroyUser(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = serializers.UserProfileSerializer
     queryset = User.objects.all()
-    parser_classes = [parsers.MultiPartParser, parsers.FormParser]
 
     def get_permissions(self):
         if self.request.method == 'GET':

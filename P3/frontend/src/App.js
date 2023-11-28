@@ -6,12 +6,13 @@ import { Search } from './pages/Search'
 import Layout from './components/layout/Layout';
 import PetDetail from './pages/PetDetail';
 import { setAuthToken } from './services/ApiService';
-// import { Login } from './pages/Login'
-// import { Signup } from './pages/Signup'
+import Login from './pages/Login'
+import Signup from './pages/Signup'
 import NotFound from './pages/NotFound'
 import PetApplication from './pages/PetApplication';
 import CompletedApplicationLayout from './pages/CompletedApplicationLayout';
 import Message from './pages/Message';
+import Logout from './pages/Logout'
 
 function App() {
 
@@ -37,9 +38,10 @@ function App() {
             <Route path=':applicationId/comments' element={<Message />} />
           </Route>
           <Route path="search" element={<Search />} />
-          {/* <Route path="login" element={<Login />} /> */}
-          {/* <Route path="signup" element={<Signup />} /> */}
+          <Route path="login" element={<Login />} />
+          <Route path="signup" element={<Signup />} />
           <Route path='*' element={<NotFound />} />
+          <Route path="logout" element={<Logout />} />
         </Route>
       </Routes>
     </Router>
