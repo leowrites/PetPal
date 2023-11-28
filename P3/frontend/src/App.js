@@ -10,7 +10,8 @@ import { setAuthToken } from './services/ApiService';
 // import { Signup } from './pages/Signup'
 import NotFound from './pages/NotFound'
 import PetApplication from './pages/PetApplication';
-import CompletedPetApplication from './pages/CompletedPetApplication';
+import CompletedApplicationLayout from './pages/CompletedApplicationLayout';
+import Message from './pages/Message';
 
 function App() {
 
@@ -31,8 +32,9 @@ function App() {
             </Route>
           </Route>
           <Route path="listings/:listingId/applications" element={<PetApplication />} />
-          <Route path="applications">
-            <Route path=":applicationId" element={<CompletedPetApplication />} />
+          <Route path="applications" element={<CompletedApplicationLayout />}>
+            <Route path=":applicationId" element={<PetApplication completed={true}/>} />
+            <Route path=':applicationId/comments' element={<Message />} />
           </Route>
           <Route path="search" element={<Search />} />
           {/* <Route path="login" element={<Login />} /> */}
