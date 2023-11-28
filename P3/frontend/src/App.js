@@ -13,7 +13,7 @@ import PetApplication from './pages/PetApplication';
 import CompletedApplicationLayout from './pages/CompletedApplicationLayout';
 import Message from './pages/Message';
 import Listings from './pages/Listings';
-import ShelterQuestion from './pages/ShelterQuestion/ShelterQuestionPage';
+import ShelterQuestion from './pages/shelterQuestion/ShelterQuestionPage';
 
 function App() {
 
