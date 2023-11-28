@@ -229,6 +229,14 @@ class PetApplicationGetOrUpdateSerializer(serializers.ModelSerializer):
         return instance
 
 
+class PetApplicationListSerializer(serializers.ModelSerializer):
+    listing = PetListingSerializer(read_only=True)
+
+    class Meta:
+        model = PetApplication
+        fields= '__all__'
+
+
 class ShelterCreationSerializer(serializers.ModelSerializer):
     user_data = UserCreationSerializer(write_only=True)
 
