@@ -10,6 +10,10 @@ class QuestionService {
         const response = await ApiService.post('/questions/', question)
         return response
     }
+    static async delete(id) {
+        const response = await ApiService.delete(`/questions/${id}`)
+        return response
+    }
 }
 
 export default QuestionService;

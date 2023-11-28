@@ -37,7 +37,7 @@ const NewQuestionModal = ({ open, handleOpen, handleAddQuestion }) => {
             >
                 <Form>
                     <label htmlFor="question">Question</label>
-                    <TextInput label="Question" id="question" name="question" placeholder="Enter the question here..." required/>
+                    <TextInput label="Question" id="question" name="question" placeholder="Enter the question here..." required />
                     <div className='pt-3'>
                         <label htmlFor="type">Type</label>
                         <div>
@@ -58,23 +58,27 @@ export default function () {
     const handleAddQuestion = (questionObj) => {
         setQuestions([...questions, questionObj])
     }
+    const handleDelete = (id) => {
+        setQuestions(questions.filter(questionObj => questionObj.id !== id))
+    }
     useEffect(() => {
         setAuthToken(localStorage.getItem("token"))
         QuestionService.list()
             .then(res => setQuestions(res.data.results))
             .catch(err => console.log(err))
     }, [])
+
     return (
         <div>
             <Heading>
                 Your Question Repository
             </Heading>
             <Button onClick={() => handleOpen(true)}>
-                Add
+            Add
             </Button>
             <div className='flex flex-wrap gap-4 justify-between'>
                 {
-                    questions?.map(questionObj => <QuestionCard key={questionObj.id} questionObj={questionObj} />)
+                    questions?.map(questionObj => <QuestionCard key={questionObj.id} questionObj={questionObj} handleDelete={handleDelete}/>)
                 }
             </div>
             <NewQuestionModal open={open} handleOpen={handleOpen} handleAddQuestion={handleAddQuestion} />

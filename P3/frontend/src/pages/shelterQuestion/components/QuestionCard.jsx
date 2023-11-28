@@ -9,10 +9,20 @@ import Subheading from '../../../components/layout/Subheading'
 import { MdModeEdit } from 'react-icons/md';
 import { FaRegTrashAlt } from "react-icons/fa";
 import QuestionModal from "./QuestionModal";
+import QuestionService from "../../../services/QuestionService";
 
-export default function ({ questionObj }) {
+export default function ({ questionObj, handleDelete }) {
     const [open, setOpen] = useState(false);
+    const [deleting , setDeleting] = useState(false); 
     const handleOpen = (open) => setOpen(open);
+    const onDelete = (id) => {
+        setDeleting(true)
+        QuestionService.delete(id)
+        .then(res => {
+            handleDelete(questionObj.id)
+            setDeleting(false)
+        })
+    }
 
     return (
         <>
@@ -27,7 +37,7 @@ export default function ({ questionObj }) {
                         <IconButton size='md' className='rounded-full' onClick={() => { handleOpen(true) }}>
                             <MdModeEdit />
                         </IconButton>
-                        <IconButton size='md' className='rounded-full'>
+                        <IconButton size='md' className='rounded-full' onClick={() => { onDelete(questionObj.id) }} disabled={deleting}>
                             <FaRegTrashAlt />
                         </IconButton>
                     </div>

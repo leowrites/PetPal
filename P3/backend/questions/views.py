@@ -27,6 +27,6 @@ class UpdateOrDestroyShelterQuestion(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAuthenticated, permissions.IsAnyShelterOwner, permissions.IsShelterOwner]
 
     def get_object(self):
-        obj = get_object_or_404(ShelterQuestion, id=self.kwargs['question_id'], shelter_id=self.kwargs['pk'])
+        obj = get_object_or_404(ShelterQuestion, id=self.kwargs['question_id'])
         self.check_object_permissions(self.request, obj.shelter)
         return obj
