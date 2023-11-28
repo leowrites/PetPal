@@ -7,7 +7,6 @@ import { setAuthToken } from "../services/ApiService"
 import { Formik, Form, Field } from 'formik'
 import PetApplicationService from "../services/PetApplicationService"
 
-
 const PetImage = ({ src }) => {
     return (
         <div>
@@ -20,9 +19,7 @@ const PetImage = ({ src }) => {
     )
 }
 
-
-// TODO: update to formik fields
-const PreconfiguredQuestions = (question, required) => {
+const PreconfiguredQuestions = (question, required, completed, answer) => {
     let inputConfig = {
         question: question.question,
         name: question.id,
@@ -81,14 +78,38 @@ const PreconfiguredQuestions = (question, required) => {
                 name={inputConfig.name}
                 type={inputConfig.type}
                 className={inputConfig.inputClass}
-                placeholder={inputConfig.placeholder}
+                placeholder={
+                    completed ? answer.answer :
+                    inputConfig.placeholder
+                }
                 required={required}
+                disabled={completed}
+                checked={completed ? answer.answer : null}
             />
         </div>
     )
 }
 
-const ApplicationForm = ({ petName, assignedQuestions, listingId }) => {
+const ReadOnlyQuestions = ({ petName, completed, answers }) => {
+    console.log(answers)
+    return (
+        <Formik>
+            <Form>
+                <p className="text-2xl min-w-full font-semibold">Adopt {petName}</p>
+                <div className="grid md:grid-cols-6 w-full gap-3">
+                    {
+                        answers?.map((answer) => {
+                            const assignedQuestion = answer.question
+                            return PreconfiguredQuestions(assignedQuestion.question, assignedQuestion.required, completed, answer)
+                        })
+                    }
+                </div>
+            </Form>
+        </Formik>
+    )
+}
+
+const WriteOnlyQuestions = ({ petName, assignedQuestions, listingId, completed }) => {
     const onSubmit = (values, { setSubmitting }) => {
         PetApplicationService.post(listingId, values)
             .then((res) => {
@@ -105,55 +126,83 @@ const ApplicationForm = ({ petName, assignedQuestions, listingId }) => {
         return acc
     }, {})
     return (
-        <div
-            className="order-3 md:order-2 md:col-span-2 md:row-span-3 pet-overview-box p-5 rounded-xl"
+        <Formik
+            onSubmit={onSubmit}
+            initialValues={initialValues}
         >
-            <Formik
-                onSubmit={onSubmit}
-                initialValues={initialValues}
-            >
-                {({ isSubmitting }) => (
-                    <Form>
-                        <p className="text-2xl min-w-full font-semibold">Adopt {petName}</p>
-                        <div className="grid md:grid-cols-6 w-full gap-3">
-                            {
-                                assignedQuestions?.map((assignedQuestion) => {
-                                    return PreconfiguredQuestions(assignedQuestion.question, assignedQuestion.required)
-                                })
-                            }
-                        </div>
+            {({ isSubmitting }) => (
+                <Form>
+                    <p className="text-2xl min-w-full font-semibold">Adopt {petName}</p>
+                    <div className="grid md:grid-cols-6 w-full gap-3">
+                        {
+                            assignedQuestions?.map((assignedQuestion) => {
+                                return PreconfiguredQuestions(assignedQuestion.question, assignedQuestion.required, completed)
+                            })
+                        }
+                    </div>
+                    {
                         <Button type='submit' disabled={isSubmitting}>
                             <p className="font-bold">
                                 Submit
                             </p>
                         </Button>
-                    </Form>
-                )}
-            </Formik>
+                    }
+                </Form>
+            )}
+        </Formik>
+    )
+}
+
+const ApplicationForm = ({ petName, assignedQuestions, listingId, completed, answers }) => {
+    return (
+        <div className="order-3 md:order-2 md:col-span-2 md:row-span-3 pet-overview-box p-5 rounded-xl">
+            {
+                completed ?
+                    <ReadOnlyQuestions petname={petName} assignedQuestions={assignedQuestions} completed={completed} answers={answers}/> :
+                    <WriteOnlyQuestions petname={petName} assignedQuestions={assignedQuestions} listingId={listingId} completed={completed} />
+            }
         </div>
     )
 }
 
 
-export default function PetApplication() {
-    const { listingId } = useParams()
+export default function PetApplication({ completed }) {
+    const { listingId, applicationId } = useParams()
     const [petDetail, setPetDetail] = useState({})
+    const [applicationResponse, setApplicationResponse] = useState([{}])
     const navigate = useNavigate()
     // should check if the user already aoplied for this pet
     // if they have redirect them to their application page
     useEffect(() => {
         // fetch pet details
         setAuthToken(localStorage.getItem('token'))
-        PetDetailService.get(listingId)
-            .then(res => {
-                setPetDetail(res.data)
-            })
-            .catch(err => {
-                if (err.response.status === 404) {
-                    navigate('/404')
-                }
-                console.error(err)
-            })
+        if (completed) {
+            // retrieve completed pet application
+            PetApplicationService.get(applicationId)
+                .then(res => {
+                    console.log(res.data)
+                    setPetDetail(res.data.listing)
+                    setApplicationResponse(res.data.application_responses)
+                })
+                .catch(err => {
+                    if (err.response.status === 404) {
+                        navigate('/404')
+                    }
+                    console.error(err)
+                })
+        }
+        else {
+            PetDetailService.get(listingId)
+                .then(res => {
+                    setPetDetail(res.data)
+                })
+                .catch(err => {
+                    if (err.response.status === 404) {
+                        navigate('/404')
+                    }
+                    console.error(err)
+                })
+        }
     }, [])
     const petListingOverview = {
         name: petDetail.name,
@@ -169,7 +218,9 @@ export default function PetApplication() {
             <PetImage src={petDetail.image} />
             {
                 petDetail.assigned_questions
-                    ? <ApplicationForm petName={petListingOverview.name} assignedQuestions={petDetail.assigned_questions} listingId={listingId} />
+                    ? <ApplicationForm petName={petListingOverview.name}
+                        assignedQuestions={petDetail.assigned_questions}
+                        listingId={listingId} completed={completed} answers={applicationResponse} />
                     : null
             }
             <div className="order-2 md:order-3 md:row-span-2 flex flex-col gap-1 p-5 rounded-xl pet-overview-box">
