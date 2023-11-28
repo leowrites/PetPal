@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react"
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, Link } from 'react-router-dom'
 import Button from '../components/inputs/Button'
 import { PetOverviewPanel } from "../components/pet/common"
 import PetDetailService from "../services/PetDetailService"
@@ -80,7 +80,7 @@ const PreconfiguredQuestions = (question, required, completed, answer) => {
                 className={inputConfig.inputClass}
                 placeholder={
                     completed ? answer.answer :
-                    inputConfig.placeholder
+                        inputConfig.placeholder
                 }
                 required={required}
                 disabled={completed}
@@ -91,7 +91,6 @@ const PreconfiguredQuestions = (question, required, completed, answer) => {
 }
 
 const ReadOnlyQuestions = ({ petName, completed, answers }) => {
-    console.log(answers)
     return (
         <Formik>
             <Form>
@@ -109,12 +108,36 @@ const ReadOnlyQuestions = ({ petName, completed, answers }) => {
     )
 }
 
+const SuccessMessage = ({ petName, redirectUrl }) => {
+    return (
+        <div className="flex flex-col gap-2 h-full">
+            <p className="text-2xl min-w-full font-semibold">Your Application for {petName}</p>
+            <div className="flex flex-col h-full items-center sm:px-10 justify-center gap-2 my-10">
+                <img src="../assets/check_icon.png" alt="" className="w-10" />
+                <p className="text-lg">
+                    Thank you for expressing your interest in adopting {petName}!
+                </p>
+                <Link to={redirectUrl}>
+                    <button
+                        className="text-white py-2 px-10 rounded-full enabled-button mt-5 w-fit hover:opacity-[85%] transition duration-300"
+                    >
+                        <p className="text-sm w-fit">View my application</p>
+                    </button>
+                </Link>
+            </div>
+        </div>)
+}
+
 const WriteOnlyQuestions = ({ petName, assignedQuestions, listingId, completed }) => {
+    const [success, setSuccess] = useState(false)
+    const [redirectUrl, setRedirectUrl] = useState('')
     const onSubmit = (values, { setSubmitting }) => {
         PetApplicationService.post(listingId, values)
             .then((res) => {
                 console.log(res)
                 setSubmitting(false)
+                setRedirectUrl(`/applications/${res.data.id}`)
+                setSuccess(true)
             })
             .catch(err => {
                 console.error(err)
@@ -126,40 +149,47 @@ const WriteOnlyQuestions = ({ petName, assignedQuestions, listingId, completed }
         return acc
     }, {})
     return (
-        <Formik
-            onSubmit={onSubmit}
-            initialValues={initialValues}
-        >
-            {({ isSubmitting }) => (
-                <Form>
-                    <p className="text-2xl min-w-full font-semibold">Adopt {petName}</p>
-                    <div className="grid md:grid-cols-6 w-full gap-3">
-                        {
-                            assignedQuestions?.map((assignedQuestion) => {
-                                return PreconfiguredQuestions(assignedQuestion.question, assignedQuestion.required, completed)
-                            })
-                        }
-                    </div>
-                    {
-                        <Button type='submit' disabled={isSubmitting}>
-                            <p className="font-bold">
-                                Submit
-                            </p>
-                        </Button>
-                    }
-                </Form>
-            )}
-        </Formik>
+        <>
+            {
+                success ?
+                    <SuccessMessage petName={petName} redirectUrl={redirectUrl} /> :
+                    <Formik
+                        onSubmit={onSubmit}
+                        initialValues={initialValues}
+                    >
+                        {({ isSubmitting }) => (
+                            <Form>
+                                <p className="text-2xl min-w-full font-semibold">Adopt {petName}</p>
+                                <div className="grid md:grid-cols-6 w-full gap-3">
+                                    {
+                                        assignedQuestions?.map((assignedQuestion) => {
+                                            return PreconfiguredQuestions(assignedQuestion.question, assignedQuestion.required, completed)
+                                        })
+                                    }
+                                </div>
+                                {
+                                    <Button type='submit' disabled={isSubmitting}>
+                                        <p className="font-bold">
+                                            Submit
+                                        </p>
+                                    </Button>
+                                }
+                            </Form>
+                        )}
+                    </Formik>
+            }
+        </>
     )
 }
 
 const ApplicationForm = ({ petName, assignedQuestions, listingId, completed, answers }) => {
+    console.log(petName)
     return (
         <div className="order-3 md:order-2 md:col-span-2 md:row-span-3 pet-overview-box p-5 rounded-xl">
             {
                 completed ?
-                    <ReadOnlyQuestions petname={petName} assignedQuestions={assignedQuestions} completed={completed} answers={answers}/> :
-                    <WriteOnlyQuestions petname={petName} assignedQuestions={assignedQuestions} listingId={listingId} completed={completed} />
+                    <ReadOnlyQuestions petName={petName} assignedQuestions={assignedQuestions} completed={completed} answers={answers} /> :
+                    <WriteOnlyQuestions petName={petName} assignedQuestions={assignedQuestions} listingId={listingId} completed={completed} />
             }
         </div>
     )
