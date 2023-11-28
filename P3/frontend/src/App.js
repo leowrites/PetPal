@@ -12,6 +12,8 @@ import NotFound from './pages/NotFound'
 import PetApplication from './pages/PetApplication';
 import CompletedApplicationLayout from './pages/CompletedApplicationLayout';
 import Message from './pages/Message';
+import Listings from './pages/Listings';
+import ShelterQuestion from './pages/ShelterQuestion/ShelterQuestionPage';
 
 function App() {
 
@@ -27,10 +29,11 @@ function App() {
       <Routes>
         <Route path="/" element={<Layout />} >
           <Route path="" element={<Landing />} />
-          <Route path="listings">
+          <Route path="listings" element={<Listings />}>
             <Route path=":listingId" element={<PetDetail />}>
             </Route>
           </Route>
+          <Route path="questions" element={<ShelterQuestion />}/>
           <Route path="listings/:listingId/applications" element={<PetApplication />} />
           <Route path="applications" element={<CompletedApplicationLayout />}>
             <Route path=":applicationId" element={<PetApplication completed={true}/>} />
