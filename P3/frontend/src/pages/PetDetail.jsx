@@ -119,8 +119,8 @@ export default function PetDetail() {
                 <div
                     className="col-span-1 md:col-span-2 p-5 py-10 rounded-xl pet-overview-box order-first md:order-last"
                 >
-                    <PetOverviewPanel petListingOverview={petListingOverview} detailsView={true} loading={loading}
-                                      applicationId={applicationid}/>
+                    <PetOverviewPanel petListingOverview={petListingOverview} detailsView={true}
+                                      applicationId={applicationId} loading={loading}/>
                 </div>
             </div>
         </div>
