@@ -206,13 +206,13 @@ const WriteOnlyQuestions = ({ petName, assignedQuestions, listingId, completed }
 
 const ApplicationForm = ({ petName, assignedQuestions, listingId, completed, answers }) => {
     return (
-        <div className="order-3 md:order-2 md:col-span-2 md:row-span-3 pet-overview-box p-5 rounded-xl">
+        <>
             {
                 completed ?
                     <ReadOnlyQuestions petName={petName} assignedQuestions={assignedQuestions} completed={completed} answers={answers} /> :
                     <WriteOnlyQuestions petName={petName} assignedQuestions={assignedQuestions} listingId={listingId} completed={completed} />
             }
-        </div>
+        </>
     )
 }
 
@@ -286,7 +286,7 @@ export default function PetApplication({ completed }) {
                 }
             </div>
             <div className="order-2 md:order-3 md:row-span-2 flex flex-col gap-1 p-5 rounded-xl pet-overview-box">
-                <PetOverviewPanel petListingOverview={petListingOverview} loading={loading}/>
+                <PetOverviewPanel petListingOverview={petListingOverview} loading={loading} />
             </div>
         </div>
     )
