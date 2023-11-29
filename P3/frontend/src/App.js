@@ -31,8 +31,8 @@ function App() {
         <Route path="/" element={<Layout />} >
           <Route path="" element={<Landing />} />
           <Route path="listings" element={<Listings />}>
-            <Route path=":listingId" element={<PetDetail />}>
-            </Route>
+          </Route>
+          <Route path="listings/:listingId" element={<PetDetail />}>
           </Route>
           <Route path="questions" element={<ShelterQuestion />}/>
           <Route path="listings/:listingId/applications" element={<PetApplication />} />
