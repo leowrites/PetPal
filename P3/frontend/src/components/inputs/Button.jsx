@@ -12,7 +12,8 @@ const Button = ({ className, onClick, buttonType, children, type, disabled, ...r
     }
 
     return (
-        <button className={`text-white hover:opacity-[80%] transition duration-300 ${className} ${buttonClass} ${disabled ? 'disabled-button' : null }`} disabled={disabled} onClick={onClick} type={type} {...rest}>
+        <button className={`text-white hover:opacity-[80%] transition duration-300 ${className} ${buttonClass} ${disabled ? 'disabled-button' : null }`} 
+        disabled={disabled} onClick={onClick} type={type} {...rest}>
             {children}
         </button>
     );
