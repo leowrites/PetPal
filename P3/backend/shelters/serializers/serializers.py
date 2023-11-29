@@ -40,59 +40,6 @@ class ApplicationResponseSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class PetApplicationGetOrUpdateSerializer(serializers.ModelSerializer):
-    application_responses = ApplicationResponseSerializer(many=True, read_only=True)
-    applicant = UserProfileSerializer(read_only=True)
-
-    class Meta:
-        model = PetApplication
-        fields = ['status', 'listing', 'application_responses', 'applicant', 'id', 'application_time', 'last_updated']
-        read_only_fields = ['listing', 'application_responses', 'applicant', 'id', 'application_time', 'last_updated']
-        extra_kwargs = {
-            'status': { 'required': True }
-        }
-
-    def validate_status(self, data):
-        new_status = super().validate(data)
-        request = self.context.get('request')
-        user = request.user
-        is_shelter = hasattr(user, 'shelter')
-        application_id = request.parser_context['kwargs'].get('application_id')
-        instance = PetApplication.objects.get(id=application_id)
-        if is_shelter and new_status not in ['approved', 'denied', 'pending']:
-            raise serializers.ValidationError("Shelter can only update status to pending, approved, and denied.")
-        if not is_shelter:
-            if instance.status not in ['pending', 'approved']:
-                raise serializers.ValidationError("You can't update the status right now.")
-            if instance.status == 'pending' and new_status != 'withdrawn':
-                raise serializers.ValidationError("Applicant can only update status from pending to withdrawn.")
-            elif instance.status == 'approved' and new_status not in ['accepted', 'withdrawn']:
-                raise serializers.ValidationError("Applicant can only update status from approved "
-                                                  "to withdrawn or accepted.")
-        return new_status
-
-    def update(self, instance, validated_data):
-        instance.status = validated_data['status']
-        instance.save(update_fields=['status', 'last_updated'])
-        request = self.context.get('request')
-
-        # send notification to the shelter owner or user
-        if request.user == instance.applicant and instance.listing.shelter.owner.notification_preferences.application_status_change:
-            Notification.objects.create(
-                user=instance.listing.shelter.owner,
-                notification_type="applicationStatusChange",
-                associated_model=instance
-            )
-        elif request.user == instance.listing.shelter.owner and instance.applicant.notification_preferences.application_status_change:
-            Notification.objects.create(
-                user=instance.applicant,
-                notification_type="applicationStatusChange",
-                associated_model=instance
-            )
-
-        return instance
-
-
 class AssignedQuestionSerializer(serializers.ModelSerializer):
     class Meta:
         model = AssignedQuestion
@@ -192,16 +139,24 @@ class PetApplicationPostSerializer(serializers.Serializer):
         }
 
 
+class ShelterSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Shelter
+        fields = ['shelter_name', 'owner', 'contact_email', 'location', 'mission_statement']
+        read_only_fields = ['owner']
+
+
 class PetListingSerializer(serializers.ModelSerializer):
     # questions = serializers.PrimaryKeyRelatedField(many=True, queryset=Question.objects.all(), write_only=True)
     assigned_questions = AssignedQuestionDetailsSerializer(many=True, required=False)
+    shelter = ShelterSerializer(read_only=True)
     image = serializers.ImageField()
 
     # user can select the questions, which will create new rows in listing questions
     class Meta:
         # for listing or creating a serializer
         model = PetListing
-        fields = ['id', 'name', 'shelter', 'status', 'assigned_questions', 'age', 'breed', 'image', 'bio', 'medical_history', 
+        fields = ['id', 'name', 'shelter', 'status', 'assigned_questions', 'age', 'breed', 'image', 'bio', 'medical_history',
                   'behavior', 'other_notes', 'listed_date']
         read_only_fields = ['shelter', 'id', 'application_questions', 'listed_date']
 
@@ -216,8 +171,71 @@ class PetListingSerializer(serializers.ModelSerializer):
                 ) for user in User.objects.filter(shelter__isnull=True, is_superuser=False)
                 if user.notification_preferences.pet_listing
             ])
-        
+
         return pet_listing
+
+
+class PetApplicationGetOrUpdateSerializer(serializers.ModelSerializer):
+    application_responses = ApplicationResponseSerializer(many=True, read_only=True)
+    applicant = UserProfileSerializer(read_only=True)
+    listing = PetListingSerializer(read_only=True)
+
+    class Meta:
+        model = PetApplication
+        fields = ['status', 'listing', 'application_responses', 'applicant', 'id', 'application_time', 'last_updated']
+        read_only_fields = ['listing', 'application_responses', 'applicant', 'id', 'application_time', 'last_updated']
+        extra_kwargs = {
+            'status': { 'required': True }
+        }
+
+    def validate_status(self, data):
+        new_status = super().validate(data)
+        request = self.context.get('request')
+        user = request.user
+        is_shelter = hasattr(user, 'shelter')
+        application_id = request.parser_context['kwargs'].get('application_id')
+        instance = PetApplication.objects.get(id=application_id)
+        if is_shelter and new_status not in ['approved', 'denied', 'pending']:
+            raise serializers.ValidationError("Shelter can only update status to pending, approved, and denied.")
+        if not is_shelter:
+            if instance.status not in ['pending', 'approved']:
+                raise serializers.ValidationError("You can't update the status right now.")
+            if instance.status == 'pending' and new_status != 'withdrawn':
+                raise serializers.ValidationError("Applicant can only update status from pending to withdrawn.")
+            elif instance.status == 'approved' and new_status not in ['accepted', 'withdrawn']:
+                raise serializers.ValidationError("Applicant can only update status from approved "
+                                                  "to withdrawn or accepted.")
+        return new_status
+
+    def update(self, instance, validated_data):
+        instance.status = validated_data['status']
+        instance.save(update_fields=['status', 'last_updated'])
+        request = self.context.get('request')
+
+        # send notification to the shelter owner or user
+        if request.user == instance.applicant and instance.listing.shelter.owner.notification_preferences.application_status_change:
+            Notification.objects.create(
+                user=instance.listing.shelter.owner,
+                notification_type="applicationStatusChange",
+                associated_model=instance
+            )
+        elif request.user == instance.listing.shelter.owner and instance.applicant.notification_preferences.application_status_change:
+            Notification.objects.create(
+                user=instance.applicant,
+                notification_type="applicationStatusChange",
+                associated_model=instance
+            )
+
+        return instance
+
+
+class PetApplicationListSerializer(serializers.ModelSerializer):
+    listing = PetListingSerializer(read_only=True)
+
+    class Meta:
+        model = PetApplication
+        fields= '__all__'
+
 
 class ShelterCreationSerializer(serializers.ModelSerializer):
     user_data = UserCreationSerializer(write_only=True)
@@ -233,13 +251,6 @@ class ShelterCreationSerializer(serializers.ModelSerializer):
         NotificationPreferences.objects.create(user=user)
         shelter = models.Shelter.objects.create(owner=user, **validated_data)
         return shelter
-
-
-class ShelterSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = models.Shelter
-        fields = ['shelter_name', 'owner', 'contact_email', 'location', 'mission_statement']
-        read_only_fields = ['owner']
 
 
 class ShelterReviewSerializer(serializers.ModelSerializer):

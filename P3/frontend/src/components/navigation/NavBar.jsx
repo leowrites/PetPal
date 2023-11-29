@@ -43,12 +43,12 @@ export default function NavBar({}) {
                     <div className="self-center flex flex-row gap-[1rem] pr-[1.5rem] font-semibold items-center">
                         {((isShelter) ? (
                             <Link to="/listings">
-                                <div class="mx-[1rem] font-medium hover:cursor-pointer border-b-[3px] border-[#FF9447] hover:border-[#290005]">My Listings</div>
+                                <div className="mx-[1rem] font-medium hover:cursor-pointer border-b-[3px] border-[#FF9447] hover:border-[#290005]">My Listings</div>
                             </Link>
                         ) : (null))}
                         {((hasNotification) ? (
-                            <Link to='/notifications' class="bg-[#FF9447] hover:opacity-[80%] transition duration-300 py-[.5rem] rounded-full px-[.5rem]" id="notificationButton">
-                                <img class="w-[2rem] h-[2rem]" src="/notification.svg"/>
+                            <Link to='/notifications' className="bg-[#FF9447] hover:opacity-[80%] transition duration-300 py-[.5rem] rounded-full px-[.5rem]" id="notificationButton">
+                                <img className="w-[2rem] h-[2rem]" src="/notification.svg"/>
                             </Link>
                         ) : (null))}
                         <Link to="/profile"
@@ -58,13 +58,13 @@ export default function NavBar({}) {
                         </Link>
                     </div>
                 ) : (
-                    <div class="self-center flex flex-row gap-[1rem] pr-[1.5rem] font-semibold">
+                    <div className="self-center flex flex-row gap-[1rem] pr-[1.5rem] font-semibold">
                         <Link to="/signup">
-                            <div class="bg-[#FF9447] py-[.75rem] w-[8rem] text-center text-[#FFF8F4] hover:opacity-[85%] transition">
+                            <div className="bg-[#FF9447] py-[.75rem] w-[8rem] text-center text-[#FFF8F4] hover:opacity-[85%] transition">
                                 Sign Up
                             </div>
                         </Link>
-                        <Link to="/login" class="border-[#290005] border-[1px] py-[.75rem] w-[8rem] text-center text-[#290005] hover:cursor-pointer hover:bg-[#290005] hover:text-white transition duration-300">
+                        <Link to="/login" className="border-[#290005] border-[1px] py-[.75rem] w-[8rem] text-center text-[#290005] hover:cursor-pointer hover:bg-[#290005] hover:text-white transition duration-300">
                             Log In
                         </Link>
                     </div>
@@ -81,7 +81,7 @@ export default function NavBar({}) {
                         <button type="button" id="navBarCollapsible" onClick={toggleNavBar} className="cursor-pointer">
                             <svg id="navBarCollapsibleClosed" ref={iconCloseRef}  xmlns="http://www.w3.org/2000/svg" width="32" height="30" style={{ display: iconDisplayStyleClose }}
                                 viewBox="0 0 42 40" fill="none">
-                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                <path fillRule="evenodd" clipRule="evenodd"
                                     d="M2.24999 4.33329H39.75C40.9006 4.33329 41.8333 3.40055 41.8333 2.24996C41.8333 1.09937 40.9006 0.166626 39.75 0.166626H2.24999C1.0994 0.166626 0.166656 1.09937 0.166656 2.24996C0.166656 3.40055 1.0994 4.33329 2.24999 4.33329ZM41.8333 37.6666C41.8333 38.8172 40.9006 39.75 39.75 39.75H2.24999C1.0994 39.75 0.166656 38.8172 0.166656 37.6666C0.166656 36.516 1.0994 35.5833 2.24999 35.5833H39.75C40.9006 35.5833 41.8333 36.516 41.8333 37.6666ZM2.24999 18.9166H39.75C40.9006 18.9166 41.8333 19.8494 41.8333 21C41.8333 22.1506 40.9006 23.0833 39.75 23.0833H2.24999C1.0994 23.0833 0.166656 22.1506 0.166656 21C0.166656 19.8494 1.0994 18.9166 2.24999 18.9166Z"
                                     fill="#290005" />
                             </svg>
@@ -104,8 +104,8 @@ export default function NavBar({}) {
                             <div className="px-[2rem] hover:cursor-pointer w-[100%] text-end">Adopt</div>
                         </Link>
                         {(isShelter) ? (
-                            <Link to="/listings" class="border-b-[.05rem] border-[#6C6866] py-[1rem] mx-[1.5rem] grow">
-                                <div class="px-[2rem] hover:cursor-pointer w-[100%] text-end hover:decoration-black">My Listings</div>
+                            <Link to="/listings" className="border-b-[.05rem] border-[#6C6866] py-[1rem] mx-[1.5rem] grow">
+                                <div className="px-[2rem] hover:cursor-pointer w-[100%] text-end hover:decoration-black">My Listings</div>
                             </Link>
                         ) : (
                             null
@@ -114,8 +114,8 @@ export default function NavBar({}) {
                     { (isAuthenticated) ? (
                         <div className="flex flex-row justify-end gap-[1rem] mr-[1.5rem] w-[100%] py-[1rem] font-semibold">
                             {(hasNotification) ? (
-                                <Link to="/notifications" class="bg-[#FF9447] hover:opacity-[80%] transition duration-300 py-[.5rem] rounded-full px-[.5rem]" id="notificationaMobile">
-                                    <img class="w-[2rem] h-[2rem]" src="notification.svg"/>
+                                <Link to="/notifications" className="bg-[#FF9447] hover:opacity-[80%] transition duration-300 py-[.5rem] rounded-full px-[.5rem]" id="notificationaMobile">
+                                    <img className="w-[2rem] h-[2rem]" src="notification.svg"/>
                                 </Link>
                             ) : (null)}
                             <Link to="/profile" className="bg-[#FF9447] py-[.75rem] w-[10rem] text-center text-[#FFF8F4] rounded-full flex flex-row gap-[.5rem] justify-center hover:opacity-[85%] transition duration-300">
@@ -123,13 +123,13 @@ export default function NavBar({}) {
                                 My Profile
                             </Link>
                         </div>) : (
-                        <div class="flex flex-row justify-end gap-[1rem] mr-[1.5rem] w-[100%] py-[1rem] font-semibold">
+                        <div className="flex flex-row justify-end gap-[1rem] mr-[1.5rem] w-[100%] py-[1rem] font-semibold">
                             <Link to="/signup">
-                                <div class="bg-[#FF9447] py-[.75rem] w-[8rem] text-center text-[#FFF8F4] hover:opacity-[85%] transition">
+                                <div className="bg-[#FF9447] py-[.75rem] w-[8rem] text-center text-[#FFF8F4] hover:opacity-[85%] transition">
                                     Sign Up
                                 </div>
                             </Link>
-                            <Link to="/login" class="border-[#290005] border-[1px] py-[.75rem] w-[8rem] text-center text-[#290005] hover:bg-[#290005] hover:text-white transition duration-300">
+                            <Link to="/login" className="border-[#290005] border-[1px] py-[.75rem] w-[8rem] text-center text-[#290005] hover:bg-[#290005] hover:text-white transition duration-300">
                                 Log In
                             </Link>
                         </div>

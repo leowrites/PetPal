@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react"
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, Link } from 'react-router-dom'
 import Button from '../components/inputs/Button'
+import { PetOverviewPanel } from "../components/pet/common"
+import PetDetailService from "../services/PetDetailService"
+import { setAuthToken } from "../services/ApiService"
+import PetApplicationService from "../services/PetApplicationService"
 
 const DescriptionSection = ({ sectionTitle, sectionDetails }) => {
     return (<div>
@@ -45,44 +49,37 @@ const PetDetailLeftPanel = ({ petListingIDetails }) => {
     </div>
 }
 
-const PetDetailRightPanel = ({ petListingOverview }) => {
-    return (<div
-        className="col-span-1 md:col-span-2 p-5 py-10 rounded-xl pet-overview-box order-first md:order-last"
-    >
-        <div className="flex flex-col gap-1">
-            <p className="text-lg font-bold">{petListingOverview.name}</p>
-            <p className="text-sm">{petListingOverview.listingTime}</p>
-            <p className="text-sm pet-overview-box-status">Status: {petListingOverview.status}</p>
-            <a className="text-sm underline pet-overview-box-shelter" href="../shelter/shelter.html">{petListingOverview.shelter}</a>
-            <p className="text-sm pet-overview-box-breed">{petListingOverview.breed}</p>
-            <p className="text-sm pet-overview-box-breed">Age {petListingOverview.age}</p>
-            <p className="text-sm"> {petListingOverview.description}</p>
-            <Button text={"Adopt"} />
-        </div>
-    </div>)
-}
-
 export default function PetDetail() {
-    const { petId } = useParams()
+    const { listingId } = useParams()
     const [petDetail, setPetDetail] = useState({})
+    const [applicationId, setApplicationId] = useState(null)
     const navigate = useNavigate()
     useEffect(() => {
         // fetch pet details
-        fetch(`http://localhost:8000/shelters/1/listings/${petId}`, {
-            headers: {
-                Authorization: `Bearer ${localStorage.getItem('token')}`
-            }
-        })
+        setAuthToken(localStorage.getItem('token'))
+        if (!localStorage.getItem('token')) {
+            navigate('/login')
+        }
+        PetDetailService.get(listingId)
             .then(res => {
-                if (res.status === 404) {
-                    console.log("Navigating")
+                setPetDetail(res.data)
+            })
+            .catch(err => {
+                if (err.response.status === 404) {
                     navigate('/404')
                 }
-                return res.json()
+                console.error(err)
             })
-            .then(data => setPetDetail(data))
+        // check if user already applied for this pet
+        PetApplicationService.list()
+        .then(res => {
+            res.data.results.forEach(application => {
+                if (application.listing.id === parseInt(listingId)) {
+                    setApplicationId(application.id)
+                }
+            })
+        })
     }, [])
-    console.log(petDetail)
     const petListingIDetails = [
         {
             sectionTitle: 'Medical History',
@@ -101,17 +98,23 @@ export default function PetDetail() {
         name: petDetail.name,
         listingTime: petDetail.listed_date,
         status: petDetail.status,
-        shelter: petDetail.shelter,
+        shelter: petDetail.shelter?.shelter_name,
         breed: petDetail.breed,
         age: petDetail.age,
-        description: petDetail.bio
+        description: petDetail.bio,
     }
+
+    
     return (
         <div>
-            <PetImages imagePath={"/dog_photo1.png"} />
+            <PetImages imagePath={petDetail.image} />
             <div className="grid grid-cols-1 my-5 gap-5 md:grid-cols-5">
                 <PetDetailLeftPanel petListingIDetails={petListingIDetails} />
-                <PetDetailRightPanel petListingOverview={petListingOverview} />
+                <div
+                    className="col-span-1 md:col-span-2 p-5 py-10 rounded-xl pet-overview-box order-first md:order-last"
+                >
+                    <PetOverviewPanel petListingOverview={petListingOverview} detailsView={true} applicationId={applicationId}/>
+                </div>
             </div>
         </div>
     )
