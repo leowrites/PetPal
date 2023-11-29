@@ -14,6 +14,10 @@ class QuestionService {
         const response = await ApiService.delete(`/questions/${id}`)
         return response
     }
+    static async update(id, question) {
+        const response = await ApiService.patch(`/questions/${id}`, question)
+        return response
+    }
 }
 
 export default QuestionService;

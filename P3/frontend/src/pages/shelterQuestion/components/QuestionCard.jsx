@@ -3,25 +3,74 @@ import {
     Card,
     CardBody,
     CardFooter,
-    IconButton
+    IconButton,
+    Popover,
+    PopoverHandler,
+    PopoverContent
 } from "@material-tailwind/react";
+import { Formik, Form } from 'formik';
+import TextInput from "../../../components/inputs/TextInput";
+import SelectInput from "../../../components/inputs/SelectInput";
+import { options } from "../../../constants/QuestionTypes";
 import Subheading from '../../../components/layout/Subheading'
 import { MdModeEdit } from 'react-icons/md';
 import { FaRegTrashAlt } from "react-icons/fa";
 import QuestionModal from "./QuestionModal";
 import QuestionService from "../../../services/QuestionService";
+import Button from "../../../components/inputs/Button";
 
-export default function ({ questionObj, handleDelete }) {
+const EditQuestionModal = ({ open, handleOpen, questionObj, handleEditQuestion }) => {
+    const initialValues = {
+        question: questionObj.question,
+        type: questionObj.type,
+    }
+    const onSubmit = (values) => {
+        // get id from backend
+        QuestionService.update(questionObj.id, values)
+            .then(res => {
+                handleEditQuestion(res.data)
+                handleOpen(false)
+            })
+    }
+    return (
+        <QuestionModal open={open} handleOpen={handleOpen} title={'Edit Question'}>
+            <Formik initialValues={initialValues}
+                onSubmit={onSubmit}
+            >
+                {({ isSubmitting }) => (
+                    <Form>
+                        <label htmlFor="question">Question</label>
+                        <TextInput label="Question" id="question" name="question" placeholder="Enter the question here..." required/>
+                        <div className='pt-3'>
+                            <label htmlFor="type">Type</label>
+                            <div>
+                                <SelectInput name='type' options={options} />
+                            </div>
+                        </div>
+                        <Button type="submit" disabled={isSubmitting} className={'mt-4'}>Submit</Button>
+                    </Form>
+                )}
+            </Formik>
+        </QuestionModal>
+    )
+
+}
+
+export default function ({ questionObj, handleDelete, handleUpdate }) {
     const [open, setOpen] = useState(false);
-    const [deleting , setDeleting] = useState(false); 
+    const [deleting, setDeleting] = useState(false);
     const handleOpen = (open) => setOpen(open);
     const onDelete = (id) => {
         setDeleting(true)
         QuestionService.delete(id)
-        .then(res => {
-            handleDelete(questionObj.id)
-            setDeleting(false)
-        })
+            .then(res => {
+                handleDelete(questionObj.id)
+                setDeleting(false)
+            })
+    }
+
+    const handleEditQuestion = (questionObj) => {
+        handleUpdate(questionObj)
     }
 
     return (
@@ -37,15 +86,25 @@ export default function ({ questionObj, handleDelete }) {
                         <IconButton size='md' className='rounded-full' onClick={() => { handleOpen(true) }}>
                             <MdModeEdit />
                         </IconButton>
-                        <IconButton size='md' className='rounded-full' onClick={() => { onDelete(questionObj.id) }} disabled={deleting}>
-                            <FaRegTrashAlt />
-                        </IconButton>
+                        <Popover placement="bottom-start">
+                            <PopoverHandler>
+                                <IconButton size='md' className='rounded-full'>
+                                    <FaRegTrashAlt />
+                                </IconButton>
+                            </PopoverHandler>
+                            <PopoverContent>
+                                <p className="inline mr-4">
+                                    Are you sure you want to delete this question?
+                                </p>
+                                <Button onClick={() => { onDelete(questionObj.id) }} disabled={deleting}>
+                                    <p>Delete</p>
+                                </Button>
+                            </PopoverContent>
+                        </Popover>
                     </div>
                 </CardFooter>
             </Card>
-            <QuestionModal open={open} handleOpen={handleOpen} title={'Edit Question'}>
-                Hello
-            </QuestionModal>
+            <EditQuestionModal open={open} handleOpen={handleOpen} questionObj={questionObj} handleEditQuestion={handleEditQuestion} />
         </>
     )
 }
