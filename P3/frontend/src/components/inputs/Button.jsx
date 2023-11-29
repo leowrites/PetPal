@@ -1,4 +1,5 @@
 import React from 'react';
+// import { Button as MButton } from '@material-tailwind/react';
 
 const Button = ({ className, onClick, buttonType, children, type, disabled, ...rest}) => {
     let buttonClass = ''
@@ -12,7 +13,7 @@ const Button = ({ className, onClick, buttonType, children, type, disabled, ...r
     }
 
     return (
-        <button className={`text-white hover:opacity-[80%] transition duration-300 ${className} ${buttonClass} ${disabled ? 'disabled-button' : null }`} 
+        <button className={`text-white hover:opacity-[80%] transition duration-300 normal-case ${className} ${buttonClass} ${disabled ? 'disabled-button' : null }`} 
         disabled={disabled} onClick={onClick} type={type} {...rest}>
             {children}
         </button>

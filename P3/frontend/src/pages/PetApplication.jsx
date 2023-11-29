@@ -6,6 +6,7 @@ import PetDetailService from "../services/PetDetailService"
 import { setAuthToken } from "../services/ApiService"
 import { Formik, Form, Field } from 'formik'
 import PetApplicationService from "../services/PetApplicationService"
+import Skeleton from 'react-loading-skeleton'
 
 const PetImage = ({ src }) => {
     return (
@@ -80,13 +81,23 @@ const PreconfiguredQuestions = (question, required, completed, answer) => {
                 className={inputConfig.inputClass}
                 placeholder={
                     completed ? answer.answer :
-                    inputConfig.placeholder
+                        inputConfig.placeholder
                 }
                 required={required}
                 disabled={completed}
                 checked={completed ? answer.answer : null}
             />
         </div>
+    )
+}
+
+const SkeletonArray = () => {
+    return (
+        <>
+            {
+                Array.from({ length: 5 }, (_, i) => <Skeleton className='mr-2 mb-2 box-content' height='2rem' key={i} inline />)
+            }
+        </>
     )
 }
 
@@ -133,7 +144,7 @@ const WriteOnlyQuestions = ({ petName, assignedQuestions, listingId, completed }
             {({ isSubmitting }) => (
                 <Form>
                     <p className="text-2xl min-w-full font-semibold">Adopt {petName}</p>
-                    <div className="grid md:grid-cols-6 w-full gap-3">
+                    <div className="grid md:grid-cols-6 w-full gap-3 mb-4">
                         {
                             assignedQuestions?.map((assignedQuestion) => {
                                 return PreconfiguredQuestions(assignedQuestion.question, assignedQuestion.required, completed)
@@ -155,13 +166,13 @@ const WriteOnlyQuestions = ({ petName, assignedQuestions, listingId, completed }
 
 const ApplicationForm = ({ petName, assignedQuestions, listingId, completed, answers }) => {
     return (
-        <div className="order-3 md:order-2 md:col-span-2 md:row-span-3 pet-overview-box p-5 rounded-xl">
+        <>
             {
                 completed ?
-                    <ReadOnlyQuestions petname={petName} assignedQuestions={assignedQuestions} completed={completed} answers={answers}/> :
+                    <ReadOnlyQuestions petname={petName} assignedQuestions={assignedQuestions} completed={completed} answers={answers} /> :
                     <WriteOnlyQuestions petname={petName} assignedQuestions={assignedQuestions} listingId={listingId} completed={completed} />
             }
-        </div>
+        </>
     )
 }
 
@@ -170,6 +181,7 @@ export default function PetApplication({ completed }) {
     const { listingId, applicationId } = useParams()
     const [petDetail, setPetDetail] = useState({})
     const [applicationResponse, setApplicationResponse] = useState([{}])
+    const [loading, setLoading] = useState(true)
     const navigate = useNavigate()
     // should check if the user already aoplied for this pet
     // if they have redirect them to their application page
@@ -183,6 +195,7 @@ export default function PetApplication({ completed }) {
                     console.log(res.data)
                     setPetDetail(res.data.listing)
                     setApplicationResponse(res.data.application_responses)
+                    setLoading(false)
                 })
                 .catch(err => {
                     if (err.response.status === 404) {
@@ -195,6 +208,7 @@ export default function PetApplication({ completed }) {
             PetDetailService.get(listingId)
                 .then(res => {
                     setPetDetail(res.data)
+                    setLoading(false)
                 })
                 .catch(err => {
                     if (err.response.status === 404) {
@@ -216,15 +230,20 @@ export default function PetApplication({ completed }) {
     return (
         <div className="order-1 grid md:grid-cols-3 gap-4 h-fit">
             <PetImage src={petDetail.image} />
-            {
-                petDetail.assigned_questions
-                    ? <ApplicationForm petName={petListingOverview.name}
-                        assignedQuestions={petDetail.assigned_questions}
-                        listingId={listingId} completed={completed} answers={applicationResponse} />
-                    : null
-            }
+            <div className="order-3 md:order-2 md:col-span-2 md:row-span-3 pet-overview-box p-5 rounded-xl">
+                {
+                    loading && <SkeletonArray />
+                }
+                {
+                    petDetail.assigned_questions
+                        ? <ApplicationForm petName={petListingOverview.name}
+                            assignedQuestions={petDetail.assigned_questions}
+                            listingId={listingId} completed={completed} answers={applicationResponse} />
+                        : null
+                }
+            </div>
             <div className="order-2 md:order-3 md:row-span-2 flex flex-col gap-1 p-5 rounded-xl pet-overview-box">
-                <PetOverviewPanel petListingOverview={petListingOverview} />
+                <PetOverviewPanel petListingOverview={petListingOverview} loading={loading}/>
             </div>
         </div>
     )
