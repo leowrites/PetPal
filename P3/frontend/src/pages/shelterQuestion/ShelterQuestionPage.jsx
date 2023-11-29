@@ -5,14 +5,16 @@ import QuestionService from "../../services/QuestionService";
 import { setAuthToken } from "../../services/ApiService";
 import QuestionCard from './components/QuestionCard'
 import QuestionModal from "./components/QuestionModal";
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form } from 'formik';
 import TextInput from "../../components/inputs/TextInput";
 import SelectInput from "../../components/inputs/SelectInput";
 import { options } from "../../constants/QuestionTypes";
 import Skeleton from "react-loading-skeleton";
+import { useNavigate } from "react-router-dom";
 
 
 const NewQuestionModal = ({ open, handleOpen, handleAddQuestion }) => {
+    const navigate = useNavigate()
     const initialValues = {
         question: '',
         type: 'TEXT',
@@ -25,6 +27,12 @@ const NewQuestionModal = ({ open, handleOpen, handleAddQuestion }) => {
                 handleOpen(false)
             })
     }
+    // redirect user if they are not logged in (replace this check by context in the future)
+    useEffect(() => {
+        if (!localStorage.getItem('token')) {
+            navigate('/login')
+        }
+    })
     return (
         <QuestionModal open={open} handleOpen={handleOpen} title={'Create a Question'}>
             <Formik initialValues={initialValues}
