@@ -8,19 +8,46 @@ export const setAuthToken = (token) => {
 };
 
 export class ApiService {
-    static get(url, config = {}) {
-        return axiosInstance.get(url, config);
+    static checkStatus(response) {
+        if (response.status >= 400 && response.status < 500) {
+            throw new Error(`Client error: ${response.status}`);
+        }
+        return response;
     }
 
-    static post(url, data, config = {}) {
-        return axiosInstance.post(url, data, config);
+    static async get(url, config = {}) {
+        try {
+            const response = await axiosInstance.get(url, config);
+            return this.checkStatus(response);
+        } catch (error) {
+            throw error;
+        }
     }
 
-    static patch(url, data, config = {}) {
-        return axiosInstance.patch(url, data, config);
+    static async post(url, data, config = {}) {
+        try {
+            const response = await axiosInstance.post(url, data, config);
+            return this.checkStatus(response);
+        } catch (error) {
+            throw error;
+        }
     }
 
-    static delete(url, config = {}) {
-        return axiosInstance.delete(url, config);
+    static async patch(url, data, config = {}) {
+        try {
+            const response = await axiosInstance.patch(url, data, config);
+            return this.checkStatus(response);
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    static async delete(url, config = {}) {
+        try {
+            const response = await axiosInstance.delete(url, config);
+            return this.checkStatus(response);
+        } catch (error) {
+            throw error;
+        }
     }
 }
