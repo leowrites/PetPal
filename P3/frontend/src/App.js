@@ -15,6 +15,8 @@ import Message from './pages/Message';
 import Listings from './pages/Listings';
 import ShelterQuestion from './pages/shelterQuestion/ShelterQuestionPage';
 import Logout from './pages/Logout'
+import 'react-loading-skeleton/dist/skeleton.css'
+
 
 function App() {
 

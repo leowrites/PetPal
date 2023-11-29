@@ -18,6 +18,7 @@ import { FaRegTrashAlt } from "react-icons/fa";
 import QuestionModal from "./QuestionModal";
 import QuestionService from "../../../services/QuestionService";
 import Button from "../../../components/inputs/Button";
+import { Colors } from "../../../constants/Colors";
 
 const EditQuestionModal = ({ open, handleOpen, questionObj, handleEditQuestion }) => {
     const initialValues = {
@@ -75,20 +76,20 @@ export default function ({ questionObj, handleDelete, handleUpdate }) {
 
     return (
         <>
-            <Card className="mt-6 w-full md:w-auto">
+            <Card className={`w-full md:w-auto shadow-none border-2 border-[${Colors.subblack}]`}>
                 <CardBody className='mb-0 pb-4'>
-                    <Subheading>
+                    <p className='text-xl font-medium'>
                         {questionObj.question}
-                    </Subheading>
+                    </p>
                 </CardBody>
                 <CardFooter className='pt-0'>
                     <div className="flex gap-2">
-                        <IconButton size='md' className='rounded-full' onClick={() => { handleOpen(true) }}>
+                        <IconButton size='md' className={`rounded-full bg-[${Colors.primary}]`} onClick={() => { handleOpen(true) }}>
                             <MdModeEdit />
                         </IconButton>
                         <Popover placement="bottom-start">
                             <PopoverHandler>
-                                <IconButton size='md' className='rounded-full'>
+                                <IconButton size='md' className={`rounded-full bg-[${Colors.subblack}]`}>
                                     <FaRegTrashAlt />
                                 </IconButton>
                             </PopoverHandler>

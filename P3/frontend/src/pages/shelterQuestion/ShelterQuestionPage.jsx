@@ -9,6 +9,8 @@ import { Formik, Form, Field } from 'formik';
 import TextInput from "../../components/inputs/TextInput";
 import SelectInput from "../../components/inputs/SelectInput";
 import { options } from "../../constants/QuestionTypes";
+import Skeleton from "react-loading-skeleton";
+
 
 const NewQuestionModal = ({ open, handleOpen, handleAddQuestion }) => {
     const initialValues = {
@@ -46,10 +48,22 @@ const NewQuestionModal = ({ open, handleOpen, handleAddQuestion }) => {
     )
 }
 
+const SkeletonArray = () => {
+    return (
+        <>
+            {
+                Array.from({ length: 5 }, (_, i) => <Skeleton className='mr-2 mb-2' width='15rem' height='8rem' key={i} inline />)
+            }
+        </>
+    )
+}
+
 export default function () {
     const [open, setOpen] = useState(false);
     const handleOpen = (open) => setOpen(open);
     const [questions, setQuestions] = useState([]);
+    const [loading, setLoading] = useState(true);
+
     const handleAddQuestion = (questionObj) => {
         setQuestions([...questions, questionObj])
     }
@@ -64,22 +78,32 @@ export default function () {
     useEffect(() => {
         setAuthToken(localStorage.getItem("token"))
         QuestionService.list()
-            .then(res => setQuestions(res.data.results))
+            .then(res => {
+                setQuestions(res.data.results)
+                setLoading(false)
+            })
             .catch(err => console.log(err))
     }, [])
 
     return (
         <div>
-            <Heading>
+            <div className='mb-5'>
+                <Heading>
                     Your Question Repository
-            </Heading>
-            <Button onClick={() => handleOpen(true)}>
-            Add
-            </Button> 
-            <div className='flex flex-wrap gap-4'>
+                </Heading>
+            </div>
+            <div>
+                <Button onClick={() => handleOpen(true)}>
+                    Add
+                </Button>
+            </div>
+            <div className='flex flex-wrap gap-4 mt-6 '>
+                {
+                    loading && <SkeletonArray />
+                }
                 {
                     questions?.map(questionObj => <QuestionCard key={questionObj.id} questionObj={questionObj} handleDelete={handleDelete}
-                        handleUpdate={handleUpdate}/>)
+                        handleUpdate={handleUpdate} />)
                 }
             </div>
             <NewQuestionModal open={open} handleOpen={handleOpen} handleAddQuestion={handleAddQuestion} />
