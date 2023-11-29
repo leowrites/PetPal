@@ -8,14 +8,7 @@ import QuestionModal from "./components/QuestionModal";
 import { Formik, Form, Field } from 'formik';
 import TextInput from "../../components/inputs/TextInput";
 import SelectInput from "../../components/inputs/SelectInput";
-
-const options = [
-    { value: 'TEXT', label: 'Text' },
-    { value: 'NUMBER', label: 'Number' },
-    { value: 'DATE', label: 'Date' },
-    { value: 'CHECKBOX', label: 'True/False' },
-    { value: 'EMAIL', label: 'Email' },
-]
+import { options } from "../../constants/QuestionTypes";
 
 const NewQuestionModal = ({ open, handleOpen, handleAddQuestion }) => {
     const initialValues = {
@@ -45,7 +38,7 @@ const NewQuestionModal = ({ open, handleOpen, handleAddQuestion }) => {
                                 <SelectInput name='type' options={options} />
                             </div>
                         </div>
-                        <Button type="submit" disabled={isSubmitting}>Submit</Button>
+                        <Button type="submit" disabled={isSubmitting} className={'mt-4'}>Submit</Button>
                     </Form>
                 )}
             </Formik>
@@ -63,6 +56,11 @@ export default function () {
     const handleDelete = (id) => {
         setQuestions(questions.filter(questionObj => questionObj.id !== id))
     }
+
+    const handleUpdate = (questionObj) => {
+        setQuestions(questions.map(question => question.id === questionObj.id ? questionObj : question))
+    }
+
     useEffect(() => {
         setAuthToken(localStorage.getItem("token"))
         QuestionService.list()
@@ -80,7 +78,8 @@ export default function () {
             </Button> 
             <div className='flex flex-wrap gap-4'>
                 {
-                    questions?.map(questionObj => <QuestionCard key={questionObj.id} questionObj={questionObj} handleDelete={handleDelete}/>)
+                    questions?.map(questionObj => <QuestionCard key={questionObj.id} questionObj={questionObj} handleDelete={handleDelete}
+                        handleUpdate={handleUpdate}/>)
                 }
             </div>
             <NewQuestionModal open={open} handleOpen={handleOpen} handleAddQuestion={handleAddQuestion} />
