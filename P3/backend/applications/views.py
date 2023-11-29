@@ -9,6 +9,14 @@ from shelters.permissions import permissions
 
 
 # Create your views here.
+class ListUserApplication(generics.ListAPIView):
+    serializer_class = serializers.PetApplicationListSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return PetApplication.objects.filter(applicant=self.request.user).order_by('-application_time')
+
+
 class UpdateOrGetPetApplicationDetails(generics.RetrieveUpdateAPIView):
     serializer_class = serializers.PetApplicationGetOrUpdateSerializer
     # only the applicant of this application, or the owner of the listing associated with this application can get the

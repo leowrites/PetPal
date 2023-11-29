@@ -6,9 +6,10 @@ import Navbar from '../navigation/NavBar'
 export default function Layout() {
     return (
         <>
-
             <Navbar />
+            <Page>
                 <Outlet />
+            </Page>
             <Footer />
         </>
     )
