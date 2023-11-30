@@ -11,7 +11,8 @@ const Logout = () => {
         localStorage.removeItem('token')
         setUser(null)
         navigate('/login')
-    }, [navigate])
+        window.location.reload();
+    }, [navigate, setUser])
 
     return (
         <></>

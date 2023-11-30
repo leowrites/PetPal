@@ -1,12 +1,32 @@
 import React from "react";
 import { LogoToLandingButton } from "./LogoToLandingButton";
-import { useState, useRef, useContext } from "react";
+import { useState, useRef, useContext, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { UserContext } from "../../contexts/UserContext";
+import UserDetailService from "../../services/UserDetailService";
+import { setAuthToken } from "../../services/ApiService"
 
 export default function NavBar({}) {
 
-    const { user } = useContext(UserContext);
+    const { user, setUser } = useContext(UserContext);
+
+    useEffect(() => {
+        const token = localStorage.getItem('token');
+
+        if (!token) {
+            setUser(null);
+            return;
+        }
+        setAuthToken(token);
+
+        UserDetailService.getSelf()
+            .then((response) => {
+                setUser(response.data);
+            }).catch((error) => {
+                setUser(null);
+            });
+    }, [setUser]);
+
 
     const isAuthenticated = (!!user)
     const isShelter = user?.is_shelter;
@@ -51,7 +71,7 @@ export default function NavBar({}) {
                         ) : (null))}
                         {((hasNotification) ? (
                             <Link to='/notifications' className="bg-[#FF9447] hover:opacity-[80%] transition duration-300 py-[.5rem] rounded-full px-[.5rem]" id="notificationButton">
-                                <img className="w-[2rem] h-[2rem]" src="/notification.svg"/>
+                                <img className="w-[2rem] h-[2rem]" src="/notification.svg" alt="notification"/>
                             </Link>
                         ) : (null))}
                         <Link to="/profile"
@@ -118,7 +138,7 @@ export default function NavBar({}) {
                         <div className="flex flex-row justify-end gap-[1rem] mr-[1.5rem] w-[100%] py-[1rem] font-semibold">
                             {(hasNotification) ? (
                                 <Link to="/notifications" className="bg-[#FF9447] hover:opacity-[80%] transition duration-300 py-[.5rem] rounded-full px-[.5rem]" id="notificationaMobile">
-                                    <img className="w-[2rem] h-[2rem]" src="notification.svg"/>
+                                    <img className="w-[2rem] h-[2rem]" src="notification.svg" alt="notification"/>
                                 </Link>
                             ) : (null)}
                             <Link to="/profile" className="bg-[#FF9447] py-[.75rem] w-[10rem] text-center text-[#FFF8F4] rounded-full flex flex-row gap-[.5rem] justify-center hover:opacity-[85%] transition duration-300">

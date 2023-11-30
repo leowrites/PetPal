@@ -13,14 +13,13 @@ import { useNavigate } from 'react-router-dom';
 const Login = () => {
     const navigate = useNavigate();
     const [formError, setFormError] = useState('')
-    const { setUser } = React.useContext(UserContext);
+    const { user, setUser } = React.useContext(UserContext);
 
     useEffect(() => {
-      // TODO: replace with check using context
-      if (localStorage.getItem("token")) {
+      if (user) {
         navigate("/");
       }
-    }, [navigate]);
+    }, [navigate, user]);
 
     return (
         <div className='flex items-center justify-center'>
