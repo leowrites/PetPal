@@ -27,8 +27,8 @@ function App() {
   }, [])
 
   return (
-    <Router>
-      <UserContext.Provider value={{user, setUser}}>
+    <UserContext.Provider value={{user, setUser}}>
+      <Router>
         <Routes>
           <Route path="/" element={<Layout />} >
             <Route path="" element={<Landing />} />
@@ -48,8 +48,8 @@ function App() {
             <Route path="logout" element={<Logout />} />
           </Route>
         </Routes>
-      </UserContext.Provider>
-    </Router>
+      </Router>
+    </UserContext.Provider>
   );
 }
 
