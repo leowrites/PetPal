@@ -13,8 +13,11 @@ import PetApplication from './pages/PetApplication';
 import CompletedApplicationLayout from './pages/CompletedApplicationLayout';
 import Message from './pages/Message';
 import Logout from './pages/Logout'
+import { UserContext } from './contexts/UserContext';
 
 function App() {
+
+  const [user, setUser] = React.useState(null)
 
   useEffect(() => {
     const token = localStorage.getItem("token")
@@ -25,25 +28,27 @@ function App() {
 
   return (
     <Router>
-      <Routes>
-        <Route path="/" element={<Layout />} >
-          <Route path="" element={<Landing />} />
-          <Route path="listings">
-            <Route path=":listingId" element={<PetDetail />}>
+      <UserContext.Provider value={{user, setUser}}>
+        <Routes>
+          <Route path="/" element={<Layout />} >
+            <Route path="" element={<Landing />} />
+            <Route path="listings">
+              <Route path=":listingId" element={<PetDetail />}>
+              </Route>
             </Route>
+            <Route path="listings/:listingId/applications" element={<PetApplication />} />
+            <Route path="applications" element={<CompletedApplicationLayout />}>
+              <Route path=":applicationId" element={<PetApplication completed={true}/>} />
+              <Route path=':applicationId/comments' element={<Message />} />
+            </Route>
+            <Route path="search" element={<Search />} />
+            <Route path="login" element={<Login />} />
+            <Route path="signup" element={<Signup />} />
+            <Route path='*' element={<NotFound />} />
+            <Route path="logout" element={<Logout />} />
           </Route>
-          <Route path="listings/:listingId/applications" element={<PetApplication />} />
-          <Route path="applications" element={<CompletedApplicationLayout />}>
-            <Route path=":applicationId" element={<PetApplication completed={true}/>} />
-            <Route path=':applicationId/comments' element={<Message />} />
-          </Route>
-          <Route path="search" element={<Search />} />
-          <Route path="login" element={<Login />} />
-          <Route path="signup" element={<Signup />} />
-          <Route path='*' element={<NotFound />} />
-          <Route path="logout" element={<Logout />} />
-        </Route>
-      </Routes>
+        </Routes>
+      </UserContext.Provider>
     </Router>
   );
 }

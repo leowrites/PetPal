@@ -3,7 +3,7 @@ import { ApiService, setAuthToken } from "./ApiService";
 
 class AuthService {
     static async login(username, password) {
-        await ApiService.post("/api/token/", {
+        return await ApiService.post("/api/token/", {
             username,
             password
         })
@@ -11,6 +11,7 @@ class AuthService {
                 const token = res.data.access
                 localStorage.setItem("token", token)
                 setAuthToken(token)
+                return res.data.user
             })
             .catch(err => {
                 throw err

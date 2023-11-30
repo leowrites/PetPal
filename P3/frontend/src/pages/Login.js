@@ -7,11 +7,13 @@ import Button from '../components/inputs/Button'
 import Text from '../components/Text'
 import { Link } from 'react-router-dom';
 import AuthService from '../services/AuthService';
+import { UserContext } from '../contexts/UserContext';
 import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const navigate = useNavigate();
     const [formError, setFormError] = useState('')
+    const { setUser } = React.useContext(UserContext);
 
     useEffect(() => {
       // TODO: replace with check using context
@@ -31,7 +33,8 @@ const Login = () => {
                     }}
                     onSubmit={async (values) => {
                         await AuthService.login(values.username, values.password)
-                            .then(() => {
+                            .then((user) => {
+                                setUser(user)
                                 navigate('/')
                             })
                             .catch((err) => {
