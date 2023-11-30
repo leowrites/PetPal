@@ -19,12 +19,13 @@ from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
 )
+from petpal.views import TokenObtainPairUserView
 from django.conf import settings
 from django.conf.urls.static import static
 
 
 urlpatterns = [
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/', TokenObtainPairUserView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('users/', include('users.urls', namespace='users')),
     path('admin/', admin.site.urls),
