@@ -5,7 +5,6 @@ import { Landing } from './pages/Landing'
 import { Search } from './pages/Search'
 import Layout from './components/layout/Layout';
 import PetDetail from './pages/PetDetail';
-import { setAuthToken } from './services/ApiService';
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import NotFound from './pages/NotFound'
@@ -13,21 +12,11 @@ import PetApplication from './pages/PetApplication';
 import CompletedApplicationLayout from './pages/CompletedApplicationLayout';
 import Message from './pages/Message';
 import Logout from './pages/Logout'
-import { UserContext } from './contexts/UserContext';
+import { UserContextProvider } from './contexts/UserContext';
 
 function App() {
-
-  const [user, setUser] = React.useState(null)
-
-  useEffect(() => {
-    const token = localStorage.getItem("token")
-    if (token) {
-      setAuthToken(token)
-    }
-  }, [])
-
   return (
-    <UserContext.Provider value={{user, setUser}}>
+    <UserContextProvider>
       <Router>
         <Routes>
           <Route path="/" element={<Layout />} >
@@ -49,7 +38,7 @@ function App() {
           </Route>
         </Routes>
       </Router>
-    </UserContext.Provider>
+    </UserContextProvider>
   );
 }
 
