@@ -60,10 +60,6 @@ export default function PetDetail() {
     const [applicationId, setApplicationId] = useState(null)
     const navigate = useNavigate()
     useEffect(() => {
-        // fetch pet details
-        if (!localStorage.getItem('token')) {
-            navigate('/login')
-        }
         PetDetailService.get(listingId)
             .then(res => {
                 setPetDetail(res.data)
