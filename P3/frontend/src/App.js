@@ -24,12 +24,12 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout />} >
             <Route path="" element={<Landing />} />
-            <Route path="listings" element={<Listings />}/>
-              <Route path="listings/:listingId" element={<PetDetail />}/>
-              <Route path="questions" element={<ShelterQuestion />}/>
+            <Route path="listings" element={<Listings />} />
+            <Route path="listings/:listingId" element={<PetDetail />} />
+            <Route path="questions" element={<ShelterQuestion />} />
             <Route path="listings/:listingId/applications" element={<PetApplication />} />
             <Route path="applications" element={<CompletedApplicationLayout />}>
-              <Route path=":applicationId" element={<PetApplication completed={true}/>} />
+              <Route path=":applicationId" element={<PetApplication completed={true} />} />
               <Route path=':applicationId/comments' element={<Message />} />
             </Route>
             <Route path="search" element={<Search />} />
