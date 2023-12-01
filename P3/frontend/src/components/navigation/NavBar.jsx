@@ -2,33 +2,12 @@ import React from "react";
 import { LogoToLandingButton } from "./LogoToLandingButton";
 import { useState, useRef, useContext, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { UserContext } from "../../contexts/UserContext";
-import UserDetailService from "../../services/UserDetailService";
-import { setAuthToken } from "../../services/ApiService"
+import { useUser } from "../../contexts/UserContext";
 
 export default function NavBar({}) {
 
-    const { user, setUser } = useContext(UserContext);
+    const { user } = useUser()
 
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-
-        if (!token) {
-            setUser(null);
-            return;
-        }
-        setAuthToken(token);
-
-        UserDetailService.getSelf()
-            .then((response) => {
-                setUser(response.data);
-            }).catch((error) => {
-                setUser(null);
-            });
-    }, [setUser]);
-
-
-    const isAuthenticated = (!!user)
     const isShelter = user?.is_shelter;
     const hasNotification = true;
     const selectedTab = useLocation().pathname.split('/')[1];
@@ -62,7 +41,7 @@ export default function NavBar({}) {
                 </div>
 
                 
-                { (isAuthenticated) ? (
+                { user ? (
                     <div className="self-center flex flex-row gap-[1rem] pr-[1.5rem] font-semibold items-center">
                         {((isShelter) ? (
                             <Link to="/listings">
@@ -134,7 +113,7 @@ export default function NavBar({}) {
                             null
                         )}
                     </div>
-                    { (isAuthenticated) ? (
+                    { user ? (
                         <div className="flex flex-row justify-end gap-[1rem] mr-[1.5rem] w-[100%] py-[1rem] font-semibold">
                             {(hasNotification) ? (
                                 <Link to="/notifications" className="bg-[#FF9447] hover:opacity-[80%] transition duration-300 py-[.5rem] rounded-full px-[.5rem]" id="notificationaMobile">
