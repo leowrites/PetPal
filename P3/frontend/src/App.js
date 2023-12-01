@@ -5,7 +5,6 @@ import { Landing } from './pages/Landing'
 import { Search } from './pages/Search'
 import Layout from './components/layout/Layout';
 import PetDetail from './pages/PetDetail';
-import { setAuthToken } from './services/ApiService';
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import NotFound from './pages/NotFound'
@@ -16,40 +15,32 @@ import Listings from './pages/Listings';
 import ShelterQuestion from './pages/shelterQuestion/ShelterQuestionPage';
 import Logout from './pages/Logout'
 import 'react-loading-skeleton/dist/skeleton.css'
-
+import { UserContextProvider } from './contexts/UserContext';
 
 function App() {
-
-  useEffect(() => {
-    const token = localStorage.getItem("token")
-    if (token) {
-      setAuthToken(token)
-    }
-  }, [])
-
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<Layout />} >
-          <Route path="" element={<Landing />} />
-          <Route path="listings" element={<Listings />}>
+    <UserContextProvider>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Layout />} >
+            <Route path="" element={<Landing />} />
+            <Route path="listings" element={<Listings />}/>
+              <Route path="listings/:listingId" element={<PetDetail />}/>
+              <Route path="questions" element={<ShelterQuestion />}/>
+            <Route path="listings/:listingId/applications" element={<PetApplication />} />
+            <Route path="applications" element={<CompletedApplicationLayout />}>
+              <Route path=":applicationId" element={<PetApplication completed={true}/>} />
+              <Route path=':applicationId/comments' element={<Message />} />
+            </Route>
+            <Route path="search" element={<Search />} />
+            <Route path="login" element={<Login />} />
+            <Route path="signup" element={<Signup />} />
+            <Route path='*' element={<NotFound />} />
+            <Route path="logout" element={<Logout />} />
           </Route>
-          <Route path="listings/:listingId" element={<PetDetail />}>
-          </Route>
-          <Route path="questions" element={<ShelterQuestion />}/>
-          <Route path="listings/:listingId/applications" element={<PetApplication />} />
-          <Route path="applications" element={<CompletedApplicationLayout />}>
-            <Route path=":applicationId" element={<PetApplication completed={true}/>} />
-            <Route path=':applicationId/comments' element={<Message />} />
-          </Route>
-          <Route path="search" element={<Search />} />
-          <Route path="login" element={<Login />} />
-          <Route path="signup" element={<Signup />} />
-          <Route path='*' element={<NotFound />} />
-          <Route path="logout" element={<Logout />} />
-        </Route>
-      </Routes>
-    </Router>
+        </Routes>
+      </Router>
+    </UserContextProvider>
   );
 }
 

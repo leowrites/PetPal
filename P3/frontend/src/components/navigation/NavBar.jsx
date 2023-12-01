@@ -1,12 +1,14 @@
 import React from "react";
 import { LogoToLandingButton } from "./LogoToLandingButton";
-import { useState, useRef, useContext } from "react";
+import { useState, useRef, useContext, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
+import { useUser } from "../../contexts/UserContext";
 
 export default function NavBar({}) {
 
-    const isAuthenticated = true;
-    const isShelter = true;
+    const { user } = useUser()
+
+    const isShelter = user?.is_shelter;
     const hasNotification = true;
     const selectedTab = useLocation().pathname.split('/')[1];
 
@@ -39,7 +41,7 @@ export default function NavBar({}) {
                 </div>
 
                 
-                { (isAuthenticated) ? (
+                { user ? (
                     <div className="self-center flex flex-row gap-[1rem] pr-[1.5rem] font-semibold items-center">
                         {((isShelter) ? (
                             <Link to="/listings">
@@ -48,7 +50,7 @@ export default function NavBar({}) {
                         ) : (null))}
                         {((hasNotification) ? (
                             <Link to='/notifications' className="bg-[#FF9447] hover:opacity-[80%] transition duration-300 py-[.5rem] rounded-full px-[.5rem]" id="notificationButton">
-                                <img className="w-[2rem] h-[2rem]" src="/notification.svg"/>
+                                <img className="w-[2rem] h-[2rem]" src="/notification.svg" alt="notification"/>
                             </Link>
                         ) : (null))}
                         <Link to="/profile"
@@ -60,11 +62,11 @@ export default function NavBar({}) {
                 ) : (
                     <div className="self-center flex flex-row gap-[1rem] pr-[1.5rem] font-semibold">
                         <Link to="/signup">
-                            <div className="bg-[#FF9447] py-[.75rem] w-[8rem] text-center text-[#FFF8F4] hover:opacity-[85%] transition">
+                            <div className="bg-[#FF9447] border-[1px] border-[#FF9447] py-[.3rem] w-[6rem] text-center text-[#FFF8F4] hover:opacity-[85%] transition">
                                 Sign Up
                             </div>
                         </Link>
-                        <Link to="/login" className="border-[#290005] border-[1px] py-[.75rem] w-[8rem] text-center text-[#290005] hover:cursor-pointer hover:bg-[#290005] hover:text-white transition duration-300">
+                        <Link to="/login" className="border-[#290005] border-[1px] py-[.3rem] w-[6rem] text-center text-[#290005] hover:cursor-pointer hover:bg-[#290005] hover:text-white transition duration-300">
                             Log In
                         </Link>
                     </div>
@@ -111,11 +113,11 @@ export default function NavBar({}) {
                             null
                         )}
                     </div>
-                    { (isAuthenticated) ? (
+                    { user ? (
                         <div className="flex flex-row justify-end gap-[1rem] mr-[1.5rem] w-[100%] py-[1rem] font-semibold">
                             {(hasNotification) ? (
                                 <Link to="/notifications" className="bg-[#FF9447] hover:opacity-[80%] transition duration-300 py-[.5rem] rounded-full px-[.5rem]" id="notificationaMobile">
-                                    <img className="w-[2rem] h-[2rem]" src="notification.svg"/>
+                                    <img className="w-[2rem] h-[2rem]" src="notification.svg" alt="notification"/>
                                 </Link>
                             ) : (null)}
                             <Link to="/profile" className="bg-[#FF9447] py-[.75rem] w-[10rem] text-center text-[#FFF8F4] rounded-full flex flex-row gap-[.5rem] justify-center hover:opacity-[85%] transition duration-300">
