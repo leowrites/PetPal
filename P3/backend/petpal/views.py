@@ -1,5 +1,0 @@
-from rest_framework_simplejwt.views import TokenObtainPairView
-from petpal.serializers import TokenObtainPairUserSerializer
-
-class TokenObtainPairUserView(TokenObtainPairView):
-    serializer_class = TokenObtainPairUserSerializer
