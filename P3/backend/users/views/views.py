@@ -2,8 +2,6 @@ from users.models import User
 from rest_framework import generics, permissions, mixins
 from users.serializers import serializers
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response
-from rest_framework.mixins import RetrieveModelMixin
 from users.permissions import permissions
 from django.shortcuts import get_object_or_404
 
