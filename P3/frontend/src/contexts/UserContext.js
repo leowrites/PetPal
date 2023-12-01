@@ -10,6 +10,7 @@ export const UserContextProvider = ({ children }) => {
     useEffect(() => {
         console.log(token)
         if (token) {
+            localStorage.setItem('token', token)
             setAuthToken(token)
             UserDetailService.getSelf()
                 .then((response) => {

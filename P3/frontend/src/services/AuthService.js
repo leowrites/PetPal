@@ -8,10 +8,7 @@ class AuthService {
             password
         })
             .then(res => {
-                const token = res.data.access
-                localStorage.setItem("token", token)
-                setAuthToken(token)
-                return res.data.user
+                return res.data
             })
             .catch(err => {
                 throw err
