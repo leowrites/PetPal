@@ -61,7 +61,6 @@ export default function PetDetail() {
     const navigate = useNavigate()
     useEffect(() => {
         // fetch pet details
-        setAuthToken(localStorage.getItem('token'))
         if (!localStorage.getItem('token')) {
             navigate('/login')
         }

@@ -27,12 +27,6 @@ const NewQuestionModal = ({ open, handleOpen, handleAddQuestion }) => {
                 handleOpen(false)
             })
     }
-    // redirect user if they are not logged in (replace this check by context in the future)
-    useEffect(() => {
-        if (!localStorage.getItem('token')) {
-            navigate('/login')
-        }
-    })
     return (
         <QuestionModal open={open} handleOpen={handleOpen} title={'Create a Question'}>
             <Formik initialValues={initialValues}
@@ -84,7 +78,6 @@ export default function () {
     }
 
     useEffect(() => {
-        setAuthToken(localStorage.getItem("token"))
         QuestionService.list()
             .then(res => {
                 setQuestions(res.data.results)
