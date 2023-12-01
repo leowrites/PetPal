@@ -7,6 +7,7 @@ const UserContext = createContext({});
 export const UserContextProvider = ({ children }) => {
     const [token, setToken] = useState(localStorage['token'])
     const [user, setUser] = useState(null)
+    const [loading, setLoading] = useState(true)
     useEffect(() => {
         console.log(token)
         if (token) {
@@ -15,12 +16,14 @@ export const UserContextProvider = ({ children }) => {
             UserDetailService.getSelf()
                 .then((response) => {
                     setUser(response.data)
+                    setLoading(false)
                 })
         }
         else {
             localStorage.removeItem('token')
             setAuthToken(null)
             setUser(null)
+            setLoading(false)
         }
     }, [token])
 
@@ -33,7 +36,9 @@ export const UserContextProvider = ({ children }) => {
     }, [token, user])
 
     return (
-        <UserContext.Provider value={contextValue}>{children}</UserContext.Provider>
+        <UserContext.Provider value={contextValue}>
+            {loading ? null : children}
+        </UserContext.Provider>
     )
 }
 
