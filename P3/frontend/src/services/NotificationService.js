@@ -1,8 +1,19 @@
 import { ApiService } from "./ApiService";
 
 class NotificationService {
-    static async getNotificationList(pageNumber, Filter) {
-        const response = await ApiService.get(`/notifications/`, { params: { pageNumber, Filter } })
+    static async getNotifications(page, read) {
+        const params = {
+            page: page,
+        }
+
+        if (read !== "all") {
+            params.read = (read === "read")
+        }
+
+        const response = await ApiService.get(
+            `/notifications/`, 
+            { params: params }
+            )
         return response
     }
     static async delete(id) {
@@ -11,4 +22,4 @@ class NotificationService {
     }
 }
 
-export { NotificationService }
+export default NotificationService;

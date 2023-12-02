@@ -3,7 +3,7 @@ import {
     List,
     ListItem,
     ListItemSuffix,
-    Card,
+    Chip,
     IconButton,
 } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
@@ -31,12 +31,18 @@ export default function NotificationList({ notifications, deleteNotification }) 
     return (
         <List>
             {notifications.map((notification) => (
-                <ListItem key={notification.id} selected={false} className="h-[2rem] w-[20rem]" onClick={() => {navigate('/hme')}}>
-                    Notification
+                <ListItem key={notification.id} selected={false} className="h-[2.5rem] w-[20rem]" onClick={() => {navigate('/hme')}}>
+                    {notification.notification_type}
                     <ListItemSuffix>
-                        <IconButton variant="text" onClick={(e) => {e.stopPropagation();}}>
-                            <TrashIcon />
-                        </IconButton>
+                        <div className="flex flex-row items-center">
+                            {!notification.read ? 
+                                (<Chip color="orange" value="unread" variant="outlined" size="sm" className="h-[2rem]"/>) : 
+                                <></>
+                            }
+                            <IconButton variant="text" onClick={(e) => {e.stopPropagation();}}>
+                                <TrashIcon />
+                            </IconButton>
+                        </div>
                     </ListItemSuffix>
                 </ListItem>
             ))}

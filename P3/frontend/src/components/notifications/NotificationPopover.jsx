@@ -12,17 +12,35 @@ import {
 
 export default function NotificationPopover({ children, notifications }) {
 
+    const [userHasUnreadNotifications, setUserHasUnreadNotifications] = useState(false);
+    const [notificationData, setNotificationData] = useState(notifications);
     const [readFilter, setReadFilter] = useState("unread");
     const [pageNumber, setPageNumber] = useState(1);
-    const [notificationData, setNotificationData] = useState(notifications);
+    
+    useEffect(() => {
+        NotificationService.getNotifications(1, "unread")
+            .then((response) => {
+                setUserHasUnreadNotifications(response.data.count > 0);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }, [])
 
     useEffect(() => {
-
+        NotificationService.getNotifications(pageNumber, readFilter)
+            .then((response) => {
+                setNotificationData(response.data);
+                console.log(response.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }, [readFilter, pageNumber])
 
-    useEffect(() => {
-        console.log(readFilter);
-    }, [readFilter]);
+    if (!notificationData) {
+        return (<></>)
+    }
 
     return (
         <Popover 
@@ -41,8 +59,8 @@ export default function NotificationPopover({ children, notifications }) {
             </div>
             <PopoverContent>
                 <ReadFilterSelector readFilter={readFilter} setReadFilter={setReadFilter} />
-                <NotificationList notifications={notifications}/>
-                <NotificationSimplePagination pageNumber={pageNumber} setPageNumber={setPageNumber} lastPage={false} />
+                <NotificationList notifications={notificationData.results}/>
+                <NotificationSimplePagination pageNumber={pageNumber} setPageNumber={setPageNumber} lastPage={(notificationData.next === null)} />
             </PopoverContent>
         </Popover>
     )

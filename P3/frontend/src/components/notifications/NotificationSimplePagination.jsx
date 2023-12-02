@@ -22,7 +22,7 @@ export default function SimplePagination({ pageNumber, setPageNumber, lastPage})
         size="sm"
         variant="outlined"
         onClick={prev}
-        disabled={lastPage}
+        disabled={pageNumber === 1}
       >
         <SlArrowLeft className="h-4 w-4" />
       </IconButton>
