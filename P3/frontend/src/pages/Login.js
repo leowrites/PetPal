@@ -35,8 +35,8 @@ const Login = () => {
 
     return (
         <div className='flex items-center justify-center'>
-            <Container className={'flex items-center justify-center flex-col w-[60%]'}>
-                <Heading>Welcome to Pet Pal!</Heading>
+            <Container className={'flex items-center justify-center flex-col w-full sm:w-4/5 md:w-3/4 lg:w-2/3 xl:w-1/2'}>
+                <Heading><h1 class="text-[2rem] mb-4">Welcome to Pet Pal!</h1></Heading>
                 <Formik
                     initialValues={{
                         username: '',
@@ -48,11 +48,11 @@ const Login = () => {
                         <div className="flex flex-col justify-center items-center w-full mb-4">
                             {formError && <Text color='text-red-500'>{formError}</Text>}
 
-                            <TextInput id='username' name='username' placeholder='Username' className='w-[20rem] mb-6 mt-2' />
+                            <TextInput id='username' name='username' placeholder='Username' className='lg:w-[22rem] w-[18rem] mb-6 mt-2 border-2 border-[#290005] bg-[#FFF8F4]' />
 
-                            <TextInput id='password' name='password' placeholder='Password' type='password' className='w-[20rem]' />
+                            <TextInput id='password' name='password' placeholder='Password' type='password' className='lg:w-[22rem] w-[18rem] border-2 border-[#290005] bg-[#FFF8F4]' />
 
-                            <Button type='submit'>Sign in</Button>
+                            <Button className='mt-6' type='submit'>Sign in</Button>
                         </div>
                     </Form>
                 </Formik>
