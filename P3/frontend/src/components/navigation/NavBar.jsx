@@ -1,8 +1,9 @@
 import React from "react";
-import { LogoToLandingButton } from "./LogoToLandingButton";
+import LogoToLandingButton from "./LogoToLandingButton";
 import { useState, useRef, useContext, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useUser } from "../../contexts/UserContext";
+import NotificationPopover from "../notifications/NotificationPopover";
 
 export default function NavBar({}) {
 
@@ -49,9 +50,7 @@ export default function NavBar({}) {
                             </Link>
                         ) : (null))}
                         {((hasNotification) ? (
-                            <Link to='/notifications' className="bg-[#FF9447] hover:opacity-[80%] transition duration-300 py-[.5rem] rounded-full px-[.5rem]" id="notificationButton">
-                                <img className="w-[2rem] h-[2rem]" src="/notification.svg" alt="notification"/>
-                            </Link>
+                            <NotificationPopover children={<span>text</span>} notifications={[1, 2, 3 ,4]} />
                         ) : (null))}
                         <Link to="/profile"
                             className="hover:opacity-[80%] transition bg-[#FF9447] py-[.6rem] px-[1rem] w-[10rem] text-center text-[#FFF8F4] hover:cursor-pointer rounded-full flex flex-nowrap justify-center items-center space-x-2">
