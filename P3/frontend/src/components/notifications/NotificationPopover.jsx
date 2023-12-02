@@ -54,10 +54,6 @@ export default function NotificationPopover({ children, notifications }) {
             });
     }
 
-    if (!notificationData) {
-        return (<></>)
-    }
-
     return (
         <Popover 
             placement="bottom" 
@@ -69,14 +65,19 @@ export default function NotificationPopover({ children, notifications }) {
             <div onClick={(e) => {e.stopPropagation()}}>
                 <PopoverHandler>
                     <div>
-                        <NotificationButton />
+                        <NotificationButton newNotifications={userHasUnreadNotifications} />
                     </div>
                 </PopoverHandler>
             </div>
             <PopoverContent>
-                <ReadFilterSelector readFilter={readFilter} setReadFilter={setReadFilter} />
-                <NotificationList notifications={notificationData.results} deleteNotification={deleteNotification}/>
-                <NotificationSimplePagination pageNumber={pageNumber} setPageNumber={setPageNumber} lastPage={(notificationData.next === null)} />
+                {notificationData !== null ? 
+                    <>
+                        <ReadFilterSelector readFilter={readFilter} setReadFilter={setReadFilter} />
+                        <NotificationList notifications={notificationData.results} deleteNotification={deleteNotification}/>
+                        <NotificationSimplePagination pageNumber={pageNumber} setPageNumber={setPageNumber} lastPage={(notificationData.next === null)} />
+                    </> : <></>
+                }
+                
             </PopoverContent>
         </Popover>
     )
