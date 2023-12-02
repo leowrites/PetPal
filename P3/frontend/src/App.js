@@ -1,6 +1,6 @@
 import './App.css';
 import React, { useEffect } from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom'
 import { Landing } from './pages/Landing'
 import { Search } from './pages/Search'
 import Layout from './components/layout/Layout';
@@ -11,8 +11,20 @@ import NotFound from './pages/NotFound'
 import PetApplication from './pages/PetApplication';
 import CompletedApplicationLayout from './pages/CompletedApplicationLayout';
 import Message from './pages/Message';
+import Listings from './pages/Listings';
+import ShelterQuestion from './pages/shelterQuestion/ShelterQuestionPage';
 import Logout from './pages/Logout'
-import { UserContextProvider } from './contexts/UserContext';
+import 'react-loading-skeleton/dist/skeleton.css'
+import { UserContextProvider, useUser } from './contexts/UserContext';
+
+const ProtectedRoute = ({ children }) => {
+  const { user } = useUser()
+  if (!user) {
+    return <Navigate to={'/login'} />
+  }
+
+  return children
+};
 
 function App() {
   return (
@@ -21,14 +33,37 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout />} >
             <Route path="" element={<Landing />} />
-            <Route path="listings">
-              <Route path=":listingId" element={<PetDetail />}>
-              </Route>
-            </Route>
-            <Route path="listings/:listingId/applications" element={<PetApplication />} />
-            <Route path="applications" element={<CompletedApplicationLayout />}>
-              <Route path=":applicationId" element={<PetApplication completed={true}/>} />
-              <Route path=':applicationId/comments' element={<Message />} />
+            <Route path="listings" element={<Listings />} />
+            <Route path="listings/:listingId" element={
+              <ProtectedRoute>
+                <PetDetail />
+              </ProtectedRoute>
+            } />
+            <Route path="questions" element={
+              <ProtectedRoute>
+                <ShelterQuestion />
+              </ProtectedRoute>
+            } />
+            <Route path="listings/:listingId/applications" element={
+              <ProtectedRoute>
+                <PetApplication />
+              </ProtectedRoute>
+            } />
+            <Route path="applications" element={
+              <ProtectedRoute>
+                <CompletedApplicationLayout />
+              </ProtectedRoute>
+            }>
+              <Route path=":applicationId" element={
+                <ProtectedRoute>
+                  <PetApplication completed={true} />
+                </ProtectedRoute>
+              } />
+              <Route path=':applicationId/comments' element={
+                <ProtectedRoute>
+                  <Message />
+                </ProtectedRoute>
+              } />
             </Route>
             <Route path="search" element={<Search />} />
             <Route path="login" element={<Login />} />

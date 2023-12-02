@@ -42,7 +42,20 @@ class ListOrCreateAssignedQuestion(generics.ListCreateAPIView):
         self.check_permissions(self.request)
         listing = get_object_or_404(PetListing, id=self.kwargs['listing_id'])
         self.check_object_permissions(self.request, listing.shelter)
-        return models.AssignedQuestion.objects.filter(listing=listing)
+        return models.AssignedQuestion.objects.filter(listing=listing).order_by('-id')
+
+    def create(self, request, *args, **kwargs):
+        if isinstance(request.data, list):
+            self.check_permissions(self.request)
+            listing = get_object_or_404(PetListing, id=self.kwargs['listing_id'])
+            self.check_object_permissions(self.request, listing.shelter)
+            for data in request.data:
+                serializer = self.get_serializer(data=data)
+                serializer.is_valid(raise_exception=True)
+                serializer.save(listing_id=self.kwargs['listing_id'])
+            return super().list(request, *args, **kwargs)
+        else:
+            return super().create(request, *args, **kwargs)
 
     def perform_create(self, serializer):
         # only the owner of the listing has permission to create the questions
