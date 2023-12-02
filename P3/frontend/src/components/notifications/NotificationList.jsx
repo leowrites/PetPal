@@ -6,6 +6,7 @@ import {
     Chip,
     IconButton,
 } from "@material-tailwind/react";
+import { FaCircle } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 function TrashIcon() {
@@ -40,11 +41,11 @@ export default function NotificationList({ notifications, deleteNotification }) 
         <List>
             {notifications.map((notification) => (
                 <ListItem key={notification.id} selected={false} className="h-[3rem] w-[20rem]" onClick={() => {navigate('/hme')}}>
-                    {notification.notification_type}
+                    {notification.message}
                     <ListItemSuffix>
                         <div className="flex flex-row items-center">
                             {!notification.read ? 
-                                (<Chip color="orange" value="unread" variant="outlined" size="sm" className="h-[2rem] mr-[.5rem]"/>) : 
+                                <FaCircle color="orange" className="mr-[.5rem]"/> : 
                                 <></>
                             }
                             <IconButton variant="text" onClick={createNotificationDeleteHandler(notification)}>
