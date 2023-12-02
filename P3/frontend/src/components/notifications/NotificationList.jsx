@@ -6,6 +6,7 @@ import {
     Card,
     IconButton,
 } from "@material-tailwind/react";
+import { useNavigate } from "react-router-dom";
 
 function TrashIcon() {
     return (
@@ -25,20 +26,20 @@ function TrashIcon() {
   }
 
 export default function NotificationList({ notifications, deleteNotification }) {
+    const navigate = useNavigate();
+
     return (
-        <Card>
-            <List>
-                {notifications.map((notification) => (
-                    <ListItem key={notification.id} className="p-1 h-auto">
-                        Item One
-                        <ListItemSuffix>
-                            <IconButton variant="text">
-                                <TrashIcon />
-                            </IconButton>
-                        </ListItemSuffix>
-                    </ListItem>
-                ))}
-            </List>
-        </Card>
+        <List>
+            {notifications.map((notification) => (
+                <ListItem key={notification.id} selected={false} className="h-[2rem] w-[20rem]" onClick={() => {navigate('/hme')}}>
+                    Notification
+                    <ListItemSuffix>
+                        <IconButton variant="text" onClick={(e) => {e.stopPropagation();}}>
+                            <TrashIcon />
+                        </IconButton>
+                    </ListItemSuffix>
+                </ListItem>
+            ))}
+        </List>
     )
 }

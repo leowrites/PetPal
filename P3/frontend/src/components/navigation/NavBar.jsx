@@ -50,7 +50,7 @@ export default function NavBar({}) {
                             </Link>
                         ) : (null))}
                         {((hasNotification) ? (
-                            <NotificationPopover children={<span>text</span>} notifications={[1, 2, 3 ,4]} />
+                            <NotificationPopover children={<span>text</span>} notifications={[{id: 1}, {id: 2}, {id: 3}, {id: 4}]} />
                         ) : (null))}
                         <Link to="/profile"
                             className="hover:opacity-[80%] transition bg-[#FF9447] py-[.6rem] px-[1rem] w-[10rem] text-center text-[#FFF8F4] hover:cursor-pointer rounded-full flex flex-nowrap justify-center items-center space-x-2">
@@ -115,9 +115,7 @@ export default function NavBar({}) {
                     { user ? (
                         <div className="flex flex-row justify-end gap-[1rem] mr-[1.5rem] w-[100%] py-[1rem] font-semibold">
                             {(hasNotification) ? (
-                                <Link to="/notifications" className="bg-[#FF9447] hover:opacity-[80%] transition duration-300 py-[.5rem] rounded-full px-[.5rem]" id="notificationaMobile">
-                                    <img className="w-[2rem] h-[2rem]" src="notification.svg" alt="notification"/>
-                                </Link>
+                                <NotificationPopover children={<span>text</span>} notifications={[{id: 1}, {id: 2}, {id: 3}, {id: 4}]} />
                             ) : (null)}
                             <Link to="/profile" className="bg-[#FF9447] py-[.75rem] w-[10rem] text-center text-[#FFF8F4] rounded-full flex flex-row gap-[.5rem] justify-center hover:opacity-[85%] transition duration-300">
                                 <img src="profile_icon.svg" alt="profile_icon.svg" className="h-6 w-6"/>
