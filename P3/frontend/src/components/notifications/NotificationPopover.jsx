@@ -71,11 +71,15 @@ export default function NotificationPopover({ children, notifications }) {
             </div>
             <PopoverContent>
                 {notificationData !== null ? 
-                    <>
+                    (<>
                         <ReadFilterSelector readFilter={readFilter} setReadFilter={setReadFilter} />
-                        <NotificationList notifications={notificationData.results} deleteNotification={deleteNotification}/>
+                        {(notificationData.count !== 0) ? 
+                            <NotificationList notifications={notificationData.results} deleteNotification={deleteNotification}/> : 
+                            <div className='p-[1rem]'>There are no {readFilter !== "all" ? readFilter : ''} notifications</div>
+                        }
                         <NotificationSimplePagination pageNumber={pageNumber} setPageNumber={setPageNumber} lastPage={(notificationData.next === null)} />
-                    </> : <></>
+                    </>
+                ): <></> 
                 }
                 
             </PopoverContent>

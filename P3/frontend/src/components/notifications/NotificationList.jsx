@@ -7,7 +7,6 @@ import {
     IconButton,
 } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
-import NotificationService from "../../services/NotificationService";
 
 function TrashIcon() {
     return (
@@ -40,12 +39,12 @@ export default function NotificationList({ notifications, deleteNotification }) 
     return (
         <List>
             {notifications.map((notification) => (
-                <ListItem key={notification.id} selected={false} className="h-[2.5rem] w-[20rem]" onClick={() => {navigate('/hme')}}>
+                <ListItem key={notification.id} selected={false} className="h-[3rem] w-[20rem]" onClick={() => {navigate('/hme')}}>
                     {notification.notification_type}
                     <ListItemSuffix>
                         <div className="flex flex-row items-center">
                             {!notification.read ? 
-                                (<Chip color="orange" value="unread" variant="outlined" size="sm" className="h-[2rem]"/>) : 
+                                (<Chip color="orange" value="unread" variant="outlined" size="sm" className="h-[2rem] mr-[.5rem]"/>) : 
                                 <></>
                             }
                             <IconButton variant="text" onClick={createNotificationDeleteHandler(notification)}>

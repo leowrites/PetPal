@@ -17,10 +17,10 @@ export default function SimplePagination({ pageNumber, setPageNumber, lastPage})
   };
  
   return (
-    <div className="flex items-center justify-center gap-8">
+    <div className="flex items-center justify-center gap-6">
       <IconButton
         size="sm"
-        variant="outlined"
+        variant="text"
         onClick={prev}
         disabled={pageNumber === 1}
       >
@@ -31,7 +31,7 @@ export default function SimplePagination({ pageNumber, setPageNumber, lastPage})
       </Typography>
       <IconButton
         size="sm"
-        variant="outlined"
+        variant="text"
         onClick={next}
         disabled={lastPage}
       >
