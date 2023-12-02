@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Select, Option } from "@material-tailwind/react";
 
-export default function ReadFilterSelector({ readFilter, setReadFilter }) {
+export default function ReadFilterSelector({ readFilter, setReadFilter, setLoading }) {
 
 
     return (
@@ -9,6 +9,7 @@ export default function ReadFilterSelector({ readFilter, setReadFilter }) {
         id="readFilter"
         onChange={(e) => {
             setReadFilter(e);
+            setLoading(true);
         }}
         value={readFilter}
         color="orange"

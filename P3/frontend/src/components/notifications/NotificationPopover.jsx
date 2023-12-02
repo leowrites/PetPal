@@ -4,16 +4,18 @@ import NotificationList from './NotificationList';
 import NotificationSimplePagination from './NotificationSimplePagination';
 import ReadFilterSelector from './ReadFilterSelector';
 import NotificationService from '../../services/NotificationService';
+import LoadingSpinner from '../presenter/LoadingSpinner';
 import {
     Popover,
     PopoverHandler,
     PopoverContent
 } from "@material-tailwind/react";
 
-export default function NotificationPopover({ children, notifications }) {
+export default function NotificationPopover({ children }) {
 
     const [userHasUnreadNotifications, setUserHasUnreadNotifications] = useState(false);
     const [notificationData, setNotificationData] = useState(null);
+    const [loading, setLoading] = useState(true);
     const [readFilter, setReadFilter] = useState("unread");
     const [pageNumber, setPageNumber] = useState(1);
     
@@ -21,20 +23,25 @@ export default function NotificationPopover({ children, notifications }) {
         NotificationService.getNotifications(1, "unread")
             .then((response) => {
                 setUserHasUnreadNotifications(response.data.count > 0);
+                setLoading(false);
             })
             .catch((error) => {
                 console.log(error);
+                setLoading(false);
             });
     }, [])
+
+    useEffect(() => {setPageNumber(1)}, [readFilter])
 
     useEffect(() => {
         NotificationService.getNotifications(pageNumber, readFilter)
             .then((response) => {
                 setNotificationData(response.data);
-                console.log(response.data);
+                setLoading(false);
             })
             .catch((error) => {
                 console.log(error);
+                setLoading(false);
             });
     }, [readFilter, pageNumber])
 
@@ -44,13 +51,16 @@ export default function NotificationPopover({ children, notifications }) {
                 NotificationService.getNotifications(pageNumber, readFilter)
                     .then((response) => {
                         setNotificationData(response.data);
+                        setLoading(false);
                     })
                     .catch((error) => {
                         console.log(error);
+                        setLoading(false);
                     });
             })
             .catch((error) => {
                 console.log(error);
+                setLoading(false);
             });
     }
 
@@ -72,15 +82,28 @@ export default function NotificationPopover({ children, notifications }) {
             <PopoverContent>
                 {notificationData !== null ? 
                     (<>
-                        <ReadFilterSelector readFilter={readFilter} setReadFilter={setReadFilter} />
+                        <ReadFilterSelector readFilter={readFilter} setReadFilter={setReadFilter} setLoading={setLoading} />
                         {(notificationData.count !== 0) ? 
                             <NotificationList notifications={notificationData.results} deleteNotification={deleteNotification}/> : 
                             <div className='p-[1rem]'>There are no {readFilter !== "all" ? readFilter : ''} notifications</div>
                         }
-                        <NotificationSimplePagination pageNumber={pageNumber} setPageNumber={setPageNumber} lastPage={(notificationData.next === null)} />
+                        <div className='relative'>
+                            <NotificationSimplePagination 
+                                pageNumber={pageNumber} 
+                                setPageNumber={setPageNumber} 
+                                lastPage={(notificationData.next === null)}
+                                setLoading={setLoading}
+                            />
+                            {loading ? 
+                                <div className='absolute bottom-[.75rem] right-[1.75rem]'>
+                                    <LoadingSpinner /> 
+                                </div>
+                            : <></>}
+                        </div>
                     </>
-                ): <></> 
-                }
+                ): <>
+                </> } 
+                
                 
             </PopoverContent>
         </Popover>
