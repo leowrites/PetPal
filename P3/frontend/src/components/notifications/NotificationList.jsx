@@ -7,6 +7,7 @@ import {
     IconButton,
 } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
+import NotificationService from "../../services/NotificationService";
 
 function TrashIcon() {
     return (
@@ -25,8 +26,16 @@ function TrashIcon() {
     );
   }
 
+
 export default function NotificationList({ notifications, deleteNotification }) {
     const navigate = useNavigate();
+
+    const createNotificationDeleteHandler = (notification) => {
+        return (e) => {
+            e.stopPropagation();
+            deleteNotification(notification.id);
+        }
+    };
 
     return (
         <List>
@@ -39,7 +48,7 @@ export default function NotificationList({ notifications, deleteNotification }) 
                                 (<Chip color="orange" value="unread" variant="outlined" size="sm" className="h-[2rem]"/>) : 
                                 <></>
                             }
-                            <IconButton variant="text" onClick={(e) => {e.stopPropagation();}}>
+                            <IconButton variant="text" onClick={createNotificationDeleteHandler(notification)}>
                                 <TrashIcon />
                             </IconButton>
                         </div>

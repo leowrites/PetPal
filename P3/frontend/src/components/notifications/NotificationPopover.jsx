@@ -13,7 +13,7 @@ import {
 export default function NotificationPopover({ children, notifications }) {
 
     const [userHasUnreadNotifications, setUserHasUnreadNotifications] = useState(false);
-    const [notificationData, setNotificationData] = useState(notifications);
+    const [notificationData, setNotificationData] = useState(null);
     const [readFilter, setReadFilter] = useState("unread");
     const [pageNumber, setPageNumber] = useState(1);
     
@@ -38,6 +38,22 @@ export default function NotificationPopover({ children, notifications }) {
             });
     }, [readFilter, pageNumber])
 
+    const deleteNotification = (notificationId) => {
+        NotificationService.deleteNotification(notificationId)
+            .then((response) => {
+                NotificationService.getNotifications(pageNumber, readFilter)
+                    .then((response) => {
+                        setNotificationData(response.data);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+    }
+
     if (!notificationData) {
         return (<></>)
     }
@@ -59,7 +75,7 @@ export default function NotificationPopover({ children, notifications }) {
             </div>
             <PopoverContent>
                 <ReadFilterSelector readFilter={readFilter} setReadFilter={setReadFilter} />
-                <NotificationList notifications={notificationData.results}/>
+                <NotificationList notifications={notificationData.results} deleteNotification={deleteNotification}/>
                 <NotificationSimplePagination pageNumber={pageNumber} setPageNumber={setPageNumber} lastPage={(notificationData.next === null)} />
             </PopoverContent>
         </Popover>

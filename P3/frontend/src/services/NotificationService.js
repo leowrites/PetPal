@@ -16,7 +16,7 @@ class NotificationService {
             )
         return response
     }
-    static async delete(id) {
+    static async deleteNotification(id) {
         const response = await ApiService.delete(`/notifications/${id}`)
         return response
     }
