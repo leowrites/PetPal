@@ -81,6 +81,8 @@ export default function NotificationPopover() {
                                 deleteNotification={deleteNotification}
                                 popoverButton={popoverButton}
                                 setReload={setReload}
+                                loading={loading}
+                                setLoading={setLoading}
                             />: 
                             <div className='p-[1rem]'>There are no {readFilter !== "all" ? readFilter : ''} notifications</div>
                         }
