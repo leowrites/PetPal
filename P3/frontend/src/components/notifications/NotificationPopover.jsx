@@ -37,6 +37,7 @@ export default function NotificationPopover() {
     }, [readFilter, pageNumber, reload])
 
     const deleteNotification = (notificationId) => {
+        setLoading(true);
         NotificationService.deleteNotification(notificationId)
             .then((response) => {
                 NotificationService.getNotifications(pageNumber, readFilter)
@@ -92,7 +93,7 @@ export default function NotificationPopover() {
                                 setLoading={setLoading}
                             />
                             {loading ? 
-                                <div className='absolute bottom-[.75rem] right-[1.75rem]'>
+                                <div className='absolute bottom-[40%] right-0'>
                                     <LoadingSpinner /> 
                                 </div>
                             : <></>}
