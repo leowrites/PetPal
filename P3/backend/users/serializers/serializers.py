@@ -72,3 +72,17 @@ class UserProfileSerializer(serializers.ModelSerializer):
         if not hasattr(instance, 'shelter'):
             rep.pop('shelter_id', None)
         return rep
+
+class ChangePasswordSerializer(serializers.Serializer):
+    password = serializers.CharField(required=True, write_only=True, validators=[validate_password])
+    password2 = serializers.CharField(required=True, write_only=True)
+
+    def validate(self, data):
+        if data['password'] != data['password2']:
+            raise serializers.ValidationError("Passwords must match")
+        return data
+
+    def update(self, instance, validated_data):
+        instance.set_password(validated_data['password'])
+        instance.save()
+        return instance

@@ -129,7 +129,7 @@ const ProfileUpdate = () => {
                         onSubmit={handleUserProfileSubmit}
                         notification={notification}
                     />
-                    <Text className=''><Link to='/' className='text-[#290005] underline'>Change Password</Link></Text>
+                    <Text className=''><Link to='/profile/password/change' className='text-[#290005] underline'>Change Password</Link></Text>
                     <div className='mt-12'>
                         <Heading>Notification Preferences</Heading>
                         <NotificationPreferencesForm

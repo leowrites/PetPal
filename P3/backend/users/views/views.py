@@ -43,3 +43,11 @@ class RetrieveOrUpdateOrDestroyUser(generics.RetrieveUpdateDestroyAPIView):
         self.check_object_permissions(self.request, user)
         return user
     
+# PUT /users/password/change
+class ChangePassword(generics.UpdateAPIView):
+    serializer_class = serializers.ChangePasswordSerializer
+    permission_classes = [IsAuthenticated, permissions.IsOwner]
+
+    def get_object(self):
+        return self.request.user
+    

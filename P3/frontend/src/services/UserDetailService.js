@@ -15,6 +15,11 @@ class UserDetailService {
         const response = await ApiService.patch(`users/${id}`, data)
         return response
     }
+
+    static async changePassword(data) {
+        const response = await ApiService.patch(`users/password/change`, data)
+        return response
+    }
 }
 
 export default UserDetailService;
