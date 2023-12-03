@@ -16,6 +16,12 @@ export default function NavBar({}) {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    useEffect(() => {
+        if (windowWidth >= 1024 && isActive) {
+            setIsActive(false);
+        }
+    }, [windowWidth])
+
     const isShelter = user?.is_shelter;
     const selectedTab = useLocation().pathname.split('/')[1];
 
@@ -28,7 +34,7 @@ export default function NavBar({}) {
     function toggleNavBar() {
         setIsActive(current => !current);
     }
-    const contentMaxHeight = isActive ? `${contentRef.current.scrollHeight}px` : null;
+    const contentMaxHeight = isActive ? `${contentRef.current?.scrollHeight}px` : null;
     const iconDisplayStyleOpen = isActive ? 'block' : 'none';
     const iconDisplayStyleClose = isActive ? 'none' : 'block';
 
