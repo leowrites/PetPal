@@ -19,7 +19,6 @@ class RetrieveSelfOrCreateUser(generics.RetrieveAPIView, generics.CreateAPIView)
     def get_object(self):
         return self.request.user
 
-
 # GET /users/<pk>
 # PUT /users/<pk>
 # DELETE /users/<pk>
