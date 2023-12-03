@@ -46,3 +46,9 @@ class UserProfileSerializer(serializers.ModelSerializer):
         model = User
         fields = ['id', 'username', 'email', 'avatar', 'is_shelter', 'shelter_id']
         read_only_fields = ['is_shelter', 'shelter_id']
+
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        if not hasattr(instance, 'shelter'):
+            rep.pop('shelter_id', None)
+        return rep
