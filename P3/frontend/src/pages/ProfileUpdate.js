@@ -8,13 +8,13 @@ import { Link } from 'react-router-dom';
 import { useUser } from '../contexts/UserContext';
 import UserDetailService from '../services/UserDetailService';
 import NotificationPreferenceService from '../services/NotificationPreferenceService';
-import { Checkbox } from "@material-tailwind/react";
 
 const ProfileUpdate = () => { 
     const { user, setUser } = useUser();
     const [notification, setNotification] = useState('')
     const [notificationPreferences, setNotificationPreferences] = useState({})
     const [notificationUpdateNotification, setNotificationUpdateNotification] = useState('')
+    const [shelter, setShelter] = useState({})
     
     const handleUserProfileSubmit = async (values, { setSubmitting }) => {
         try {
@@ -51,6 +51,10 @@ const ProfileUpdate = () => {
         }
         getNotificationPreferences();
     }, [])
+
+    useEffect(() => {
+        
+    })
 
     const handleNotificationPreferenceSubmit = async (values, { setSubmitting }) => {
         try {
