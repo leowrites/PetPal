@@ -40,7 +40,15 @@ class UserCreationSerializer(serializers.ModelSerializer):
         return password
 
 class UserProfileSerializer(serializers.ModelSerializer):
+    shelter_id = serializers.PrimaryKeyRelatedField(source='shelter', required=False, allow_null=True, read_only=True)
+
     class Meta:
         model = User
-        fields = ['id', 'username', 'email', 'avatar', 'is_shelter']
-        read_only_fields = ['is_shelter']
+        fields = ['id', 'username', 'email', 'avatar', 'is_shelter', 'shelter_id']
+        read_only_fields = ['is_shelter', 'shelter_id']
+
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        if not hasattr(instance, 'shelter'):
+            rep.pop('shelter_id', None)
+        return rep
