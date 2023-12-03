@@ -80,7 +80,7 @@ export default function PetDetail() {
                 }
             })
         })
-    }, [])
+    }, [listingId])
     const petListingIDetails = [
         {
             sectionTitle: 'Medical History',

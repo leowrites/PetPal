@@ -15,7 +15,6 @@ export default function NotificationList({ notifications, deleteNotification, po
     const createNotificationClickHandler = (notification) => 
         (e) => {
             popoverButton.current.click();
-            navigate('/')
             NotificationService.getNotification(notification.id)
                 .then((response) => {
                     setReload((prev) => !prev);

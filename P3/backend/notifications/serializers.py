@@ -19,7 +19,7 @@ class NotificationSerializer(serializers.ModelSerializer):
         if instance.notification_type == "applicationMessage":
             listing = instance.associated_model.application.listing
             message = f'New message on application for {listing.name}'
-        elif instance.notification_type in "application_status_change":
+        elif instance.notification_type == "application_status_change":
             application = instance.associated_model
             listing = application.listing
             message = f'Status change on application for {listing.name}'
