@@ -5,6 +5,7 @@ import { Form, Formik, Field } from 'formik';
 import TextInput from '../components/inputs/TextInput';
 import Text from '../components/Text'
 import Button from '../components/inputs/Button'
+import { Link } from 'react-router-dom';
 import { useUser } from '../contexts/UserContext';
 import UserDetailService from '../services/UserDetailService';
 
@@ -42,7 +43,10 @@ const ProfileUpdate = () => {
     
     return (
         <div class="container mx-auto px-5 sm:px-5 md:px-5 lg:px-20">
-            <Heading><h1 class="text-[2rem] font-semibold mb-4">Account Settings</h1></Heading>
+            <div class="flex flex-row justify-between items-center">
+                <Heading><h1 class="text-[2rem] font-semibold mb-4">Account Settings</h1></Heading>
+                <Link to="/logout" className="text-white bg-[#ff9447] rounded-[20px] px-[1rem] py-[.5rem] font-semibold">Logout</Link>
+            </div>
             <div class="grid sm:grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                 <div class="bg-white p-6 rounded pt-4 lg:w-3/4">
                     <Heading>Edit Profile</Heading>
