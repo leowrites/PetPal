@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import NotificationButton from './NotificationButton';
 import NotificationList from './NotificationList';
 import NotificationSimplePagination from './NotificationSimplePagination';
@@ -19,6 +20,7 @@ export default function NotificationPopover() {
     const [reload, setReload] = useState(false);
     const [readFilter, setReadFilter] = useState("unread");
     const [pageNumber, setPageNumber] = useState(1);
+    const navigate = useNavigate();
     const popoverButton = useRef(null);
 
     useEffect(() => {setPageNumber(1)}, [readFilter])
@@ -35,6 +37,8 @@ export default function NotificationPopover() {
                 setLoading(false);
             });
     }, [readFilter, pageNumber, reload])
+
+
 
     const deleteNotification = (notificationId) => {
         setLoading(true);
@@ -55,6 +59,25 @@ export default function NotificationPopover() {
                 setLoading(false);
             });
     }
+
+    const createNotificationClickHandler = (notification) => 
+        (e) => {
+            if (loading) return;
+            setLoading(true);
+            NotificationService.getNotification(notification.id)
+                .then((response) => {
+                    popoverButton.current.click();
+                    setReload((prev) => !prev);
+                    if (response.data.type === "applicationMessage") {navigate(`/applications/${response.data.applicationId}/comments`);}
+                    else if (response.data.type === "applicationStatusChange") {navigate(`/applications/${response.data.applicationId}`);}
+                    else if (response.data.type === "application") {navigate(`/applications/${response.data.applicationId}`);}
+                    else if (response.data.type === "petListing") {navigate(`/listings/${response.data.listingId}`);}
+                    else if (response.data.type === "review") {navigate(`/shelters/${response.data.shelterId}/reviews`);}
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+        }
 
     return (
         <Popover 
@@ -78,11 +101,9 @@ export default function NotificationPopover() {
                         {(notificationData.count !== 0) ?
                             <NotificationList 
                                 notifications={notificationData.results} 
+                                createNotificationClickHandler={createNotificationClickHandler}
                                 deleteNotification={deleteNotification}
-                                popoverButton={popoverButton}
-                                setReload={setReload}
                                 loading={loading}
-                                setLoading={setLoading}
                             />: 
                             <div className='p-[1rem]'>There are no {readFilter !== "all" ? readFilter : ''} notifications</div>
                         }
