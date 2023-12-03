@@ -20,25 +20,13 @@ export default function NotificationPopover() {
     const [readFilter, setReadFilter] = useState("unread");
     const [pageNumber, setPageNumber] = useState(1);
     const popoverButton = useRef(null);
-    
-    useEffect(() => {
-        NotificationService.getNotifications(1, "unread")
-            .then((response) => {
-                setUserHasUnreadNotifications(response.data.count > 0);
-                console.log(response.data.count > 0)
-                setLoading(false);
-            })
-            .catch((error) => {
-                console.log(error);
-                setLoading(false);
-            });
-    }, [reload])
 
     useEffect(() => {setPageNumber(1)}, [readFilter])
 
     useEffect(() => {
         NotificationService.getNotifications(pageNumber, readFilter)
             .then((response) => {
+                if (readFilter === "unread") setUserHasUnreadNotifications(response.data.count > 0);
                 setNotificationData(response.data);
                 setLoading(false);
             })
