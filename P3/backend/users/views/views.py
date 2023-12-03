@@ -9,7 +9,12 @@ from django.shortcuts import get_object_or_404
 # GET /users/
 # POST /users/
 class RetrieveSelfOrCreateUser(generics.RetrieveAPIView, generics.CreateAPIView):
-    serializer_class = serializers.UserCreationSerializer
+    
+    def get_serializer_class(self):
+        if self.request.method == "POST":
+            return serializers.UserCreationSerializer
+        else:
+            return serializers.UserProfileSerializer
 
     def get_permissions(self):
         if self.request.method == "POST":
