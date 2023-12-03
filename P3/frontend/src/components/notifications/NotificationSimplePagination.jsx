@@ -2,15 +2,15 @@ import React from "react";
 import { IconButton, Typography } from "@material-tailwind/react";
 import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
  
-export default function SimplePagination({ pageNumber, setPageNumber, lastPage, setLoading}) {
+export default function SimplePagination({ pageNumber, setPageNumber, lastPage, loading, setLoading}) {
  
     const next = () => {
-        if (lastPage) return;
+        if (lastPage || loading) return;
         setPageNumber(pageNumber + 1);
         setLoading(true);
     }
     const prev =  () => {
-        if (pageNumber === 1) return;
+        if (pageNumber === 1 || loading) return;
         setPageNumber(pageNumber - 1);
         setLoading(true);
     }
@@ -21,7 +21,7 @@ export default function SimplePagination({ pageNumber, setPageNumber, lastPage, 
             size="sm"
             variant="text"
             onClick={prev}
-            disabled={pageNumber === 1}
+            disabled={pageNumber === 1 || loading}
         >
             <SlArrowLeft className="h-4 w-4" />
         </IconButton>
@@ -32,7 +32,7 @@ export default function SimplePagination({ pageNumber, setPageNumber, lastPage, 
             size="sm"
             variant="text"
             onClick={next}
-            disabled={lastPage}
+            disabled={lastPage || loading}
         >
             <SlArrowRight strokeWidth={2} className="h-4 w-4" />
         </IconButton>

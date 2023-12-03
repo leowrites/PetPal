@@ -8,6 +8,7 @@ export default function ReadFilterSelector({ readFilter, setReadFilter, setLoadi
         <Select
         id="readFilter"
         onChange={(e) => {
+            if (e === readFilter) return;
             setReadFilter(e);
             setLoading(true);
         }}

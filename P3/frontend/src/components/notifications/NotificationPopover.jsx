@@ -100,6 +100,7 @@ export default function NotificationPopover() {
                                 pageNumber={pageNumber} 
                                 setPageNumber={setPageNumber} 
                                 lastPage={(notificationData.count / 10) <= pageNumber}
+                                loading={loading}
                                 setLoading={setLoading}
                             />
                             {loading ? 
