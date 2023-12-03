@@ -11,7 +11,7 @@ import {
     PopoverContent
 } from "@material-tailwind/react";
 
-export default function NotificationPopover({ children }) {
+export default function NotificationPopover() {
 
     const [userHasUnreadNotifications, setUserHasUnreadNotifications] = useState(false);
     const [notificationData, setNotificationData] = useState(null);
@@ -83,7 +83,7 @@ export default function NotificationPopover({ children }) {
                 </PopoverHandler>
             </div>
             <PopoverContent>
-                {notificationData !== null ? 
+                {notificationData ? 
                     (<>
                         <ReadFilterSelector readFilter={readFilter} setReadFilter={setReadFilter} setLoading={setLoading} />
                         {(notificationData.count !== 0) ?
