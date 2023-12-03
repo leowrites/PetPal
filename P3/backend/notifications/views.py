@@ -24,52 +24,26 @@ class NotificationDeleteOrRetrieveAPIView(RetrieveDestroyAPIView):
         notification = self.get_object()
         notification.read = True
         notification.save()
-        response_data = {'redirect': ''}
         if notification.notification_type == "applicationMessage":
-            application_comment = notification.associated_model
-            application = application_comment.application
-            listing = application.listing
-            shelter = listing.shelter
-            response_data['redirect'] = reverse_lazy(
-                'shelters:application-comment-list-create',
-                kwargs={
-                    'pk': shelter.id,
-                    'listing_id': listing.id,
-                    'application_id': application.id
-                }
-            )
+            return Response({
+                'type': notification.notification_type,
+                'applicationId': notification.associated_model.application.id
+            })
         elif notification.notification_type in ("applicationStatusChange", "application"):
-            application = notification.associated_model
-            listing = application.listing
-            shelter = listing.shelter
-            response_data['redirect'] = reverse_lazy(
-                'shelters:pet-application-details', 
-                kwargs={
-                    'pk': shelter.id,
-                    'listing_id': listing.id,
-                    'application_id': application.id
-                }
-            )
+            return Response({
+                'type': notification.notification_type,
+                'applicationId': notification.associated_model.id
+            })
         elif notification.notification_type == "petListing":
-            listing = notification.associated_model
-            shelter = listing.shelter
-            response_data['redirect'] = reverse_lazy(
-                'shelters:pet-listing-update-destroy', 
-                kwargs={
-                    'pk': shelter.id,
-                    'listing_id': listing.id
-                }
-            )
+            return Response({
+                'type': notification.notification_type,
+                'listingId': notification.associated_model.id
+            })
         elif notification.notification_type == "review":
-            shelter_review = notification.associated_model
-            shelter = shelter_review.shelter
-            response_data['redirect'] = reverse_lazy(
-                'shelters:shelter-review-list-create', 
-                kwargs={
-                    'pk': shelter.id
-                }
-            )
-        return Response(response_data)
+            return Response({
+                'type': notification.notification_type,
+                'shelterId': notification.associated_model.shelter.id
+            })
 
 class NotificationListAPIView(ListAPIView):
     serializer_class = NotificationSerializer
