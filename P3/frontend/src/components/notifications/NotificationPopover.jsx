@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import NotificationButton from './NotificationButton';
 import NotificationList from './NotificationList';
 import NotificationSimplePagination from './NotificationSimplePagination';
@@ -16,20 +16,23 @@ export default function NotificationPopover({ children }) {
     const [userHasUnreadNotifications, setUserHasUnreadNotifications] = useState(false);
     const [notificationData, setNotificationData] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [reload, setReload] = useState(false);
     const [readFilter, setReadFilter] = useState("unread");
     const [pageNumber, setPageNumber] = useState(1);
+    const popoverButton = useRef(null);
     
     useEffect(() => {
         NotificationService.getNotifications(1, "unread")
             .then((response) => {
                 setUserHasUnreadNotifications(response.data.count > 0);
+                console.log(response.data.count > 0)
                 setLoading(false);
             })
             .catch((error) => {
                 console.log(error);
                 setLoading(false);
             });
-    }, [])
+    }, [reload])
 
     useEffect(() => {setPageNumber(1)}, [readFilter])
 
@@ -43,7 +46,7 @@ export default function NotificationPopover({ children }) {
                 console.log(error);
                 setLoading(false);
             });
-    }, [readFilter, pageNumber])
+    }, [readFilter, pageNumber, reload])
 
     const deleteNotification = (notificationId) => {
         NotificationService.deleteNotification(notificationId)
@@ -73,7 +76,7 @@ export default function NotificationPopover({ children }) {
             unmount: { scale: .8, y: -20 },
           }}>
             <div onClick={(e) => {e.stopPropagation()}}>
-                <PopoverHandler>
+                <PopoverHandler ref={popoverButton}>
                     <div>
                         <NotificationButton newNotifications={userHasUnreadNotifications} />
                     </div>
@@ -83,8 +86,13 @@ export default function NotificationPopover({ children }) {
                 {notificationData !== null ? 
                     (<>
                         <ReadFilterSelector readFilter={readFilter} setReadFilter={setReadFilter} setLoading={setLoading} />
-                        {(notificationData.count !== 0) ? 
-                            <NotificationList notifications={notificationData.results} deleteNotification={deleteNotification}/> : 
+                        {(notificationData.count !== 0) ?
+                            <NotificationList 
+                                notifications={notificationData.results} 
+                                deleteNotification={deleteNotification}
+                                popoverButton={popoverButton}
+                                setReload={setReload}
+                            />: 
                             <div className='p-[1rem]'>There are no {readFilter !== "all" ? readFilter : ''} notifications</div>
                         }
                         <div className='relative'>

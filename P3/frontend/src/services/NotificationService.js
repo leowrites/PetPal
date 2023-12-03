@@ -20,6 +20,10 @@ class NotificationService {
         const response = await ApiService.delete(`/notifications/${id}`)
         return response
     }
+    static async getNotification(id) {
+        const response = await ApiService.get(`/notifications/${id}`)
+        return response
+    }
 }
 
 export default NotificationService;

@@ -25,30 +25,24 @@ class NotificationDeleteOrRetrieveAPIView(RetrieveDestroyAPIView):
         notification.read = True
         notification.save()
         if notification.notification_type == "applicationMessage":
-            application = notification.associated_model.application
-            listing = application.listing
             return Response({
                 'type': notification.notification_type,
-                'applicationId': application.id
+                'applicationId': notification.associated_model.application.id
             })
         elif notification.notification_type in ("applicationStatusChange", "application"):
-            application = notification.associated_model.application
-            listing = application.listing
             return Response({
                 'type': notification.notification_type,
-                'applicationId': application.id
+                'applicationId': notification.associated_model.id
             })
         elif notification.notification_type == "petListing":
-            listing = notification.associated_model
             return Response({
                 'type': notification.notification_type,
-                'listingId': listing.id
+                'listingId': notification.associated_model.id
             })
         elif notification.notification_type == "review":
-            shelter = notification.associated_model.shelter
             return Response({
                 'type': notification.notification_type,
-                'shelterId': shelter.id
+                'shelterId': notification.associated_model.shelter.id
             })
 
 class NotificationListAPIView(ListAPIView):
