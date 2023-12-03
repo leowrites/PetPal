@@ -99,7 +99,7 @@ export default function NotificationPopover() {
                             <NotificationSimplePagination 
                                 pageNumber={pageNumber} 
                                 setPageNumber={setPageNumber} 
-                                lastPage={(notificationData.next === null)}
+                                lastPage={(notificationData.count / 10) <= pageNumber}
                                 setLoading={setLoading}
                             />
                             {loading ? 
