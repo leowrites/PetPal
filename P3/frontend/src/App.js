@@ -14,6 +14,7 @@ import Message from './pages/Message';
 import Listings from './pages/Listings';
 import ShelterQuestion from './pages/shelterQuestion/ShelterQuestionPage';
 import Logout from './pages/Logout'
+import ProfileUpdate from './pages/ProfileUpdate'
 import 'react-loading-skeleton/dist/skeleton.css'
 import { UserContextProvider, useUser } from './contexts/UserContext';
 
@@ -65,6 +66,7 @@ function App() {
                 </ProtectedRoute>
               } />
             </Route>
+            <Route path="profile" element={<ProfileUpdate />}/>
             <Route path="search" element={<Search />} />
             <Route path="login" element={<Login />} />
             <Route path="signup" element={<Signup />} />
