@@ -66,7 +66,11 @@ function App() {
                 </ProtectedRoute>
               } />
             </Route>
-            <Route path="profile" element={<ProfileUpdate />}/>
+            <Route path="profile" element={
+                <ProtectedRoute>
+                    <ProfileUpdate />
+                </ProtectedRoute>
+              }/>
             <Route path="search" element={<Search />} />
             <Route path="login" element={<Login />} />
             <Route path="signup" element={<Signup />} />
