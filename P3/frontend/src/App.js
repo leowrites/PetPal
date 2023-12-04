@@ -16,6 +16,7 @@ import ShelterQuestion from './pages/shelterQuestion/ShelterQuestionPage';
 import Logout from './pages/Logout'
 import 'react-loading-skeleton/dist/skeleton.css'
 import { UserContextProvider, useUser } from './contexts/UserContext';
+import NewListing from './pages/NewListing';
 
 const ProtectedRoute = ({ children }) => {
   const { user } = useUser()
@@ -25,6 +26,14 @@ const ProtectedRoute = ({ children }) => {
 
   return children
 };
+
+const ShelterProtectedRoute = ({ children }) => {
+  const { user } = useUser()
+  if (!user || !user.is_shelter) {
+    return <Navigate to={'/login'} />
+  }
+  return children
+}
 
 function App() {
   return (
@@ -38,6 +47,11 @@ function App() {
               <ProtectedRoute>
                 <PetDetail />
               </ProtectedRoute>
+            } />
+            <Route path="listings/new" element={
+              <ShelterProtectedRoute>
+                <NewListing />
+              </ShelterProtectedRoute>
             } />
             <Route path="questions" element={
               <ProtectedRoute>
