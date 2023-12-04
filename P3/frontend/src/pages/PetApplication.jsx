@@ -7,6 +7,7 @@ import { setAuthToken } from "../services/ApiService"
 import { Formik, Form, Field } from 'formik'
 import PetApplicationService from "../services/PetApplicationService"
 import Skeleton from 'react-loading-skeleton'
+import Page from "../components/layout/Page"
 
 const PetImage = ({ src }) => {
     return (
@@ -271,23 +272,25 @@ export default function PetApplication({ completed }) {
         description: petDetail.bio
     }
     return (
-        <div className="order-1 grid md:grid-cols-3 gap-4 h-fit">
-            <PetImage src={petDetail.image} />
-            <div className="order-3 md:order-2 md:col-span-2 md:row-span-3 pet-overview-box p-5 rounded-xl">
-                {
-                    loading && <SkeletonArray />
-                }
-                {
-                    petDetail.assigned_questions
-                        ? <ApplicationForm petName={petListingOverview.name}
-                            assignedQuestions={petDetail.assigned_questions}
-                            listingId={listingId} completed={completed} answers={applicationResponse} />
-                        : null
-                }
+        <Page>
+            <div className="order-1 grid md:grid-cols-3 gap-4 h-fit">
+                <PetImage src={petDetail.image} />
+                <div className="order-3 md:order-2 md:col-span-2 md:row-span-3 pet-overview-box p-5 rounded-xl">
+                    {
+                        loading && <SkeletonArray />
+                    }
+                    {
+                        petDetail.assigned_questions
+                            ? <ApplicationForm petName={petListingOverview.name}
+                                assignedQuestions={petDetail.assigned_questions}
+                                listingId={listingId} completed={completed} answers={applicationResponse} />
+                            : null
+                    }
+                </div>
+                <div className="order-2 md:order-3 md:row-span-2 flex flex-col gap-1 p-5 rounded-xl pet-overview-box">
+                    <PetOverviewPanel petListingOverview={petListingOverview} loading={loading} />
+                </div>
             </div>
-            <div className="order-2 md:order-3 md:row-span-2 flex flex-col gap-1 p-5 rounded-xl pet-overview-box">
-                <PetOverviewPanel petListingOverview={petListingOverview} loading={loading} />
-            </div>
-        </div>
+        </Page>
     )
 }

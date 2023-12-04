@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom"
 import Button from "../components/inputs/Button"
+import Page from "../components/layout/Page"
 
 export default function () {
     return (
-        <div>
+        <Page>
             <div>
                 Listings
             </div>
@@ -12,6 +13,6 @@ export default function () {
                     Manage Questions
                 </Button>
             </Link>
-        </div>
+        </Page>
     )
 }
