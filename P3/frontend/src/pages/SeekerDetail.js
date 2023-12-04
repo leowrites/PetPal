@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react"
 import UserDetailService from "../services/UserDetailService"
-import { setAuthToken } from "../services/ApiService"
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import Heading from '../components/layout/Heading';
