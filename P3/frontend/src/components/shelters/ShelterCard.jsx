@@ -4,6 +4,7 @@ import {
     CardBody,
   } from "@material-tailwind/react";
 import Button from "../inputs/Button";
+import { Link } from "react-router-dom";
    
   export default function ShelterCard({ shelter }) {
     return (
@@ -14,7 +15,7 @@ import Button from "../inputs/Button";
           className="m-0 w-2/5 shrink-0 rounded-r-none"
         >
           <div className="flex justify-center items-center h-full">
-            <img src="https://static.tvtropes.org/pmwiki/pub/images/scooby_doo_9.png" alt="Profile Icon" className="h-3/5 w-3/5" />
+            <img src="https://m.media-amazon.com/images/I/81LspF1zOvL._AC_UF894,1000_QL80_.jpg" alt="Profile Icon" className="h-3/5 w-3/5" />
           </div>
         </CardHeader>
 
@@ -34,7 +35,7 @@ import Button from "../inputs/Button";
           </div>
           <div>
             {/* TODO: update link to shelter pages */}
-            <a href="/" className="inline-block">
+            <Link to={`/shelters/${shelter.id}`} className="inline-block">
               <Button className="flex items-center gap-1 px-1 py-1">
                 <p className='text-xs'>Learn More</p>
                 <svg
@@ -52,7 +53,7 @@ import Button from "../inputs/Button";
                   />
                 </svg>
               </Button>
-            </a>
+            </Link>
           </div>
         </CardBody>
       </Card>
