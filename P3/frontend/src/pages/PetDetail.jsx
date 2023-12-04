@@ -100,6 +100,7 @@ export default function PetDetail() {
         listingTime: petDetail.listed_date,
         status: petDetail.status,
         shelter: petDetail.shelter?.shelter_name,
+        shelterOwner: petDetail.shelter?.owner,
         breed: petDetail.breed,
         age: petDetail.age,
         description: petDetail.bio,
