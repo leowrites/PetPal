@@ -24,7 +24,6 @@ class RetrieveSelfOrCreateUser(generics.RetrieveAPIView, generics.CreateAPIView)
     def get_object(self):
         return self.request.user
 
-
 # GET /users/<pk>
 # PUT /users/<pk>
 # DELETE /users/<pk>
@@ -43,4 +42,12 @@ class RetrieveOrUpdateOrDestroyUser(generics.RetrieveUpdateDestroyAPIView):
         user = get_object_or_404(User, id=self.kwargs['pk'])
         self.check_object_permissions(self.request, user)
         return user
+    
+# PUT /users/password/change
+class ChangePassword(generics.UpdateAPIView):
+    serializer_class = serializers.ChangePasswordSerializer
+    permission_classes = [IsAuthenticated, permissions.IsOwner]
+
+    def get_object(self):
+        return self.request.user
     

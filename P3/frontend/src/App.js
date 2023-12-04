@@ -15,8 +15,10 @@ import Listings from './pages/Listings';
 import ShelterQuestion from './pages/shelterQuestion/ShelterQuestionPage';
 import SeekerDetail from './pages/SeekerDetail';
 import Logout from './pages/Logout'
+import ProfileUpdate from './pages/ProfileUpdate'
 import 'react-loading-skeleton/dist/skeleton.css'
 import { UserContextProvider, useUser } from './contexts/UserContext';
+import ChangePassword from './pages/ChangePassword';
 
 const ProtectedRoute = ({ children }) => {
   const { user } = useUser()
@@ -66,6 +68,16 @@ function App() {
                 </ProtectedRoute>
               } />
             </Route>
+            <Route path="profile" element={
+                <ProtectedRoute>
+                    <ProfileUpdate />
+                </ProtectedRoute>
+              }/>
+            <Route path="profile/password/change" element= {
+                <ProtectedRoute>
+                    <ChangePassword />
+                </ProtectedRoute>
+            }/>
             <Route path="/users/:userId" element={
                 <ProtectedRoute>
                     <SeekerDetail />
