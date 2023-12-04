@@ -260,7 +260,7 @@ export default function PetApplication({ completed }) {
                     console.error(err)
                 })
         }
-    }, [])
+    }, [listingId, applicationId])
     const petListingOverview = {
         name: petDetail.name,
         listingTime: petDetail.listed_date,

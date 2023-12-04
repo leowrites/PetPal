@@ -13,6 +13,34 @@ class NotificationSerializer(serializers.ModelSerializer):
         model = Notification
         fields = ['id', 'user', 'notification_type', 'associated_model_type', 'associated_model_id', 'created', 'read']
     
+    def to_representation(self, instance):
+        request, message = self.context.get('request'), None
+
+        if instance.notification_type == "applicationMessage":
+            listing = instance.associated_model.application.listing
+            message = f'New message on application for {listing.name}'
+        elif instance.notification_type == "application_status_change":
+            application = instance.associated_model
+            listing = application.listing
+            message = f'Status change on application for {listing.name}'
+        elif instance.notification_type == "application":
+            application = instance.associated_model
+            listing = application.listing
+            message = f'New application for {listing.name}'
+        elif instance.notification_type == "petListing":
+            listing = instance.associated_model
+            message = f'New pet listed: {listing.name}!'
+        elif instance.notification_type == "review":
+            message = f'New review for your shelter'
+
+        return {
+            'id': instance.id,
+            'type': instance.notification_type,
+            'message': message,
+            'created': instance.created,
+            'read': instance.read
+        }
+    
 class NotificationPreferencesSerializer(serializers.ModelSerializer):
     user = UserProfileSerializer(read_only=True)
 
@@ -45,7 +73,7 @@ class NotificationPreferencesSerializer(serializers.ModelSerializer):
         return instance
     
     def to_representation(self, instance):
-        request = self.context.get('request')
+        request, message = self.context.get('request'), None
         
         if hasattr(request.user, 'shelter'):
             return {

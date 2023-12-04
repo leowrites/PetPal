@@ -1,6 +1,6 @@
 import React from "react";
 
-export function LogoToLandingButton() {
+export default function LogoToLandingButton() {
     return (
         <a href="/" className="flex flex-row text-[2rem]">
             <h1 className="pr-[10px] text-[#290005] my-[.2rem]">Pet Pal</h1>
