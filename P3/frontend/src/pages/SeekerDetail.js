@@ -4,6 +4,7 @@ import { setAuthToken } from "../services/ApiService"
 import { useParams } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
 import Heading from '../components/layout/Heading';
+import { useUser } from "../contexts/UserContext"
 
 const SeekerDetail = () => {
     const { user } = useUser()
