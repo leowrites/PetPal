@@ -6,13 +6,13 @@ import { useNavigate } from 'react-router-dom';
 import Heading from '../components/layout/Heading';
 
 const SeekerDetail = () => {
+    const { user } = useUser()
     const { userId } = useParams()
-    const navigate = useNavigate();
+    const navigate = useNavigate()
     const [viewUser, setViewUser] = useState({})
 
     useEffect(() => {
-        setAuthToken(localStorage.getItem('token'))
-        if (!localStorage.getItem('token')) {
+        if (!user) {
             navigate('/login')
         }
         UserDetailService.getById(userId)
