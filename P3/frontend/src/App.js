@@ -13,6 +13,7 @@ import CompletedApplicationLayout from './pages/CompletedApplicationLayout';
 import Message from './pages/Message';
 import Listings from './pages/Listings';
 import ShelterQuestion from './pages/shelterQuestion/ShelterQuestionPage';
+import Shelters from './pages/Shelters';
 import SeekerDetail from './pages/SeekerDetail';
 import Logout from './pages/Logout'
 import ProfileUpdate from './pages/ProfileUpdate'
@@ -84,6 +85,7 @@ function App() {
                 </ProtectedRoute>
             } />
             <Route path="search" element={<Search />} />
+            <Route path="shelters" element={<Shelters />} />
             <Route path="login" element={<Login />} />
             <Route path="signup" element={<Signup />} />
             <Route path="404" element={<NotFound />} />

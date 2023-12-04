@@ -1,8 +1,8 @@
 import { ApiService } from "./ApiService";
 
 class ShelterService {
-    static async getAll() {
-        const response = await ApiService.get(`shelters/`)
+    static async getAll(page) {
+        const response = await ApiService.get(`shelters/?page=${page}`)
         return response
     }
 
