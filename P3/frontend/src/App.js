@@ -13,6 +13,7 @@ import CompletedApplicationLayout from './pages/CompletedApplicationLayout';
 import Message from './pages/Message';
 import Listings from './pages/Listings';
 import ShelterQuestion from './pages/shelterQuestion/ShelterQuestionPage';
+import SeekerDetail from './pages/SeekerDetail';
 import Logout from './pages/Logout'
 import 'react-loading-skeleton/dist/skeleton.css'
 import { UserContextProvider, useUser } from './contexts/UserContext';
@@ -65,9 +66,15 @@ function App() {
                 </ProtectedRoute>
               } />
             </Route>
+            <Route path="/users/:userId" element={
+                <ProtectedRoute>
+                    <SeekerDetail />
+                </ProtectedRoute>
+            } />
             <Route path="search" element={<Search />} />
             <Route path="login" element={<Login />} />
             <Route path="signup" element={<Signup />} />
+            <Route path="404" element={<NotFound />} />
             <Route path='*' element={<NotFound />} />
             <Route path="logout" element={<Logout />} />
           </Route>
