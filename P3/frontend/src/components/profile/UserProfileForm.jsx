@@ -17,7 +17,7 @@ const UserProfileForm = ({ user, onSubmit, notification, errors }) => {
             }}
             onSubmit={onSubmit}
             enableReinitialize>
-            {({ isSubmitting, errors, isValid, }) => (
+            {({ isSubmitting, errors, isValid, setFieldValue }) => (
                 <Form>
                     <div className="flex flex-col justify-start items-start w-full mb-4">
                         {notification && <Text color='text-[#ff9447]'>{notification}</Text>}
