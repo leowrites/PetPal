@@ -41,6 +41,7 @@ class UserCreationSerializer(serializers.ModelSerializer):
 
 class UserProfileSerializer(serializers.ModelSerializer):
     shelter_id = serializers.PrimaryKeyRelatedField(source='shelter', required=False, allow_null=True, read_only=True)
+    avatar = serializers.ImageField(label="Upload an avatar", required=False)
 
     class Meta:
         model = User
