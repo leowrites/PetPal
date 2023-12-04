@@ -29,6 +29,9 @@ import { Link } from "react-router-dom";
                         {shelter.contact_email}
                     </a>
                 </p>
+                <p className="w-full text-[#290005] font-semibold text-sm mb-2">
+                    {shelter.location}
+                </p>
                 <p className="w-full text-[#290005] font-medium text-sm mb-2">
                     {shelter.mission_statement}
                 </p>
