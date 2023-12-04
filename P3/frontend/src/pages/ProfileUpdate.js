@@ -10,6 +10,7 @@ import ShelterService from '../services/ShelterService';
 import UserProfileForm from '../components/profile/UserProfileForm';
 import NotificationPreferencesForm from '../components/profile/NotificationPreferencesForm';
 import ShelterProfileForm from '../components/profile/ShelterProfileForm';
+import { Avatar } from "@material-tailwind/react";
 
 const ProfileUpdate = () => { 
     const { user, setUser, setToken } = useUser();
@@ -21,8 +22,15 @@ const ProfileUpdate = () => {
     const [shelterNotification, setShelterNotification] = useState('')
     
     const handleUserProfileSubmit = async (values, { setSubmitting }) => {
+        const formData = new FormData();
+        formData.append('username', values.username);
+        formData.append('email', values.email);
+        if (values.avatar) {
+            formData.append('avatar', values.avatar);
+        }
+
         try {
-            const response = await UserDetailService.patchSelf(user.id, values);
+            const response = await UserDetailService.patchSelf(user.id, formData);
             setUser(response.data);
             setNotification('Profile updated successfully!');
 
@@ -140,6 +148,11 @@ const ProfileUpdate = () => {
             <div class="grid sm:grid-cols-1 md:grid-cols-2 gap-8 mb-8">
                 <div class="bg-white p-6 rounded pt-4 lg:w-3/4">
                     <Heading>Edit Profile</Heading>
+                    {user.avatar == null ? (
+                        null 
+                    ) : (
+                        <Avatar src={user.avatar == null ? null : user.avatar} alt={user.username} size="xl" />
+                    )}
                     <UserProfileForm
                         user={user}
                         onSubmit={handleUserProfileSubmit}

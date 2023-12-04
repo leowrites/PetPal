@@ -2,20 +2,37 @@ import { Form, Formik } from 'formik';
 import TextInput from '../inputs/TextInput';
 import Text from '../Text'
 import Button from '../inputs/Button'
+import { useFormikContext } from 'formik';
 
-export default function UserProfileForm({ user, onSubmit, notification, errors }) {
+const UserProfileForm = ({ user, onSubmit, notification, errors }) => {
+
+    const { setFieldValue } = useFormikContext() ?? {};
+
     return (
         <Formik
             initialValues={{
+                avatar: user.avatar,
                 username: user.username,
                 email: user.email,
             }}
             onSubmit={onSubmit}
             enableReinitialize>
-            {({ isSubmitting, errors, isValid }) => (
+            {({ isSubmitting, errors, isValid, }) => (
                 <Form>
                     <div className="flex flex-col justify-start items-start w-full mb-4">
                         {notification && <Text color='text-[#ff9447]'>{notification}</Text>}
+                
+                        <label for="avatar" class="mt-3 block font-semibold">Avatar</label>
+                        <input 
+                            name="avatar" 
+                            type="file" 
+                            onChange={(event) => {
+                                setFieldValue("avatar", event.currentTarget.files[0]);
+                            }}
+                            accept="image/*"
+                            className="w-full file:mr-2 file:py-1 file:px-2
+                            file:border-0 file:text-sm file:font-semibold
+                            file:bg-[#290005] file:text-white hover:file:bg-[#ff9447] file:cursor-pointer"/>
 
                         <label for="username" class="mt-3 block font-semibold">Username</label>
                         <TextInput 
@@ -53,3 +70,5 @@ export default function UserProfileForm({ user, onSubmit, notification, errors }
         </Formik>
     )
 }
+
+export default UserProfileForm;
