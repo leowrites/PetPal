@@ -79,25 +79,28 @@ const NewListing = () => {
                 }}
                 onSubmit={async (values, { setFieldError }) => {
                     if (user.is_shelter) {
+                        const formData = new FormData();
+                        formData.append('name', values.name);
+                        formData.append('age', values.age);
+                        formData.append('breed', values.breed);
+                        formData.append('bio', values.about);
+                        formData.append('medical_history', values.medicalHistory);
+                        formData.append('behavior', values.behavior);
+                        formData.append('other_notes', values.other);
+                        formData.append('image', values.image);
+
                         await PetListingService.create(
                             user.shelter_id,
-                            values.name,
-                            values.breed,
-                            values.age,
-                            values.about,
-                            values.medicalHistory,
-                            values.behavior,
-                            values.other,
-                            values.image,
-                            ).then((res) => {
-                                window.location.href = `/listings/${res.data.id}`
-                            }).catch((err) => {
-                                if (err.response && err.response.data) {
-                                    Object.keys(err.response.data).forEach((key) => {
-                                        setFieldError(key, err.response.data[key][0]);
-                                    });
-                                }
-                            })
+                            formData
+                        ).then((res) => {
+                            window.location.href = `/listings/${res.data.id}`
+                        }).catch((err) => {
+                            if (err.response && err.response.data) {
+                                Object.keys(err.response.data).forEach((key) => {
+                                    setFieldError(key, err.response.data[key][0]);
+                                });
+                            }
+                        })
                     }
                     }}
             >
