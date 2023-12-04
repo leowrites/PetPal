@@ -3,6 +3,7 @@ import Heading from '../components/layout/Heading';
 import Text from '../components/Text'
 import { Link } from 'react-router-dom';
 import { useUser } from '../contexts/UserContext';
+import { useNavigate } from 'react-router-dom';
 import UserDetailService from '../services/UserDetailService';
 import NotificationPreferenceService from '../services/NotificationPreferenceService';
 import ShelterService from '../services/ShelterService';
@@ -11,7 +12,8 @@ import NotificationPreferencesForm from '../components/profile/NotificationPrefe
 import ShelterProfileForm from '../components/profile/ShelterProfileForm';
 
 const ProfileUpdate = () => { 
-    const { user, setUser } = useUser();
+    const { user, setUser, setToken } = useUser();
+    const navigate = useNavigate();
     const [notification, setNotification] = useState('')
     const [notificationPreferences, setNotificationPreferences] = useState({})
     const [notificationUpdateNotification, setNotificationUpdateNotification] = useState('')
@@ -114,6 +116,20 @@ const ProfileUpdate = () => {
             }
         }
     }
+
+    const handleDeleteProfile = async () => {
+        if (window.confirm('Are you sure you want to delete your profile? This action cannot be undone.')) {
+            try {
+                await UserDetailService.deleteSelf(user.id);
+                setToken(null)
+                navigate('/login')
+                window.location.reload();
+            } 
+            catch (error) {
+                console.log('Error deleting profile', error);
+            }
+        }
+    }
     
     return (
         <div class="container mx-auto px-5 sm:px-5 md:px-5 lg:px-20">
@@ -130,6 +146,7 @@ const ProfileUpdate = () => {
                         notification={notification}
                     />
                     <Text className=''><Link to='/profile/password/change' className='text-[#290005] underline'>Change Password</Link></Text>
+                    <p className='mt-2 text-md text-[#290005] underline cursor-pointer' onClick={handleDeleteProfile}>Delete Profile</p>
                     <div className='mt-12'>
                         <Heading>Notification Preferences</Heading>
                         <NotificationPreferencesForm

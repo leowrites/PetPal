@@ -20,6 +20,11 @@ class UserDetailService {
         const response = await ApiService.patch(`users/password/change`, data)
         return response
     }
+
+    static async deleteSelf(id) {
+        const response = await ApiService.delete(`users/${id}`)
+        return response
+    }
 }
 
 export default UserDetailService;
