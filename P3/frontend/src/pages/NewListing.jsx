@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import Container from '../components/layout/Container';
 import Heading from '../components/layout/Heading';
-import ImgContainer from '../components/layout/ImgContainer';
 import TextInput from '../components/inputs/TextInput';
 import Text from '../components/Text';
 import { Formik, Form } from 'formik';
@@ -60,7 +59,7 @@ const NewListing = () => {
             displayName: 'Other',
             inputType: 'textarea',
             colSpan: 2,
-            required: false,
+            required: true,
         }
     ]
 
@@ -78,13 +77,13 @@ const NewListing = () => {
                     other: '',
                     image: null,
                 }}
-                onSubmit={async (values) => {
+                onSubmit={async (values, { setFieldError }) => {
                     if (user.is_shelter) {
                         await PetListingService.create(
                             user.shelter_id,
                             values.name,
-                            values.age,
                             values.breed,
+                            values.age,
                             values.about,
                             values.medicalHistory,
                             values.behavior,
@@ -92,6 +91,12 @@ const NewListing = () => {
                             values.image,
                             ).then((res) => {
                                 window.location.href = `/listings/${res.data.id}`
+                            }).catch((err) => {
+                                if (err.response && err.response.data) {
+                                    Object.keys(err.response.data).forEach((key) => {
+                                        setFieldError(key, err.response.data[key][0]);
+                                    });
+                                }
                             })
                     }
                     }}
@@ -111,27 +116,30 @@ const NewListing = () => {
                     return (
                         <Form>
                             <div class="grid grid-cols-2 gap-6 my-6">
-                                <div class="col-span-2 flex justify-start relative w-64 h-50">
-                                    {
-                                        imageUrl ? (
-                                            <img src={imageUrl} alt=""
-                                                class="w-64 h-50 object-cover pet-photo rounded-xl aspect-square" />
-                                        ) : (
-                                            <div class="w-64 h-50 object-cover pet-photo rounded-xl aspect-square" />
-                                        )
-                                    }
-                                    <label htmlFor="image"
-                                        class="absolute right-3 bottom-3 cursor-pointer bg-white border-2 border-black px-3 rounded-xl">
-                                        Upload picture
-                                    </label>
-                                    <input
-                                        className="hidden w-full h-full cursor-pointer"
-                                        id="image"
-                                        name="image"
-                                        type="file"
-                                        onChange={handleImageChange}
-                                        accept='image/*'
-                                    />
+                                <div className="flex flex-col col-span-2">
+                                    <div className="col-span-2 flex justify-start relative w-64 h-50">
+                                        {
+                                            imageUrl ? (
+                                                <img src={imageUrl} alt=""
+                                                    class="w-64 h-50 object-cover pet-photo rounded-xl aspect-square" />
+                                            ) : (
+                                                <div class="w-64 h-50 object-cover pet-photo rounded-xl aspect-square" />
+                                            )
+                                        }
+                                        <label htmlFor="image"
+                                            class="absolute right-3 bottom-3 cursor-pointer bg-white border-2 border-black px-3 rounded-xl">
+                                            Upload picture
+                                        </label>
+                                        <input
+                                            className="hidden w-full h-full cursor-pointer"
+                                            id="image"
+                                            name="image"
+                                            type="file"
+                                            onChange={handleImageChange}
+                                            accept='image/*'
+                                        />
+                                    </div>
+                                    {errors['image'] && <Text color='text-red-500'>{errors['image']}</Text>}
                                 </div>
                                 {
                                     fields.map(field => (

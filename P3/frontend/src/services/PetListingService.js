@@ -12,7 +12,7 @@ class PetListingService {
         other_notes,
         image,
     ) {
-        const response = await ApiService.post(`/shelters/${shelterId}/listings/`, {
+        const response = await ApiService.post(`/shelters/${shelterId}/listings`, {
             name,
             breed,
             age,
