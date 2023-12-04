@@ -8,10 +8,11 @@ import Button from '../components/inputs/Button';
 import PetListingService from '../services/PetListingService';
 import PetDetailService from '../services/PetDetailService';
 import { useUser } from '../contexts/UserContext';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import SelectInput from '../components/inputs/SelectInput';
 
 const EditListing = () => {
+    const navigate = useNavigate();
     const { user } = useUser();
     const [imageUrl, setImageUrl] = useState('');
     const [initialValues, setInitialValues] = useState({
@@ -82,6 +83,9 @@ const EditListing = () => {
         if (listingId) {
             PetDetailService.get(listingId).then((response) => {
                 const listing = response.data;
+                if (listing.shelter.owner !== user.id) {
+                   navigate(`/listings/${listingId}`); 
+                }
                 fetch(listing.image)
                 .then(async response => {
                     const contentType = response.headers.get('content-type')
