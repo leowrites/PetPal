@@ -7,13 +7,16 @@ import { useNavigate } from 'react-router-dom';
 import ShelterListingCard from "../components/shelters/ShelterListingCard";
 import { useUser } from "../contexts/UserContext";
 import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
+import { Button, IconButton } from "@material-tailwind/react";
 
 const ShelterDetail = () => {
     const { user } = useUser()
     const { shelterId } = useParams()
     const [shelter, setShelter] = useState({})
     const [listings, setListings] = useState([])
+    const [currPage, setCurrPage] = useState(1)
     const navigate = useNavigate()
+    const listingsPerPage = 2
 
     useEffect(() => {
         ShelterService.getById(shelterId)
@@ -35,6 +38,11 @@ const ShelterDetail = () => {
                 setListings([])
             })
     }, [shelterId])
+
+    const totalPages = Math.ceil(listings.length / listingsPerPage)
+    const indexOfLastListing = currPage * listingsPerPage
+    const indexOfFirstListing = indexOfLastListing - listingsPerPage
+    const currListings = listings.slice(indexOfFirstListing, indexOfLastListing)
 
     return (
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-14">
@@ -63,10 +71,30 @@ const ShelterDetail = () => {
                             </a>
                         </p>
                     </div>
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                        {listings.map((listing) => (
-                            <ShelterListingCard listing={listing} />
-                        ))}
+                    <div className="flex flex-col justify-center">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 justify-items-center">
+                            {currListings.map((listing) => (
+                                <ShelterListingCard listing={listing} />
+                            ))}
+                        </div>
+                        <div className="flex justify-center items-center gap-4 mt-5">
+                            <Button
+                                variant="text"
+                                className="flex items-center gap-2 rounded-full"
+                                onClick={() => setCurrPage(currPage - 1)}
+                                disabled={currPage === 1}
+                            >
+                                <ArrowLeftIcon strokeWidth={3} className="h-4 w-4" /> 
+                            </Button>
+                            <Button
+                                variant="text"
+                                className="flex items-center gap-2 rounded-full"
+                                onClick={() => setCurrPage(currPage + 1)}
+                                disabled={currPage === totalPages}
+                            >
+                                <ArrowRightIcon strokeWidth={3} className="h-4 w-4" /> 
+                            </Button>
+                        </div>
                     </div>
                 </div>
             ) : ( 
