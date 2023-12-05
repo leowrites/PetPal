@@ -3,6 +3,8 @@ from rest_framework import serializers
 from django.contrib.auth.password_validation import validate_password
 from shelters.models.shelter import Shelter
 from notifications.models import NotificationPreferences
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
 
 class UserCreationSerializer(serializers.ModelSerializer):
     password2 = serializers.CharField(write_only=True, label="Confirm Password")
@@ -25,6 +27,8 @@ class UserCreationSerializer(serializers.ModelSerializer):
         return validated_data
 
     def validate_username(self, username):
+        if username.strip() == '':
+            raise serializers.ValidationError("Username cannot be empty")
         if User.objects.filter(username=username).exists():
             raise serializers.ValidationError("Username already exists")
         return username
@@ -41,14 +45,45 @@ class UserCreationSerializer(serializers.ModelSerializer):
 
 class UserProfileSerializer(serializers.ModelSerializer):
     shelter_id = serializers.PrimaryKeyRelatedField(source='shelter', required=False, allow_null=True, read_only=True)
+    avatar = serializers.ImageField(label="Upload an avatar", required=False)
 
     class Meta:
         model = User
         fields = ['id', 'username', 'email', 'avatar', 'is_shelter', 'shelter_id']
         read_only_fields = ['is_shelter', 'shelter_id']
 
+    def validate_username(self, username):
+        if username.strip() == '':
+            raise serializers.ValidationError("Username cannot be empty")
+        if User.objects.filter(username=username).exists() and self.context['request'].user.username != username:
+            raise serializers.ValidationError("Username already exists")
+        return username
+    
+    def validate_email(self, email):
+        if email.strip() == '':
+            raise serializers.ValidationError("Email cannot be empty")
+        try:
+            validate_email(email)
+        except ValidationError:
+            raise serializers.ValidationError("Invalid email format")
+        return email
+    
     def to_representation(self, instance):
         rep = super().to_representation(instance)
         if not hasattr(instance, 'shelter'):
             rep.pop('shelter_id', None)
         return rep
+
+class ChangePasswordSerializer(serializers.Serializer):
+    password = serializers.CharField(required=True, write_only=True, validators=[validate_password])
+    password2 = serializers.CharField(required=True, write_only=True)
+
+    def validate(self, data):
+        if data['password'] != data['password2']:
+            raise serializers.ValidationError("Passwords must match")
+        return data
+
+    def update(self, instance, validated_data):
+        instance.set_password(validated_data['password'])
+        instance.save()
+        return instance

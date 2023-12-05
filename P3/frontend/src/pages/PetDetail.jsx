@@ -6,6 +6,7 @@ import PetDetailService from "../services/PetDetailService"
 import { setAuthToken } from "../services/ApiService"
 import Skeleton from "react-loading-skeleton"
 import PetApplicationService from "../services/PetApplicationService"
+import Page from "../components/layout/Page"
 
 const DescriptionSection = ({ sectionTitle, sectionDetails, loading }) => {
     return (<div>
@@ -113,7 +114,7 @@ export default function PetDetail() {
 
 
     return (
-        <div>
+        <Page>
             <PetImages imagePath={petDetail.image} />
             <div className="grid grid-cols-1 my-5 gap-5 md:grid-cols-5">
                 <PetDetailLeftPanel petListingIDetails={petListingIDetails} loading={loading}/>
@@ -124,6 +125,6 @@ export default function PetDetail() {
                                       applicationId={applicationId} loading={loading}/>
                 </div>
             </div>
-        </div>
+        </Page>
     )
 }
