@@ -20,8 +20,8 @@ import Logout from './pages/Logout'
 import ProfileUpdate from './pages/ProfileUpdate'
 import 'react-loading-skeleton/dist/skeleton.css'
 import { UserContextProvider, useUser } from './contexts/UserContext';
-import NewListing from './pages/NewListing';
-import EditListing from './pages/EditListing';
+import NewListing from './pages/manageListings/NewListing';
+import EditListing from './pages/manageListings/EditListing';
 import ChangePassword from './pages/ChangePassword';
 import PetApplicationList from './pages/PetApplicationList';
 

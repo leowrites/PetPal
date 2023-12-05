@@ -1,33 +1,17 @@
-import React, { useState, useEffect } from 'react';
-import Container from '../components/layout/Container';
-import Heading from '../components/layout/Heading';
-import TextInput from '../components/inputs/TextInput';
-import Text from '../components/Text';
+import React, { useState } from 'react';
+import Container from '../../components/layout/Container';
+import Heading from '../../components/layout/Heading';
+import TextInput from '../../components/inputs/TextInput';
+import Text from '../../components/Text';
 import { Formik, Form } from 'formik';
-import Button from '../components/inputs/Button';
-import PetListingService from '../services/PetListingService';
-import PetDetailService from '../services/PetDetailService';
-import { useUser } from '../contexts/UserContext';
-import { useParams, useNavigate } from 'react-router-dom';
-import SelectInput from '../components/inputs/SelectInput';
-import Page from '../components/layout/Page';
+import Button from '../../components/inputs/Button';
+import PetListingService from '../../services/PetListingService';
+import { useUser } from '../../contexts/UserContext';
+import Page from '../../components/layout/Page';
 
-const EditListing = () => {
-    const navigate = useNavigate();
+const NewListing = () => {
     const { user } = useUser();
     const [imageUrl, setImageUrl] = useState('');
-    const [initialValues, setInitialValues] = useState({
-        status: '',
-        name: '',
-        age: '',
-        breed: '',
-        about: '',
-        medicalHistory: '',
-        behavior: '',
-        other: '',
-        image: null,
-    });
-    const { listingId } = useParams();
     const fields = [
         {
             name: 'name',
@@ -40,6 +24,8 @@ const EditListing = () => {
             name: 'age',
             displayName: 'Age',
             inputType: 'number',
+            min: 0,
+            max: 20,
             colSpan: 1,
             required: true,
         },
@@ -80,47 +66,25 @@ const EditListing = () => {
         }
     ]
 
-    useEffect(() => {
-        if (listingId) {
-            PetDetailService.get(listingId).then((response) => {
-                const listing = response.data;
-                if (listing.shelter.owner !== user.id) {
-                   navigate(`/listings/${listingId}`); 
-                }
-                fetch(listing.image)
-                .then(async response => {
-                    const contentType = response.headers.get('content-type')
-                    const blob = await response.blob()
-                    const file = new File([blob], listing.image, { contentType })
-                    setInitialValues({
-                        status: listing.status,
-                        name: listing.name,
-                        age: listing.age,
-                        breed: listing.breed,
-                        about: listing.bio,
-                        medicalHistory: listing.medical_history,
-                        behavior: listing.behavior,
-                        other: listing.other_notes,
-                        image: file,
-                    });
-                })
-                setImageUrl(listing.image);
-            })
-        }
-    }, [listingId])
-
     return (
         <Page>
             <div className='flex items-center justify-center'>
                 <Container className="sm:w-4/5 md:w-3/4 lg:w-2/3 xl:w-2/3">
-                    <Heading>Edit Pet Listing</Heading>
+                    <Heading>Add a New Pet</Heading>
                     <Formik
-                        initialValues={initialValues}
-                        enableReinitialize
+                        initialValues={{
+                            name: '',
+                            age: '',
+                            breed: '',
+                            about: '',
+                            medicalHistory: '',
+                            behavior: '',
+                            other: '',
+                            image: null,
+                        }}
                         onSubmit={async (values, { setFieldError }) => {
                             if (user.is_shelter) {
                                 const formData = new FormData();
-                                formData.append('status', values.status);
                                 formData.append('name', values.name);
                                 formData.append('age', values.age);
                                 formData.append('breed', values.breed);
@@ -128,12 +92,10 @@ const EditListing = () => {
                                 formData.append('medical_history', values.medicalHistory);
                                 formData.append('behavior', values.behavior);
                                 formData.append('other_notes', values.other);
-                                if (values.image) {
-                                    formData.append('image', values.image);
-                                }
+                                formData.append('image', values.image);
 
-                                await PetListingService.update(
-                                    listingId,
+                                await PetListingService.create(
+                                    user.shelter_id,
                                     formData
                                 ).then((res) => {
                                     window.location.href = `/listings/${res.data.id}`
@@ -147,7 +109,7 @@ const EditListing = () => {
                             }
                             }}
                     >
-                        {({errors, setFieldValue}) => {
+                        {({errors, setFieldValue, values}) => {
                             const handleImageChange = (event) => {
                                 const file = event.currentTarget.files[0];
                                 if (file) {
@@ -187,24 +149,6 @@ const EditListing = () => {
                                             </div>
                                             {errors['image'] && <Text color='text-red-500'>{errors['image']}</Text>}
                                         </div>
-                                        <div className="col-span-2 flex flex-col">
-                                            <label htmlFor="status">Status</label>
-                                            <SelectInput
-                                                options={[
-                                                    {
-                                                        value: 'available',
-                                                        label: 'Available'
-                                                    },
-                                                    {
-                                                        value: 'not_available',
-                                                        label: 'Not Available'
-                                                    },
-                                                ]}
-                                                id="status"
-                                                name="status"
-                                                onChange={(e) => setFieldValue('status', e.target.value)}
-                                            />
-                                        </div>
                                         {
                                             fields.map(field => (
                                                 <div className={`col-span-${field.colSpan} flex flex-col`} key={field.name}>
@@ -226,7 +170,7 @@ const EditListing = () => {
                                             ))
                                         }
                                         <div className='col-span-2 flex justify-start'>
-                                            <Button className='px-8' type="submit">Save Changes</Button>
+                                            <Button className='px-8' type="submit">Create</Button>
                                         </div>
                                     </div>
                                 </Form>
@@ -239,4 +183,4 @@ const EditListing = () => {
     );
 };
 
-export default EditListing;
+export default NewListing;
