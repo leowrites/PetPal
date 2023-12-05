@@ -174,6 +174,8 @@ const NewListing = () => {
                                                         placeholder={field.displayName}
                                                         className='w-full'
                                                         type={field.inputType}
+                                                        min={field.min}
+                                                        max={field.max}
                                                         validate={(value) => {
                                                             if (!value && field.required) {
                                                                 return 'This field is required'
