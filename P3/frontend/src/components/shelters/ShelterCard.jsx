@@ -8,13 +8,13 @@ import { Link } from "react-router-dom";
    
   export default function ShelterCard({ shelter }) {
     return (
-      <Card className="w-full xl:flex-row">
+      <Card className="w-full xl:flex-row bg-[#FFF8F4]">
         <CardHeader
           shadow={false}
           floated={false}
           className="m-0 w-2/5 shrink-0 rounded-r-none"
         >
-          <div className="flex justify-center items-center h-full">
+          <div className="flex justify-center items-center h-full bg-[#FFF8F4]">
             <img src="https://cdn.openart.ai/stable_diffusion/7e44533f01f05971afa6875ddebf6be76762b408_2000x2000.webp" alt="Profile Icon" className="rounded-xl h-4/5 w-4/5" />
           </div>
         </CardHeader>
