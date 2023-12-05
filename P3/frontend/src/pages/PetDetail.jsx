@@ -6,6 +6,7 @@ import PetDetailService from "../services/PetDetailService"
 import { setAuthToken } from "../services/ApiService"
 import Skeleton from "react-loading-skeleton"
 import PetApplicationService from "../services/PetApplicationService"
+import Page from "../components/layout/Page"
 
 const DescriptionSection = ({ sectionTitle, sectionDetails, loading }) => {
     return (<div>
@@ -17,23 +18,17 @@ const DescriptionSection = ({ sectionTitle, sectionDetails, loading }) => {
     </div>)
 }
 
-const PetImages = ({ imagePath }) => {
+const PetImages = ({ images }) => {
     return (
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4 h-fit">
-            <div className="col-span-2">
-                <img className="rounded-xl w-full object-cover pet-photo" src={imagePath} />
+            <div className="col-span-2 w-full">
+                <img className="rounded-xl h-96 w-full object-cover" src={images ? images[0] : '/logo_dark_mode.svg'} alt={'dog-placeholder.svg'}/>
             </div>
-            <div className="col-span-1">
-                <img
-                    className="rounded-xl max-w-full h-full object-cover pet-photo"
-                    src={imagePath}
-                />
+            <div className="col-span-1 w-full">
+                <img className="rounded-xl h-96 w-full object-cover" src={images ? images[1] : '/logo_dark_mode.svg'} alt={'dog-placeholder.svg'}/>
             </div>
-            <div className="col-span-1">
-                <img
-                    className="rounded-xl max-w-full h-full object-cover pet-photo"
-                    src={imagePath}
-                />
+            <div className="col-span-1 w-full">
+                <img className="rounded-xl h-96 w-full object-cover" src={images ? images[2] : '/logo_dark_mode.svg'} alt={'dog-placeholder.svg'}/>
             </div>
         </div>
     )
@@ -96,10 +91,16 @@ export default function PetDetail() {
         }
     ]
     const petListingOverview = {
+        id: listingId,
         name: petDetail.name,
-        listingTime: petDetail.listed_date,
-        status: petDetail.status,
+        listingTime: (new Date(petDetail.listed_date)).toLocaleTimeString('en-US', {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+        }),
+        status: petDetail.status === 'available' ? 'Available' : 'Not Available',
         shelter: petDetail.shelter?.shelter_name,
+        shelterOwner: petDetail.shelter?.owner,
         breed: petDetail.breed,
         age: petDetail.age,
         description: petDetail.bio,
@@ -107,8 +108,8 @@ export default function PetDetail() {
 
 
     return (
-        <div>
-            <PetImages imagePath={petDetail.image} />
+        <Page>
+            <PetImages images={petDetail.images} />
             <div className="grid grid-cols-1 my-5 gap-5 md:grid-cols-5">
                 <PetDetailLeftPanel petListingIDetails={petListingIDetails} loading={loading}/>
                 <div
@@ -118,6 +119,6 @@ export default function PetDetail() {
                                       applicationId={applicationId} loading={loading}/>
                 </div>
             </div>
-        </div>
+        </Page>
     )
 }

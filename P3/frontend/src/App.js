@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom'
 import { Landing } from './pages/Landing'
 import { Search } from './pages/Search'
@@ -20,6 +20,8 @@ import Logout from './pages/Logout'
 import ProfileUpdate from './pages/ProfileUpdate'
 import 'react-loading-skeleton/dist/skeleton.css'
 import { UserContextProvider, useUser } from './contexts/UserContext';
+import NewListing from './pages/NewListing';
+import EditListing from './pages/EditListing';
 import ChangePassword from './pages/ChangePassword';
 
 const ProtectedRoute = ({ children }) => {
@@ -30,6 +32,14 @@ const ProtectedRoute = ({ children }) => {
 
   return children
 };
+
+const ShelterProtectedRoute = ({ children }) => {
+  const { user } = useUser()
+  if (!user || !user.is_shelter) {
+    return <Navigate to={'/login'} />
+  }
+  return children
+}
 
 function App() {
   return (
@@ -43,6 +53,16 @@ function App() {
               <ProtectedRoute>
                 <PetDetail />
               </ProtectedRoute>
+            } />
+            <Route path="listings/:listingId/edit" element={
+              <ProtectedRoute>
+                <EditListing />
+              </ProtectedRoute>
+            } />
+            <Route path="listings/new" element={
+              <ShelterProtectedRoute>
+                <NewListing />
+              </ShelterProtectedRoute>
             } />
             <Route path="questions" element={
               <ProtectedRoute>

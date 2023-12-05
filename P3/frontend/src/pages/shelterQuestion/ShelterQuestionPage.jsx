@@ -11,6 +11,7 @@ import SelectInput from "../../components/inputs/SelectInput";
 import { options } from "../../constants/QuestionTypes";
 import Skeleton from "react-loading-skeleton";
 import { useNavigate } from "react-router-dom";
+import Page from "../../components/layout/Page";
 
 
 const NewQuestionModal = ({ open, handleOpen, handleAddQuestion }) => {
@@ -87,7 +88,7 @@ export default function () {
     }, [])
 
     return (
-        <div>
+        <Page>
             <div className='mb-5'>
                 <Heading>
                     Your Question Repository
@@ -108,6 +109,6 @@ export default function () {
                 }
             </div>
             <NewQuestionModal open={open} handleOpen={handleOpen} handleAddQuestion={handleAddQuestion} />
-        </div>
+        </Page>
     )
 }

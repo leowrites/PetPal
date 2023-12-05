@@ -12,7 +12,13 @@ class PetApplicationFilter(django_filters.FilterSet):
 
 
 class PetListingFilter(django_filters.FilterSet):
+    min_age = django_filters.NumberFilter(field_name='age', lookup_expr='gte')
+    max_age = django_filters.NumberFilter(field_name='age', lookup_expr='lte')
+    name = django_filters.CharFilter(field_name='name', lookup_expr='istartswith')
+    breed = django_filters.CharFilter(field_name='breed', lookup_expr='istartswith')
+    shelter_name = django_filters.CharFilter(field_name='shelter__shelter_name', lookup_expr='istartswith')
+
     class Meta:
         model = PetListing
-        fields = ['shelter', 'status', 'name', 'breed', 'age']
+        fields = ['shelter_name', 'status', 'name', 'breed', 'min_age', 'max_age']
         
