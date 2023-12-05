@@ -26,10 +26,10 @@ export default function SearchItems({ listings, lastListingElementRef, loading }
     return (
         <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-4">
             {listings.slice(0, listings.length-1).map((listing) => (
-                <SearchListingCard listing={listing} key={listing.id} />
+                <SearchListingCard listing={listing} />
             ))}
             <div ref={lastListingElementRef} >
-                <SearchListingCard listing={listings[listings.length-1]} key={listings[listings.length-1].id}/>
+                <SearchListingCard listing={listings[listings.length-1]} />
             </div>
             {loading ? SkeletonArray : null}
         </div>
