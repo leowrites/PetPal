@@ -23,6 +23,8 @@ const NewListing = () => {
             name: 'age',
             displayName: 'Age',
             inputType: 'number',
+            min: 0,
+            max: 20,
             colSpan: 1,
             required: true,
         },
@@ -154,6 +156,8 @@ const NewListing = () => {
                                                 placeholder={field.displayName}
                                                 className='w-full'
                                                 type={field.inputType}
+                                                min = {field.min}
+                                                max = {field.max}
                                                 validate={(value) => {
                                                     if (!value && field.required) {
                                                         return 'This field is required'
