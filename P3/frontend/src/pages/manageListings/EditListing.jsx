@@ -16,6 +16,7 @@ import Skeleton from 'react-loading-skeleton';
 import { Checkbox } from '@material-tailwind/react';
 import { Link } from 'react-router-dom';
 import { Chip } from "@material-tailwind/react";
+import ListingQuestionEditor from './components/ListingQuestionEditor';
 
 const EditListing = () => {
     const navigate = useNavigate();
@@ -113,17 +114,11 @@ const EditListing = () => {
                 setImageUrls(listing.images);
             })
         }
-        QuestionService.list()
-            .then(res => {
-                setQuestions(res.data.results)
-                setLoading(false)
-            })
-            .catch(err => console.log(err))
     }, [listingId, navigate, user.id])
 
     return (
         <Page>
-            <div className='flex items-center justify-center'>
+            <div className='flex flex-col items-center justify-center gap-8'>
                 <Container className="sm:w-4/5 md:w-3/4 lg:w-2/3 xl:w-2/3">
                     <Heading>Edit Pet Listing</Heading>
                     <Formik
@@ -260,41 +255,13 @@ const EditListing = () => {
                             )
                         }}
                     </Formik>
+                </Container>
 
 
-                     {/* <div className="flex flex-col col-span-2">
-                                            <div className="flex flex-col md:flex-row justify-between">
-                                                <Heading>Questions</Heading>
-                                                <Link to='/questions'>
-                                                    <Button >Edit question repository</Button>
-                                                </Link>
-                                            </div>
-                                            <Text className='col-span-2'>Select which questions applicants will respond to in their application.</Text>
-
-                                            {
-                                                loading ? (
-                                                    Array.from({ length: 5 }, (_, i) => <Skeleton className='mr-2 mb-2' width='15rem' height='8rem' key={i} inline />)
-                                                ) : (
-                                                    <div className='col-span-2 flex flex-col'>
-                                                        {
-                                                            questions.map(question => (
-                                                                <Container className='flex items-center pl-1 pr-2 mt-4 py-0' key={question.id}>
-                                                                    <Checkbox
-                                                                        color="blue"
-                                                                        id={question.id}
-                                                                        name={question.id}
-                                                                        checked={values.questions[question.id]}
-                                                                        onChange={(e) => setFieldValue(`questions`, {...values.questions, [question.id]: e.target.checked})}
-                                                                    />
-                                                                    <label htmlFor={question.id} className="w-full py-2">{question.question}</label>
-                                                                    <Chip value={question.type} />
-                                                                </Container>
-                                                            ))
-                                                        }
-                                                    </div>
-                                                )
-                                            }
-                                        </div> */}
+                <Container className="sm:w-4/5 md:w-3/4 lg:w-2/3 xl:w-2/3 flex flex-col col-span-2 gap-4">
+                    <Heading>Questions</Heading>
+                    <Text className='col-span-2'>Select which questions applicants will respond to in their application.</Text>
+                    <ListingQuestionEditor listingId={listingId}/>
                 </Container>
             </div>
         </Page>
