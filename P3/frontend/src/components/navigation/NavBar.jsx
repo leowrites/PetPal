@@ -54,6 +54,11 @@ export default function NavBar({}) {
                             <div className="mx-[1rem] font-medium hover:cursor-pointer border-b-[3px] border-[#FF9447] hover:border-[#290005]">My Listings</div>
                         </Link>
                     ) : (null))}
+                    {((isShelter) ? (
+                        <Link to="/applications">
+                            <div className="mx-[1rem] font-medium hover:cursor-pointer border-b-[3px] border-[#FF9447] hover:border-[#290005]">My Applications</div>
+                        </Link>
+                    ) : (null))}
                         <NotificationPopover/>
                     <Link to="/profile"
                         className="hover:opacity-[80%] transition bg-[#FF9447] py-[.6rem] px-[1rem] w-[10rem] text-center text-[#FFF8F4] hover:cursor-pointer rounded-full flex flex-nowrap justify-center items-center space-x-2">
@@ -111,6 +116,13 @@ export default function NavBar({}) {
                     {(isShelter) ? (
                         <Link to="/listings" className="border-b-[.05rem] border-[#6C6866] py-[1rem] mx-[1.5rem] grow">
                             <div className="px-[2rem] hover:cursor-pointer w-[100%] text-end hover:decoration-black">My Listings</div>
+                        </Link>
+                    ) : (
+                        null
+                    )}
+                    {(isShelter) ? (
+                        <Link to="/listings" className="border-b-[.05rem] border-[#6C6866] py-[1rem] mx-[1.5rem] grow">
+                            <div className="px-[2rem] hover:cursor-pointer w-[100%] text-end hover:decoration-black">My Applications</div>
                         </Link>
                     ) : (
                         null
