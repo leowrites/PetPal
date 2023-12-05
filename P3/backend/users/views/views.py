@@ -33,7 +33,7 @@ class RetrieveOrUpdateOrDestroyUser(generics.RetrieveUpdateDestroyAPIView):
 
     def get_permissions(self):
         if self.request.method == 'GET':
-            permission_classes = [IsAuthenticated, permissions.IsOwnerOrUserHasApplicationWithShelter]
+            permission_classes = [IsAuthenticated]
         else:
             permission_classes = [IsAuthenticated, permissions.IsOwner]
         return [permission() for permission in permission_classes]
