@@ -15,7 +15,7 @@ import { Link } from "react-router-dom";
           className="m-0 w-2/5 shrink-0 rounded-r-none"
         >
           <div className="flex justify-center items-center h-full">
-            <img src="https://m.media-amazon.com/images/I/81LspF1zOvL._AC_UF894,1000_QL80_.jpg" alt="Profile Icon" className="h-3/5 w-3/5" />
+            <img src="https://cdn.openart.ai/stable_diffusion/7e44533f01f05971afa6875ddebf6be76762b408_2000x2000.webp" alt="Profile Icon" className="rounded-xl h-4/5 w-4/5" />
           </div>
         </CardHeader>
 
@@ -39,7 +39,7 @@ import { Link } from "react-router-dom";
             <div>
                 <Link to={`/shelters/${shelter.id}`} className="inline-block">
                 <Button className="flex items-center gap-1 px-1 py-1">
-                    <p className='text-xs'>Learn More</p>
+                    <p className='text-xs'>View {shelter.shelter_name}</p>
                     <svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"

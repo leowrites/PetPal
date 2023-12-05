@@ -25,7 +25,7 @@ const Shelters = () => {
     }, [currPage])
 
     return (
-        <div className="container mx-auto px-5 sm:px-5 md:px-5 lg:px-20">
+        <div className="container mx-auto mt-10 px-5 sm:px-5 md:px-5 lg:px-20">
             <Heading>
                 <h1 className="text-[2rem] font-semibold mb-4">Shelters A-Z</h1>
             </Heading>
