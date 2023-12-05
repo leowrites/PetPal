@@ -2,7 +2,7 @@ import React from "react";
 import SearchListingCard from "./SearchListingCard";
 import Skeleton from 'react-loading-skeleton'
 
-const SkeletonArray = Array.from({ length: 10 }, (_, i) => <Skeleton className='mr-[20rem] h-[30rem] rounded-lg' key={i} inline />)
+const SkeletonArray = Array.from({ length: 10 }, (_, i) => <Skeleton className='mr-[20rem] h-[28rem] rounded-lg' key={i} inline />)
 
 export default function SearchItems({ listings, lastListingElementRef, loading }) {
 
