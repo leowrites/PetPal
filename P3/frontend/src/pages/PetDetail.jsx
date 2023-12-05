@@ -21,7 +21,13 @@ const DescriptionSection = ({ sectionTitle, sectionDetails, loading }) => {
 const PetImages = ({ imagePath }) => {
     return (
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4 h-fit">
-            <div className="col-span-4 w-full">
+            <div className="col-span-2 w-full">
+                <img className="rounded-xl h-96 w-full object-contain" src={imagePath ? imagePath : '/logo_dark_mode.svg'} alt={'dog-placeholder.svg'}/>
+            </div>
+            <div className="col-span-1 w-full">
+                <img className="rounded-xl h-96 w-full object-contain" src={imagePath ? imagePath : '/logo_dark_mode.svg'} alt={'dog-placeholder.svg'}/>
+            </div>
+            <div className="col-span-1 w-full">
                 <img className="rounded-xl h-96 w-full object-contain" src={imagePath ? imagePath : '/logo_dark_mode.svg'} alt={'dog-placeholder.svg'}/>
             </div>
         </div>
