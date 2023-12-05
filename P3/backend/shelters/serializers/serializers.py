@@ -183,6 +183,9 @@ class PetListingSerializer(serializers.ModelSerializer):
         images.append(instance.image2.url)
         images.append(instance.image3.url)
         rep['images'] = images
+        rep.pop('image')
+        rep.pop('image2')
+        rep.pop('image3')
         return rep
 
 
