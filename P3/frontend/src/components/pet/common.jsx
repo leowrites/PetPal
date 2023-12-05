@@ -43,21 +43,30 @@ export const PetOverviewPanel = ({ petListingOverview, detailsView, applicationI
     }
     return (
         <div className="flex flex-col gap-1">
-            {
-                loading ?
-                    <SkeletonArray />
-                    :
-                    <>
-                        <p className="text-lg font-bold">{petListingOverview.name}</p>
-                        <p className="text-sm">Listing Time: {petListingOverview.listingTime}</p>
-                        <p className="text-sm pet-overview-box-status">Status: {petListingOverview.status}</p>
-                        <a className="text-sm underline pet-overview-box-shelter" href="../shelter/shelter.html">{petListingOverview.shelter}</a>
-                        <p className="text-sm pet-overview-box-breed">{petListingOverview.breed}</p>
-                        <p className="text-sm pet-overview-box-breed">Age {petListingOverview.age}</p>
-                        <p className="text-sm"> {petListingOverview.description}</p>
-                        <ActionButton />
-                    </>
-            }
+        {
+            loading ?
+                <SkeletonArray />
+                :
+                <>
+            <p className="text-lg font-bold">{petListingOverview.name}</p>
+            <p className="text-sm">Listing Time: {petListingOverview.listingTime}</p>
+            <p className="text-sm pet-overview-box-status">Status: {petListingOverview.status}</p>
+            <a className="text-sm underline pet-overview-box-shelter" href="../shelter/shelter.html">{petListingOverview.shelter}</a>
+            <p className="text-sm pet-overview-box-breed">{petListingOverview.breed}</p>
+            <p className="text-sm pet-overview-box-breed">Age {petListingOverview.age}</p>
+            <p className="text-sm"> {petListingOverview.description}</p>
+            <div class="flex flex-row gap-2 mt-4">
+                <ActionButton />
+                {
+                    user.is_shelter && user.id === petListingOverview.shelterOwner ?
+                        <Link to={`/listings/${petListingOverview.id}/edit`}>
+                            <Button>Edit</Button>
+                        </Link>
+                        : null
+                }
+            </div>
+            </>
+        }
         </div>
     )
 }

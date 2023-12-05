@@ -16,6 +16,12 @@ export default function NavBar({}) {
         return () => window.removeEventListener('resize', handleResize);
     }, []);
 
+    useEffect(() => {
+        if (windowWidth >= 1024 && isActive) {
+            setIsActive(false);
+        }
+    }, [windowWidth])
+
     const isShelter = user?.is_shelter;
     const selectedTab = useLocation().pathname.split('/')[1];
 
@@ -28,12 +34,12 @@ export default function NavBar({}) {
     function toggleNavBar() {
         setIsActive(current => !current);
     }
-    const contentMaxHeight = isActive ? `${contentRef.current.scrollHeight}px` : null;
+    const contentMaxHeight = isActive ? `${contentRef.current?.scrollHeight}px` : null;
     const iconDisplayStyleOpen = isActive ? 'block' : 'none';
     const iconDisplayStyleClose = isActive ? 'none' : 'block';
 
     const desktopNavBar = (
-        <div className=" bg-[#FFF8F4] lg:flex lg:flex-row flex-nowrap gap-[2rem] justify-between text-[1rem]">
+        <div className=" bg-[#FFF8F4] lg:flex lg:flex-row flex-nowrap gap-[2rem] justify-between text-[1rem] shadow-md">
             {/* <!-- normal navbar start --> */}
             <div className=" flex flex-row text-[2rem] items-center pl-[1.5rem]">
                 <LogoToLandingButton/>
@@ -43,7 +49,9 @@ export default function NavBar({}) {
                 <Link to="/search" className={"hover:border-b-[.5rem] hover:border-[#290005] hover:pb-[.6rem] self-end text-[1rem] font-medium px-[2rem] hover:cursor-pointer" + ((selectedTab === "search") ? " border-[#290005] border-b-[.5rem] self-end pb-[.6rem]" : " pb-[1.1rem]")}>
                     Adopt
                 </Link>
-                
+                <Link to="/shelters" className={"hover:border-b-[.5rem] hover:border-[#290005] hover:pb-[.6rem] self-end text-[1rem] font-medium px-[2rem] hover:cursor-pointer" + ((selectedTab === "shelters") ? " border-[#290005] border-b-[.5rem] self-end pb-[.6rem]" : " pb-[1.1rem]")}>
+                    Shelters
+                </Link>
             </div>
 
             
@@ -110,6 +118,9 @@ export default function NavBar({}) {
                     </Link>
                     <Link to="/search" className="border-b-[.05rem] border-[#6C6866] py-[1rem] mx-[1.5rem] grow">
                         <div className="px-[2rem] hover:cursor-pointer w-[100%] text-end">Adopt</div>
+                    </Link>
+                    <Link to="/shelters" className="border-b-[.05rem] border-[#6C6866] py-[1rem] mx-[1.5rem] grow">
+                        <div className="px-[2rem] hover:cursor-pointer w-[100%] text-end">Shelters</div>
                     </Link>
                     {(isShelter) ? (
                         <Link to="/listings" className="border-b-[.05rem] border-[#6C6866] py-[1rem] mx-[1.5rem] grow">

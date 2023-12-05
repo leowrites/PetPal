@@ -19,7 +19,7 @@ class ListPetListing(generics.ListAPIView):
     queryset = PetListing.objects.all()
     filter_backends = [filters.OrderingFilter, DjangoFilterBackend]
     filterset_class = PetListingFilter
-    ordering_fields = ["name", "age"]
+    ordering_fields = ["name", "age", "listed_date"]
     ordering = ["name"]
     pagination_class = PageNumberPagination
 
