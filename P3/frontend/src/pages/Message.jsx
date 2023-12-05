@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Page from '../components/layout/Page';
 import Container from '../components/layout/Container';
 import { Input, Button } from '@material-tailwind/react'
@@ -13,6 +13,7 @@ const Message = () => {
     const [messages, setMessages] = useState([]);
     const { applicationId } = useParams();
     const { user } = useUser();
+    const divRef = useRef(null);
 
     useEffect(() => {
         PetApplicationCommentService.list(applicationId)
@@ -35,9 +36,15 @@ const Message = () => {
             });
     }
 
+    useEffect(() => {
+        if (divRef.current) {
+        divRef.current.scrollTop = divRef.current.scrollHeight
+        }
+    }, [messages]);
+
     return (
         <div className="min-h-screen w-full left-0 fixed">
-            <div className="lg:px-48 px-8 flex flex-col gap-1">
+            <div ref={divRef} className="lg:px-48 px-8 flex flex-col gap-1 overflow-auto h-[80vh] pb-36" style={{overflowAnchor: 'auto'}}>
                 {
                     messages.sort((a, b) => (new Date(a.date_created)) > (new Date(b.date_created)) ? 1 : -1).map((message) => (
                         <div className="flex flex-col gap-0">
