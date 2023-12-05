@@ -7,9 +7,39 @@ import { useNavigate } from 'react-router-dom';
 import ShelterListingCard from "../components/shelters/ShelterListingCard";
 import { useUser } from "../contexts/UserContext";
 import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
-import { Button, IconButton } from "@material-tailwind/react";
+import { Button, Dialog, DialogBody, DialogHeader, Textarea, Input, Typography } from "@material-tailwind/react";
 import ReviewService from "../services/ReviewService";
 import Container from "../components/layout/Container";
+import Review from "../components/review/Review";
+import { FaPen } from "react-icons/fa";
+import { Formik, Form, Field } from "formik";
+import ShelterCircularPagination from "../components/shelters/ShelterCircularPagination";
+
+
+const RatingInput = (props) => (
+    <Input
+        type="number"
+        name="rating"
+        id="rating"
+        min="0"
+        max="5"
+        className="rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
+        label={'Rating'}
+        {...props}
+    />
+)
+
+const ReviewInput = (props) => (
+    <Textarea
+        name="text"
+        id="text"
+        rows="5"
+        className="rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 mb-0"
+        label={'Review'}
+        {...props}
+    />
+)
+
 
 const ShelterDetail = () => {
     const { user } = useUser()
@@ -17,9 +47,14 @@ const ShelterDetail = () => {
     const [shelter, setShelter] = useState({})
     const [listings, setListings] = useState([])
     const [currPage, setCurrPage] = useState(1)
+    const [currReviewPage, setCurrReviewPage] = useState(1)
+    const [totalReviewPages, setTotalReviewPages] = useState(1)
     const navigate = useNavigate()
     const [reviews, setReviews] = useState([])
     const listingsPerPage = 2
+    const reviewPerPage = 10
+    const [open, setOpen] = useState(false)
+    const handleOpen = (open) => setOpen(open);
 
     useEffect(() => {
         ShelterService.getById(shelterId)
@@ -43,15 +78,16 @@ const ShelterDetail = () => {
     }, [shelterId])
 
     useEffect(() => {
-        ReviewService.list(shelterId)
+        ReviewService.list(shelterId, currReviewPage)
             .then(res => {
                 setReviews(res.data.results)
+                setTotalReviewPages(Math.ceil(res.data.count / reviewPerPage))
             })
             .catch(err => {
                 console.log("error fetching reviews:", err)
                 setReviews([])
             })
-    }, [shelterId])
+    }, [shelterId, currReviewPage])
 
     const totalPages = Math.ceil(listings.length / listingsPerPage)
     const indexOfLastListing = currPage * listingsPerPage
@@ -140,7 +176,89 @@ const ShelterDetail = () => {
                 </div>
                 </Container> 
             )}
-            
+            <Container className="px-12 py-8">
+                <div className="flex flex-row justify-between items-center">
+                    <Heading><h1 class="mt-0 text-[1.75rem] font-semibold mb-4">Reviews</h1></Heading>
+                    <Button className="flex items-center gap-3 px-3" onClick={handleOpen}><FaPen />Write a Review</Button>
+                </div>
+                <div className="flex flex-col gap-y-4 w-full">
+                    {reviews.sort((a, b) => (new Date(a.created_at) < new Date(b.created_at)) ? -1 : 1)
+                    .map((review, i) => (
+                        <Review review={review} key={i} />
+                    ))}
+                </div>
+                <div className="flex justify-center items-center gap-4 mt-5">
+                    <ShelterCircularPagination 
+                        totalPages={totalReviewPages} 
+                        onPageChange={(pageNum) => {
+                            setCurrReviewPage(pageNum);
+                        }}
+                    />
+                </div>
+            </Container>
+
+            <Dialog
+                open={open}
+                size={"sm"}
+                handler={handleOpen}
+            >
+                <DialogHeader>Write a Review</DialogHeader>
+                <DialogBody className="pt-0">
+                    <Formik
+                        initialValues={{
+                            rating: 0,
+                            text: ""
+                        }}
+                        validate={(values) => {
+                            const errors = {};
+                            if (values.rating < 0 || values.rating > 5) {
+                                errors.rating = 'Rating must be between 0 and 5';
+                            }
+                            if (!values.text) {
+                                errors.text = 'Required';
+                            }
+                            return errors;
+                        }}
+                        onSubmit={(values) => {
+                            ReviewService.create(shelterId, {
+                                rating: values.rating,
+                                text: values.text,
+                                shelter: shelterId,
+                            })
+                                .then(res => {
+                                    setReviews([res.data, ...reviews])
+                                    handleOpen(false)
+                                })
+                                .catch(err => {
+                                    console.log("error creating review:", err)
+                                })
+                        }}
+                    >
+                        {({ errors }) => (
+                            <Form>
+                                <div className="flex flex-col gap-y-4">
+                                    <Field name="rating" as={RatingInput}/>
+                                    {errors.rating && <Typography
+                                        variant="small"
+                                        color="red"
+                                        className="mt-2 flex items-center gap-1 font-normal"
+                                    >{errors.rating}</Typography>}
+
+                                    
+                                    <Field name="text" as={ReviewInput}/>
+                                    {errors.text && <Typography
+                                        variant="small"
+                                        color="red"
+                                        className="mt-0 flex items-center gap-1 font-normal"
+                                    >{errors.text}</Typography>}
+
+                                    <Button className="w-full" color="blue" type='submit'>Submit</Button>
+                                </div>
+                            </Form>
+                        )}
+                    </Formik>
+                </DialogBody>
+            </Dialog>
         </div>
     )
 }
