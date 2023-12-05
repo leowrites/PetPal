@@ -47,7 +47,7 @@ export const Landing = () => {
                 }/>
               </Link>
             </div>
-            <div className='relative flex flex-row flex-wrap justify-center gap-[3rem] max-h-[45rem] overflow-hidden border-b-[1px]'>
+            <div className='relative flex flex-row flex-wrap justify-center gap-[3rem] max-h-[34rem] overflow-hidden border-b-[1px]'>
               {landingListings?.map((listing) => {
                 return (
                   <div className='max-w-[20rem]'>
@@ -56,7 +56,7 @@ export const Landing = () => {
                 )
               })}
               {(loading || !landingListings?.length) && SkeletonArray}
-              {!loading ? <div className="pointer-events-none to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-b from-transparent via-white/10 to-white hover:via-white/10 hover:to-white/20 transition " /> : null}
+              {!loading ? <div className="pointer-events-none to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-b from-transparent via-transparent to-white " /> : null}
             </div>
           </div>
         </div>
