@@ -68,7 +68,7 @@ export default function SearchListingCard({listing}) {
                     color="blue-gray"
                     className="flex flex-row items-center gap-1.5 font-normal text-xs"
                 >
-                    <div>{listing.age} Year Old</div> <FaBirthdayCake className="mb-[.1rem]" />
+                    <div>{listing.age} Year{listing.age !== 1 ? 's' : ''} Old</div> <FaBirthdayCake className="mb-[.1rem]" />
                 </div>
                 </div>
                 <div variant="lead" color="gray" className="ml-[.5rem] mt-[.25rem] font-normal text-md">
