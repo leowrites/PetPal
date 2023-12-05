@@ -1,6 +1,7 @@
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import Button from '../inputs/Button'
 import Skeleton from 'react-loading-skeleton'
+import { useUser } from '../../contexts/UserContext'
 
 const SkeletonArray = () => {
     return (
@@ -13,7 +14,10 @@ const SkeletonArray = () => {
 }
 
 export const PetOverviewPanel = ({ petListingOverview, detailsView, applicationId, loading }) => {
+    const { user } = useUser()
     const ActionButton = () => {
+        // don't let shelters adopt anything
+        if (user.is_shelter) return null
         return (
             applicationId ?
                 <Link to={`/applications/${applicationId}`}>
