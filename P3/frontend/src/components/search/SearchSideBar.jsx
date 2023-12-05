@@ -44,7 +44,7 @@ export default function SearchSideBar({ setListings, pageRequested, setPageReque
     }, [sortValue, listingStatus, petNameInput, shelterNameInput, breedInput, minAge, maxAge, setLoading, setListings]);
 
     useEffect(() => {
-        if (nextPageLink === null || !pageRequested) return;
+        if (nextPageLink === null || pageRequested === 1) return;
         setLoading(true);
         ApiService.get(nextPageLink).then((response) => {
             setListings((prevListings) => [...prevListings, ...response.data.results]);
