@@ -1,6 +1,7 @@
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import Button from '../inputs/Button'
 import Skeleton from 'react-loading-skeleton'
+import { useUser } from '../../contexts/UserContext'
 
 const SkeletonArray = () => {
     return (
@@ -13,6 +14,7 @@ const SkeletonArray = () => {
 }
 
 export const PetOverviewPanel = ({ petListingOverview, detailsView, applicationId, loading }) => {
+    const { user } = useUser()
     const ActionButton = () => {
         return (
             applicationId ?
@@ -40,7 +42,16 @@ export const PetOverviewPanel = ({ petListingOverview, detailsView, applicationI
             <p className="text-sm pet-overview-box-breed">{petListingOverview.breed}</p>
             <p className="text-sm pet-overview-box-breed">Age {petListingOverview.age}</p>
             <p className="text-sm"> {petListingOverview.description}</p>
-            <ActionButton />
+            <div class="flex flex-row gap-2 mt-4">
+                <ActionButton />
+                {
+                    user.is_shelter && user.id === petListingOverview.shelterOwner ?
+                        <Link to={`/listings/${petListingOverview.id}/edit`}>
+                            <Button>Edit</Button>
+                        </Link>
+                        : null
+                }
+            </div>
             </>
         }
         </div>
