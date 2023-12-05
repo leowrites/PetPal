@@ -8,6 +8,8 @@ import ShelterListingCard from "../components/shelters/ShelterListingCard";
 import { useUser } from "../contexts/UserContext";
 import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
 import { Button, IconButton } from "@material-tailwind/react";
+import ReviewService from "../services/ReviewService";
+import Container from "../components/layout/Container";
 
 const ShelterDetail = () => {
     const { user } = useUser()
@@ -16,6 +18,7 @@ const ShelterDetail = () => {
     const [listings, setListings] = useState([])
     const [currPage, setCurrPage] = useState(1)
     const navigate = useNavigate()
+    const [reviews, setReviews] = useState([])
     const listingsPerPage = 2
 
     useEffect(() => {
@@ -39,17 +42,29 @@ const ShelterDetail = () => {
             })
     }, [shelterId])
 
+    useEffect(() => {
+        ReviewService.list(shelterId)
+            .then(res => {
+                setReviews(res.data.results)
+            })
+            .catch(err => {
+                console.log("error fetching reviews:", err)
+                setReviews([])
+            })
+    }, [shelterId])
+
     const totalPages = Math.ceil(listings.length / listingsPerPage)
     const indexOfLastListing = currPage * listingsPerPage
     const indexOfFirstListing = indexOfLastListing - listingsPerPage
     const currListings = listings.slice(indexOfFirstListing, indexOfLastListing)
 
     return (
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-14">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-14 flex flex-col gap-y-10">
             {user && listings.length != 0 ? (
-                <div className="grid grid-cols-1 xl:grid-cols-2 gap-x-40 gap-y-16">
+                <div className="grid grid-cols-1 xl:grid-cols-2 gap-x-10 gap-y-16">
+                    <Container>
                     <div className="flex flex-col items-center">
-                        <Heading><h1 class="mt-10 text-[2rem] font-semibold mb-4">{shelter.shelter_name}</h1></Heading>
+                        <Heading><h1 class="mt-4 text-[2rem] font-semibold mb-4">{shelter.shelter_name}</h1></Heading>
                         <p className="text-md font-semibold mb-4 text-center">
                             Location: {shelter.location}
                         </p>
@@ -71,7 +86,8 @@ const ShelterDetail = () => {
                             </a>
                         </p>
                     </div>
-                    <div className="flex flex-col justify-center">
+                    </Container>
+                    <Container className="flex flex-col justify-center px-4">
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 justify-items-center">
                             {currListings.map((listing) => (
                                 <ShelterListingCard listing={listing} />
@@ -95,9 +111,10 @@ const ShelterDetail = () => {
                                 <ArrowRightIcon strokeWidth={3} className="h-4 w-4" /> 
                             </Button>
                         </div>
-                    </div>
+                    </Container>
                 </div>
-            ) : ( 
+            ) : (
+                <Container>
                 <div className="flex flex-col items-center">
                     <Heading><h1 class="mt-10 text-[2rem] font-semibold mb-4">{shelter.shelter_name}</h1></Heading>
                     <p className="text-md font-semibold mb-4 text-center">
@@ -121,6 +138,7 @@ const ShelterDetail = () => {
                         </a>
                     </p>
                 </div>
+                </Container> 
             )}
             
         </div>
