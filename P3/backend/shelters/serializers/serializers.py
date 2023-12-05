@@ -244,6 +244,7 @@ class PetApplicationGetOrUpdateSerializer(serializers.ModelSerializer):
 
 class PetApplicationListSerializer(serializers.ModelSerializer):
     listing = PetListingSerializer(read_only=True)
+    applicant = UserProfileSerializer(read_only=True)
 
     class Meta:
         model = PetApplication

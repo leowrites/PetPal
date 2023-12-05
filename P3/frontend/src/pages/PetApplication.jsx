@@ -226,12 +226,9 @@ export default function PetApplication({ completed }) {
     const navigate = useNavigate()
     // should check if the user already aoplied for this pet
     // if they have redirect them to their application page
+    // for shelters, they should be able to view the application too
     useEffect(() => {
         // fetch pet details
-        setAuthToken(localStorage.getItem('token'))
-        if (!localStorage.getItem('token')) {
-            navigate('/login')
-        }
         if (completed) {
             // retrieve completed pet application
             PetApplicationService.get(applicationId)
@@ -242,10 +239,8 @@ export default function PetApplication({ completed }) {
                     setLoading(false)
                 })
                 .catch(err => {
-                    if (err.response.status === 404) {
-                        navigate('/404')
-                    }
                     console.error(err)
+                    navigate('/404')
                 })
         }
         else {
@@ -255,13 +250,11 @@ export default function PetApplication({ completed }) {
                     setLoading(false)
                 })
                 .catch(err => {
-                    if (err.response.status === 404) {
-                        navigate('/404')
-                    }
                     console.error(err)
+                    navigate('/404')
                 })
         }
-    }, [listingId, applicationId])
+    }, [listingId, applicationId, completed, navigate])
     const petListingOverview = {
         name: petDetail.name,
         listingTime: petDetail.listed_date,

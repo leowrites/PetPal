@@ -10,8 +10,8 @@ class PetApplicationService {
         const response = await ApiService.post(`/listings/${listingId}/applications`, answers)
         return response
     }
-    static async list() {
-        const response = await ApiService.get(`/applications/`)
+    static async list(params) {
+        const response = await ApiService.get(`/applications/`, { params })
         return response
     }
 }
