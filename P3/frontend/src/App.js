@@ -19,6 +19,7 @@ import ProfileUpdate from './pages/ProfileUpdate'
 import 'react-loading-skeleton/dist/skeleton.css'
 import { UserContextProvider, useUser } from './contexts/UserContext';
 import ChangePassword from './pages/ChangePassword';
+import PetApplicationList from './pages/PetApplicationList';
 
 const ProtectedRoute = ({ children }) => {
   const { user } = useUser()
@@ -54,20 +55,24 @@ function App() {
             } />
             <Route path="applications" element={
               <ProtectedRoute>
-                <CompletedApplicationLayout />
+                <PetApplicationList />
               </ProtectedRoute>
             }>
-              <Route path=":applicationId" element={
-                <ProtectedRoute>
-                  <PetApplication completed={true} />
-                </ProtectedRoute>
-              } />
-              <Route path=':applicationId/comments' element={
-                <ProtectedRoute>
-                  <Message />
-                </ProtectedRoute>
-              } />
             </Route>
+            <Route path=":applicationId" element={
+              <ProtectedRoute>
+                <CompletedApplicationLayout>
+                  <PetApplication completed={true} />
+                </CompletedApplicationLayout>
+              </ProtectedRoute>
+            } />
+            <Route path=':applicationId/comments' element={
+              <ProtectedRoute>
+                <CompletedApplicationLayout>
+                  <Message />
+                </CompletedApplicationLayout>
+              </ProtectedRoute>
+            } />
             <Route path="profile" element={
                 <ProtectedRoute>
                     <ProfileUpdate />
