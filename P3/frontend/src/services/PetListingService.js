@@ -11,6 +11,11 @@ class PetListingService {
         return response
     }
 
+    static async getByParams(params) {
+        const response = await ApiService.get(`/listings/`, {params : params})
+        return response
+    }
+
     static async update(id, data) {
         const response = await ApiService.patch(`/listings/${id}`, data)
         return response

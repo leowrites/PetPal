@@ -49,7 +49,11 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout />} >
             <Route path="" element={<Landing />} />
-            <Route path="listings" element={<Listings />} />
+            <Route path="listings" element={
+              <ShelterProtectedRoute>
+                <Listings />
+              </ShelterProtectedRoute>
+            } />
             <Route path="listings/:listingId" element={
               <ProtectedRoute>
                 <PetDetail />
