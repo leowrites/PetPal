@@ -21,20 +21,8 @@ const DescriptionSection = ({ sectionTitle, sectionDetails, loading }) => {
 const PetImages = ({ imagePath }) => {
     return (
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4 h-fit">
-            <div className="col-span-2">
-                <img className="rounded-xl w-full object-cover pet-photo" src={imagePath} />
-            </div>
-            <div className="col-span-1">
-                <img
-                    className="rounded-xl max-w-full h-full object-cover pet-photo"
-                    src={imagePath}
-                />
-            </div>
-            <div className="col-span-1">
-                <img
-                    className="rounded-xl max-w-full h-full object-cover pet-photo"
-                    src={imagePath}
-                />
+            <div className="col-span-4 w-full">
+                <img className="rounded-xl h-96 w-full object-contain" src={imagePath ? imagePath : '/logo_dark_mode.svg'} alt={'dog-placeholder.svg'}/>
             </div>
         </div>
     )
