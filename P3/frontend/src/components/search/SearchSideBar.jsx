@@ -8,6 +8,7 @@ import AgeMultiRange from "./AgeMultiRange";
 import PetDetailService from "../../services/PetDetailService";
 import { ApiService } from "../../services/ApiService";
 import SearchSortSelector from "./SearchSortSelector";
+import LoadingSpinner from "../presenter/LoadingSpinner";
 
 export default function SearchSideBar({ setListings, pageRequested, setPageRequested, loading, setLoading }) {
     const [listingStatus, setListingStatus] = useState("available");
@@ -52,15 +53,20 @@ export default function SearchSideBar({ setListings, pageRequested, setPageReque
         }).catch((error) => {
             console.log(error);
         });
-    }, [pageRequested, setLoading, setListings, nextPageLink]);
+    }, [pageRequested, setLoading, setListings, setNextPageLink]);
 
     return (
         <Card className="w-full max-w-[20rem] p-4 shadow-xl">
-            <div className="mb-2 flex items-center gap-4 pt-4">
-                <img src="logo.svg" alt="brand" className="h-8 w-8"/>
-                <h1 className="text-2xl text-[#290005]">
-                    Find Your Pal!
-                </h1>
+            <div className="relative">
+                <div className="mb-2 flex items-center gap-4 pt-4">
+                    <img src="logo.svg" alt="brand" className="h-8 w-8"/>
+                    <h1 className="text-2xl text-[#290005]">
+                        Find Your Pal!
+                    </h1>
+                </div>
+                <div className="absolute right-[12.5%] top-[35%]">
+                    {loading && <LoadingSpinner />}
+                </div>
             </div>
             <div className="flex flex-col p-[1rem] gap-[1rem] justify-start">
                 <div className="text-[#290005] mx-[.75rem] text-lg flex flex-row items-center justify-between">
