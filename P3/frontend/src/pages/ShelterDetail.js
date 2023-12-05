@@ -182,19 +182,27 @@ const ShelterDetail = () => {
                     <Button className="flex items-center gap-3 px-3" onClick={handleOpen}><FaPen />Write a Review</Button>
                 </div>
                 <div className="flex flex-col gap-y-4 w-full">
-                    {reviews.sort((a, b) => (new Date(a.created_at) < new Date(b.created_at)) ? -1 : 1)
-                    .map((review, i) => (
-                        <Review review={review} key={i} />
-                    ))}
+                    {
+                    !user ? (
+                            <p>You must be logged in to view reviews.</p>
+                        ) : (
+                            reviews.sort((a, b) => (new Date(a.created_at) < new Date(b.created_at)) ? -1 : 1)
+                            .map((review, i) => (
+                                <Review review={review} key={i} />
+                            ))
+                        )
+                    }
                 </div>
-                <div className="flex justify-center items-center gap-4 mt-5">
-                    <ShelterCircularPagination 
-                        totalPages={totalReviewPages} 
-                        onPageChange={(pageNum) => {
-                            setCurrReviewPage(pageNum);
-                        }}
-                    />
-                </div>
+                { user && (
+                    <div className="flex justify-center items-center gap-4 mt-5">
+                        <ShelterCircularPagination 
+                            totalPages={totalReviewPages} 
+                            onPageChange={(pageNum) => {
+                                setCurrReviewPage(pageNum);
+                            }}
+                        />
+                    </div>
+                ) }
             </Container>
 
             <Dialog
