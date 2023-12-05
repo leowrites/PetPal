@@ -13,7 +13,7 @@ const PetImage = ({ src }) => {
     return (
         <div>
             <img
-                src={src}
+                src={src ? src[0] : '/logo_dark_mode.svg'}
                 alt=""
                 className="w-full h-full object-cover pet-photo rounded-xl aspect-square"
             />
@@ -274,7 +274,7 @@ export default function PetApplication({ completed }) {
     return (
         <Page>
             <div className="order-1 grid md:grid-cols-3 gap-4 h-fit">
-                <PetImage src={petDetail.image} />
+                <PetImage src={petDetail.images} />
                 <div className="order-3 md:order-2 md:col-span-2 md:row-span-3 pet-overview-box p-5 rounded-xl">
                     {
                         loading && <SkeletonArray />

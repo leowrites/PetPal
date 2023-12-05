@@ -18,17 +18,17 @@ const DescriptionSection = ({ sectionTitle, sectionDetails, loading }) => {
     </div>)
 }
 
-const PetImages = ({ imagePath }) => {
+const PetImages = ({ images }) => {
     return (
         <div className="grid grid-cols-2 gap-4 md:grid-cols-4 h-fit">
             <div className="col-span-2 w-full">
-                <img className="rounded-xl h-96 w-full object-contain" src={imagePath ? imagePath : '/logo_dark_mode.svg'} alt={'dog-placeholder.svg'}/>
+                <img className="rounded-xl h-96 w-full object-cover" src={images ? images[0] : '/logo_dark_mode.svg'} alt={'dog-placeholder.svg'}/>
             </div>
             <div className="col-span-1 w-full">
-                <img className="rounded-xl h-96 w-full object-contain" src={imagePath ? imagePath : '/logo_dark_mode.svg'} alt={'dog-placeholder.svg'}/>
+                <img className="rounded-xl h-96 w-full object-cover" src={images ? images[1] : '/logo_dark_mode.svg'} alt={'dog-placeholder.svg'}/>
             </div>
             <div className="col-span-1 w-full">
-                <img className="rounded-xl h-96 w-full object-contain" src={imagePath ? imagePath : '/logo_dark_mode.svg'} alt={'dog-placeholder.svg'}/>
+                <img className="rounded-xl h-96 w-full object-cover" src={images ? images[2] : '/logo_dark_mode.svg'} alt={'dog-placeholder.svg'}/>
             </div>
         </div>
     )
@@ -109,7 +109,7 @@ export default function PetDetail() {
 
     return (
         <Page>
-            <PetImages imagePath={petDetail.image} />
+            <PetImages images={petDetail.images} />
             <div className="grid grid-cols-1 my-5 gap-5 md:grid-cols-5">
                 <PetDetailLeftPanel petListingIDetails={petListingIDetails} loading={loading}/>
                 <div
