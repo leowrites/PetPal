@@ -59,14 +59,14 @@ function App() {
               </ProtectedRoute>
             }>
             </Route>
-            <Route path=":applicationId" element={
+            <Route path="applications/:applicationId" element={
               <ProtectedRoute>
                 <CompletedApplicationLayout>
                   <PetApplication completed={true} />
                 </CompletedApplicationLayout>
               </ProtectedRoute>
             } />
-            <Route path=':applicationId/comments' element={
+            <Route path='applications/:applicationId/comments' element={
               <ProtectedRoute>
                 <CompletedApplicationLayout>
                   <Message />

@@ -239,10 +239,8 @@ export default function PetApplication({ completed }) {
                     setLoading(false)
                 })
                 .catch(err => {
-                    if (err.response.status === 404) {
-                        navigate('/404')
-                    }
                     console.error(err)
+                    navigate('/404')
                 })
         }
         else {
@@ -252,10 +250,8 @@ export default function PetApplication({ completed }) {
                     setLoading(false)
                 })
                 .catch(err => {
-                    if (err.response.status === 404) {
-                        navigate('/404')
-                    }
                     console.error(err)
+                    navigate('/404')
                 })
         }
     }, [listingId, applicationId])
