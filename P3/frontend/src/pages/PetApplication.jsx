@@ -273,6 +273,10 @@ export default function PetApplication({ completed }) {
     }
 
     const handleStatusChange = (val) => {
+        // check if old status is the same as the new status
+        if (val === application.status) {
+            return
+        }
         setStatusLoading(true)
         PetApplicationService.update(applicationId, { status: val })
             .then(res => {
