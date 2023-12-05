@@ -96,9 +96,14 @@ export default function PetDetail() {
         }
     ]
     const petListingOverview = {
+        id: listingId,
         name: petDetail.name,
-        listingTime: petDetail.listed_date,
-        status: petDetail.status,
+        listingTime: (new Date(petDetail.listed_date)).toLocaleTimeString('en-US', {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+        }),
+        status: petDetail.status === 'available' ? 'Available' : 'Not Available',
         shelter: petDetail.shelter?.shelter_name,
         shelterOwner: petDetail.shelter?.owner,
         breed: petDetail.breed,
