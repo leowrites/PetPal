@@ -4,7 +4,7 @@ import SearchSideBar from '../components/search/SearchSideBar';
 
 export const Search = () => {
   const [listings, setListings] = useState([]);
-  const [pageRequested, setPageRequested] = useState(1);
+  const [pageRequested, setPageRequested] = useState(false);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
@@ -17,7 +17,7 @@ export const Search = () => {
         <aside className='md:sticky md:top-0'>
           <SearchSideBar 
             setListings={setListings} 
-            pageRequested={1} 
+            pageRequested={pageRequested} 
             setPageRequested={setPageRequested} 
             loading={loading}
             setLoading={setLoading}

@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Card } from "@material-tailwind/react";
-import { FaFilter, FaSearch, FaBuilding } from "react-icons/fa";
+import { FaFilter, FaBuilding } from "react-icons/fa";
 import { MdOutlinePets, MdDriveFileRenameOutline } from "react-icons/md";
 import SearchTextInput from "./SearchTextInput";
 import SearchFilterSelector from "./SearchFilterSelector";
 import AgeMultiRange from "./AgeMultiRange";
 import PetDetailService from "../../services/PetDetailService";
 import { ApiService } from "../../services/ApiService";
+import SearchSortSelector from "./SearchSortSelector";
 
 export default function SearchSideBar({ setListings, pageRequested, setPageRequested, loading, setLoading }) {
     const [listingStatus, setListingStatus] = useState("available");
@@ -16,12 +17,13 @@ export default function SearchSideBar({ setListings, pageRequested, setPageReque
     const [minAge, setMinAge] = useState(0);
     const [maxAge, setMaxAge] = useState(20);
     const [nextPageLink, setNextPageLink] = useState(null);
+    const [sortValue, setSortValue] = useState("name");
 
     useEffect(() => {
         const timer = setTimeout(() => {
             setLoading(true);
             PetDetailService.getPetListings(
-                '',
+                sortValue,
                 petNameInput,
                 shelterNameInput,
                 listingStatus,
@@ -29,7 +31,7 @@ export default function SearchSideBar({ setListings, pageRequested, setPageReque
                 minAge,
                 maxAge
             ).then((response) => {
-                setListings(response.data);
+                setListings(response.data.results);
                 setNextPageLink(response.data.next);
                 setLoading(false);
             }).catch((error) => {
@@ -38,10 +40,10 @@ export default function SearchSideBar({ setListings, pageRequested, setPageReque
         }, 500);
     
         return () => clearTimeout(timer);
-    }, [listingStatus, petNameInput, shelterNameInput, breedInput, minAge, maxAge]);
+    }, [sortValue, listingStatus, petNameInput, shelterNameInput, breedInput, minAge, maxAge, setLoading, setListings]);
 
     useEffect(() => {
-        if (nextPageLink === null) return;
+        if (nextPageLink === null || !pageRequested) return;
         setLoading(true);
         ApiService.get(nextPageLink).then((response) => {
             setListings((prevListings) => [...prevListings, ...response.data.results]);
@@ -50,7 +52,7 @@ export default function SearchSideBar({ setListings, pageRequested, setPageReque
         }).catch((error) => {
             console.log(error);
         });
-    }, [pageRequested]);
+    }, [pageRequested, setLoading, setListings, nextPageLink]);
 
     return (
         <Card className="w-full max-w-[20rem] p-4 shadow-xl">
@@ -61,9 +63,9 @@ export default function SearchSideBar({ setListings, pageRequested, setPageReque
                 </h1>
             </div>
             <div className="flex flex-col p-[1rem] gap-[1rem] justify-start">
-                <div className="text-[#290005] mx-[.75rem] text-lg flex flex-row justify-between">
+                <div className="text-[#290005] mx-[.75rem] text-lg flex flex-row items-center justify-between">
                     <div>Search</div>
-                    <FaSearch />
+                    <SearchSortSelector sortValue={sortValue} setSortValue={setSortValue} />
                 </div>
                 <SearchTextInput label={"Search by pet name"} value={petNameInput} icon={<MdDriveFileRenameOutline />} onChange={(e) => setPetNameInput(e.target.value)}/>
                 <SearchTextInput label={"Search by shelter name"} value={shelterNameInput} icon={<FaBuilding />} onChange={(e) => setShelterNameInput(e.target.value)}/>
