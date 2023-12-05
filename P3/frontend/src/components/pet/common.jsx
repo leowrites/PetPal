@@ -35,29 +35,29 @@ export const PetOverviewPanel = ({ petListingOverview, detailsView, applicationI
                     <Button>View Application</Button>
                 </Link>
                 : detailsView ?
-                <Link to='applications'>
-                    <Button>Adopt</Button>
-                </Link>
-                : null
+                    <Link to='applications'>
+                        <Button>Adopt</Button>
+                    </Link>
+                    : null
         )
     }
     return (
         <div className="flex flex-col gap-1">
-        {
-            loading ?
-                <SkeletonArray />
-                :
-                <>
-            <p className="text-lg font-bold">{petListingOverview.name}</p>
-            <p className="text-sm">Listing Time: {petListingOverview.listingTime}</p>
-            <p className="text-sm pet-overview-box-status">Status: {petListingOverview.status}</p>
-            <a className="text-sm underline pet-overview-box-shelter" href="../shelter/shelter.html">{petListingOverview.shelter}</a>
-            <p className="text-sm pet-overview-box-breed">{petListingOverview.breed}</p>
-            <p className="text-sm pet-overview-box-breed">Age {petListingOverview.age}</p>
-            <p className="text-sm"> {petListingOverview.description}</p>
-            <ActionButton />
-            </>
-        }
+            {
+                loading ?
+                    <SkeletonArray />
+                    :
+                    <>
+                        <p className="text-lg font-bold">{petListingOverview.name}</p>
+                        <p className="text-sm">Listing Time: {petListingOverview.listingTime}</p>
+                        <p className="text-sm pet-overview-box-status">Status: {petListingOverview.status}</p>
+                        <a className="text-sm underline pet-overview-box-shelter" href="../shelter/shelter.html">{petListingOverview.shelter}</a>
+                        <p className="text-sm pet-overview-box-breed">{petListingOverview.breed}</p>
+                        <p className="text-sm pet-overview-box-breed">Age {petListingOverview.age}</p>
+                        <p className="text-sm"> {petListingOverview.description}</p>
+                        <ActionButton />
+                    </>
+            }
         </div>
     )
 }
@@ -73,7 +73,7 @@ const ApplicationRows = ({ applications, isShelter }) => {
                 : "p-4 border-b border-blue-gray-50";
 
             return (
-                <tr key={id}>
+                <tr className='hover:cursor-pointer' key={id} onClick={() => { navigate(`/applications/${id}`) }}>
                     <td className={classes}>
                         <div className="flex items-center gap-3">
                             <div className="flex flex-col">
@@ -236,7 +236,7 @@ export function ApplicationTable({ applications, pageNumber, hasNextPage, addPag
                                         }
                                     </tr>
                                 ))
-                                : <ApplicationRows applications={applications} isShelter={isShelter}/>
+                                : <ApplicationRows applications={applications} isShelter={isShelter} />
                         }
                     </tbody>
                 </table>
