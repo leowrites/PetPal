@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom'
 import { Landing } from './pages/Landing'
 import { Search } from './pages/Search'
@@ -13,12 +13,17 @@ import CompletedApplicationLayout from './pages/CompletedApplicationLayout';
 import Message from './pages/Message';
 import Listings from './pages/Listings';
 import ShelterQuestion from './pages/shelterQuestion/ShelterQuestionPage';
+import Shelters from './pages/Shelters';
 import SeekerDetail from './pages/SeekerDetail';
+import ShelterDetail from './pages/ShelterDetail';
 import Logout from './pages/Logout'
 import ProfileUpdate from './pages/ProfileUpdate'
 import 'react-loading-skeleton/dist/skeleton.css'
 import { UserContextProvider, useUser } from './contexts/UserContext';
+import NewListing from './pages/NewListing';
+import EditListing from './pages/EditListing';
 import ChangePassword from './pages/ChangePassword';
+import PetApplicationList from './pages/PetApplicationList';
 
 const ProtectedRoute = ({ children }) => {
   const { user } = useUser()
@@ -28,6 +33,14 @@ const ProtectedRoute = ({ children }) => {
 
   return children
 };
+
+const ShelterProtectedRoute = ({ children }) => {
+  const { user } = useUser()
+  if (!user || !user.is_shelter) {
+    return <Navigate to={'/login'} />
+  }
+  return children
+}
 
 function App() {
   return (
@@ -42,6 +55,16 @@ function App() {
                 <PetDetail />
               </ProtectedRoute>
             } />
+            <Route path="listings/:listingId/edit" element={
+              <ProtectedRoute>
+                <EditListing />
+              </ProtectedRoute>
+            } />
+            <Route path="listings/new" element={
+              <ShelterProtectedRoute>
+                <NewListing />
+              </ShelterProtectedRoute>
+            } />
             <Route path="questions" element={
               <ProtectedRoute>
                 <ShelterQuestion />
@@ -54,20 +77,24 @@ function App() {
             } />
             <Route path="applications" element={
               <ProtectedRoute>
-                <CompletedApplicationLayout />
+                <PetApplicationList />
               </ProtectedRoute>
             }>
-              <Route path=":applicationId" element={
-                <ProtectedRoute>
-                  <PetApplication completed={true} />
-                </ProtectedRoute>
-              } />
-              <Route path=':applicationId/comments' element={
-                <ProtectedRoute>
-                  <Message />
-                </ProtectedRoute>
-              } />
             </Route>
+            <Route path="applications/:applicationId" element={
+              <ProtectedRoute>
+                <CompletedApplicationLayout>
+                  <PetApplication completed={true} />
+                </CompletedApplicationLayout>
+              </ProtectedRoute>
+            } />
+            <Route path='applications/:applicationId/comments' element={
+              <ProtectedRoute>
+                <CompletedApplicationLayout>
+                  <Message />
+                </CompletedApplicationLayout>
+              </ProtectedRoute>
+            } />
             <Route path="profile" element={
                 <ProtectedRoute>
                     <ProfileUpdate />
@@ -84,6 +111,8 @@ function App() {
                 </ProtectedRoute>
             } />
             <Route path="search" element={<Search />} />
+            <Route path="shelters" element={<Shelters />} />
+            <Route path="shelters/:shelterId" element={<ShelterDetail />} />
             <Route path="login" element={<Login />} />
             <Route path="signup" element={<Signup />} />
             <Route path="404" element={<NotFound />} />

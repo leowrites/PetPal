@@ -15,7 +15,7 @@ const PetImage = ({ src }) => {
     return (
         <div>
             <img
-                src={src}
+                src={src ? src[0] : '/logo_dark_mode.svg'}
                 alt=""
                 className="w-full h-full object-cover pet-photo rounded-xl aspect-square"
             />
@@ -230,12 +230,9 @@ export default function PetApplication({ completed }) {
     const navigate = useNavigate()
     // should check if the user already aoplied for this pet
     // if they have redirect them to their application page
+    // for shelters, they should be able to view the application too
     useEffect(() => {
         // fetch pet details
-        setAuthToken(localStorage.getItem('token'))
-        if (!localStorage.getItem('token')) {
-            navigate('/login')
-        }
         if (completed) {
             // retrieve completed pet application
             PetApplicationService.get(applicationId)
@@ -246,8 +243,8 @@ export default function PetApplication({ completed }) {
                     setLoading(false)
                 })
                 .catch(err => {
-                    navigate('/404')
                     console.error(err)
+                    navigate('/404')
                 })
         }
         else {
@@ -257,11 +254,11 @@ export default function PetApplication({ completed }) {
                     setLoading(false)
                 })
                 .catch(err => {
-                    navigate('/404')
                     console.error(err)
+                    navigate('/404')
                 })
         }
-    }, [listingId, applicationId])
+    }, [listingId, applicationId, completed, navigate])
     const petListingOverview = {
         name: petDetail.name,
         listingTime: petDetail.listed_date,
@@ -336,7 +333,7 @@ export default function PetApplication({ completed }) {
                 }
             </div>
             <div className="order-1 grid md:grid-cols-3 gap-4 h-fit">
-                <PetImage src={petDetail.image} />
+                <PetImage src={petDetail.images} />
                 <div className="order-3 md:order-2 md:col-span-2 md:row-span-3 pet-overview-box p-5 rounded-xl">
                     {
                         loading && <SkeletonArray />

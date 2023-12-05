@@ -142,8 +142,8 @@ class PetApplicationPostSerializer(serializers.Serializer):
 class ShelterSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Shelter
-        fields = ['shelter_name', 'owner', 'contact_email', 'location', 'mission_statement']
-        read_only_fields = ['owner']
+        fields = ['id', 'shelter_name', 'owner', 'contact_email', 'location', 'mission_statement']
+        read_only_fields = ['owner', 'id']
 
 
 class PetListingSerializer(serializers.ModelSerializer):
@@ -151,12 +151,14 @@ class PetListingSerializer(serializers.ModelSerializer):
     assigned_questions = AssignedQuestionDetailsSerializer(many=True, required=False)
     shelter = ShelterSerializer(read_only=True)
     image = serializers.ImageField()
+    image2 = serializers.ImageField()
+    image3 = serializers.ImageField()
 
     # user can select the questions, which will create new rows in listing questions
     class Meta:
         # for listing or creating a serializer
         model = PetListing
-        fields = ['id', 'name', 'shelter', 'status', 'assigned_questions', 'age', 'breed', 'image', 'bio', 'medical_history',
+        fields = ['id', 'name', 'shelter', 'status', 'assigned_questions', 'age', 'breed', 'image', 'image2', 'image3', 'bio', 'medical_history',
                   'behavior', 'other_notes', 'listed_date']
         read_only_fields = ['shelter', 'id', 'application_questions', 'listed_date']
 
@@ -173,6 +175,17 @@ class PetListingSerializer(serializers.ModelSerializer):
             ])
 
         return pet_listing
+
+    def to_representation(self, instance):
+        rep = super().to_representation(instance)
+        images = []
+        images.append(instance.image.url)
+        images.append(instance.image2.url)
+        images.append(instance.image3.url)
+        rep['images'] = images
+        rep.pop('image2')
+        rep.pop('image3')
+        return rep
 
 
 class PetApplicationGetOrUpdateSerializer(serializers.ModelSerializer):
@@ -231,6 +244,7 @@ class PetApplicationGetOrUpdateSerializer(serializers.ModelSerializer):
 
 class PetApplicationListSerializer(serializers.ModelSerializer):
     listing = PetListingSerializer(read_only=True)
+    applicant = UserProfileSerializer(read_only=True)
 
     class Meta:
         model = PetApplication
