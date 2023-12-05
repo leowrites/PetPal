@@ -142,8 +142,8 @@ class PetApplicationPostSerializer(serializers.Serializer):
 class ShelterSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Shelter
-        fields = ['shelter_name', 'owner', 'contact_email', 'location', 'mission_statement', 'id']
-        read_only_fields = ['owner']
+        fields = ['id', 'shelter_name', 'owner', 'contact_email', 'location', 'mission_statement']
+        read_only_fields = ['owner', 'id']
 
 
 class PetListingSerializer(serializers.ModelSerializer):

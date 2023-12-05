@@ -13,7 +13,9 @@ import CompletedApplicationLayout from './pages/CompletedApplicationLayout';
 import Message from './pages/Message';
 import Listings from './pages/Listings';
 import ShelterQuestion from './pages/shelterQuestion/ShelterQuestionPage';
+import Shelters from './pages/Shelters';
 import SeekerDetail from './pages/SeekerDetail';
+import ShelterDetail from './pages/ShelterDetail';
 import Logout from './pages/Logout'
 import ProfileUpdate from './pages/ProfileUpdate'
 import 'react-loading-skeleton/dist/skeleton.css'
@@ -104,6 +106,8 @@ function App() {
                 </ProtectedRoute>
             } />
             <Route path="search" element={<Search />} />
+            <Route path="shelters" element={<Shelters />} />
+            <Route path="shelters/:shelterId" element={<ShelterDetail />} />
             <Route path="login" element={<Login />} />
             <Route path="signup" element={<Signup />} />
             <Route path="404" element={<NotFound />} />
