@@ -10,8 +10,29 @@ import {
     Chip
 } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
-
 import { FaBirthdayCake } from "react-icons/fa";
+
+function timeSince(dateString) {
+    const date = new Date(dateString);
+    const now = new Date();
+    const secondsPast = (now.getTime() - date.getTime()) / 1000;
+  
+    if(secondsPast < 60) {
+      return parseInt(secondsPast) + ' seconds ago';
+    }
+    if(secondsPast < 3600) {
+      return parseInt(secondsPast/60) + ' minutes ago';
+    }
+    if(secondsPast <= 86400) {
+      return parseInt(secondsPast/3600) + ' hours ago';
+    }
+    if(secondsPast > 86400) {
+      let day = date.getDate();
+      let month = date.toDateString().match(/ [a-zA-Z]*/)[0].replace(" ","");
+      let year = date.getFullYear() == now.getFullYear() ? "" :  " "+date.getFullYear();
+      return day + " " + month + year;
+    }
+  }
 
 export default function SearchListingCard({listing}) {
     const navigate = useNavigate();
@@ -33,8 +54,9 @@ export default function SearchListingCard({listing}) {
                 alt={`${listing.name} ${listing.id} image`}
                 />
                 <div className="hover:cursor-pointer opacity-0 hover:opacity-100 to-bg-black-10 absolute inset-0 h-full w-full transition bg-gradient-to-tr from-transparent via-black/10 to-black/20 " />
-                <div className="!absolute top-4 right-4 rounded-full">
-                  {listing.status === "available" ? (<Chip color="green" variant="gradient" value="Available" size="sm" />) : (<Chip color="red" variant="gradient" value="Unavailable" size="sm" />)}
+                <div className="!absolute top-4 right-4 rounded-full flex flex-col items-end gap-[.2rem]">
+                    <Chip color="blue-gray" variant="gradient" value={`Listed ${timeSince(listing.listed_date)}`} size="sm" />
+                    {listing.status === "available" ? (<Chip color="green" variant="gradient" value="Available" size="sm" />) : (<Chip color="red" variant="gradient" value="Unavailable" size="sm" />)}
                 </div>
             </CardHeader>
             <CardBody>

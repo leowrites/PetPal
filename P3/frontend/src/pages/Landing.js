@@ -1,32 +1,28 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import ListingCard from '../components/presenter/ListingCard';
+import SearchListingCard from '../components/search/SearchListingCard';
 import Button from '../components/inputs/Button';
 import { Link } from 'react-router-dom';
+import PetDetailService from '../services/PetDetailService';
+import Skeleton from 'react-loading-skeleton';
+
+const SkeletonArray = Array.from({ length: 10 }, (_, i) => <Skeleton className='mr-[20rem] h-[28rem] rounded-lg' key={i} inline />)
 
 export const Landing = () => {
+  const [landingListings, setLandingListings] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  const listings = [{
-      name: "Buddy",
-      listed_date: "2021-09-01",
-      breed: "Beagle",
-      shelter: {name: "Toronto Humane Society"},
-      age: 9,
-    },{
-      name: "Buddy",
-      listed_date: "2021-09-01",
-      breed: "Beagle",
-      shelter: {name: "Toronto Humane Society"},
-      age: 9,
-    },
-    {
-      name: "Buddy",
-      listed_date: "2021-09-01",
-      breed: "Beagle",
-      shelter: {name: "Toronto Humane Society"},
-      age: 9,
-    }
-  ]
-
+  useEffect(() => {
+    setLoading(true);
+    PetDetailService.getPetListings('-listed_date', '', '', '', '', null, null)
+      .then((res) => {
+        setLoading(false);
+        setLandingListings(res.data.results);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [setLandingListings])
 
   return (
     <div>
@@ -41,20 +37,26 @@ export const Landing = () => {
         <div class="flex flex-col items-center justify-center gap-[.25rem] pb-[3rem]">
 
           {/* Spacing container */}
-          <div className='flex flex-wrap justify-start max-w-[310px] gap-[1rem] md:max-w-[650px] lg:max-w-[996px] xl:max-w-[1000px]'>
+          <div className='flex flex-wrap justify-start max-w-[310px] gap-[1rem] md:max-w-[740px] lg:max-w-[740px] xl:max-w-[1100px]'>
             {/* Example Pets */}
             <div className='flex flex-row items-center gap-[.5rem]'>
-              <div class="text-[1.5rem] pb-[4px] font-semibold">Latest in Ontario</div>
+              <div class="text-[1.5rem] pb-[4px] font-semibold">Latest Pets Listed</div>
               <Link to='/search'>
-                <Button className='w-[8rem] h-[2rem] flex text-center items-center justify-center' onClick={() => {}} buttonType='' children={
+                <Button className='w-[8rem] h-[2rem] mb-[.25rem] flex text-center items-center justify-center' onClick={() => {}} buttonType='' children={
                   <div>See All</div>
                 }/>
               </Link>
             </div>
-            <div className='flex flex-row flex-wrap justify-start gap-[3rem]'>
-              {listings.map((listing) => {
-                return <ListingCard listing={listing}/>
+            <div className='relative flex flex-row flex-wrap justify-center gap-[3rem] max-h-[40rem] overflow-hidden rounded-b-3xl'>
+              {landingListings?.map((listing) => {
+                return (
+                  <div className='max-w-[20rem]'>
+                    <SearchListingCard listing={listing}/>
+                  </div>
+                )
               })}
+              {(loading || !landingListings?.length) && SkeletonArray}
+              {!loading ? <Link to='/search' className="hover:cursor-pointer to-bg-black-10 absolute inset-0 h-full w-full transition bg-gradient-to-b from-transparent via-black/30 to-black/60 " /> : null}
             </div>
           </div>
         </div>
