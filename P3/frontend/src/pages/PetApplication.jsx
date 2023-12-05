@@ -254,7 +254,7 @@ export default function PetApplication({ completed }) {
                     navigate('/404')
                 })
         }
-    }, [listingId, applicationId])
+    }, [listingId, applicationId, completed, navigate])
     const petListingOverview = {
         name: petDetail.name,
         listingTime: petDetail.listed_date,
