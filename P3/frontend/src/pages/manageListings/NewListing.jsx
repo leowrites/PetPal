@@ -11,7 +11,7 @@ import Page from '../../components/layout/Page';
 
 const NewListing = () => {
     const { user } = useUser();
-    const [imageUrl, setImageUrl] = useState('');
+    const [imageUrls, setImageUrls] = useState([null, null, null]);
     const fields = [
         {
             name: 'name',
@@ -80,7 +80,7 @@ const NewListing = () => {
                             medicalHistory: '',
                             behavior: '',
                             other: '',
-                            image: null,
+                            images: [null, null, null]
                         }}
                         onSubmit={async (values, { setFieldError }) => {
                             if (user.is_shelter) {
@@ -92,7 +92,9 @@ const NewListing = () => {
                                 formData.append('medical_history', values.medicalHistory);
                                 formData.append('behavior', values.behavior);
                                 formData.append('other_notes', values.other);
-                                formData.append('image', values.image);
+                                formData.append('image', values.images[0]);
+                                formData.append('image2', values.images[1]);
+                                formData.append('image3', values.images[2]);
 
                                 await PetListingService.create(
                                     user.shelter_id,
@@ -110,45 +112,58 @@ const NewListing = () => {
                             }}
                     >
                         {({errors, setFieldValue, values}) => {
-                            const handleImageChange = (event) => {
+                            const handleImageChange = (event, i) => {
                                 const file = event.currentTarget.files[0];
                                 if (file) {
                                     const reader = new FileReader();
                                     reader.onloadend = () => {
-                                        setImageUrl(reader.result);  // Set the image URL for preview
-                                        setFieldValue("image", file);  // Update Formik state
+                                        let newImageUrls = imageUrls;
+                                        newImageUrls[i] = reader.result;
+                                        setImageUrls(newImageUrls);
+
+                                        let newImages = values.images;
+                                        newImages[i] = file;
+                                        setFieldValue("images", newImages);
                                     };
                                     reader.readAsDataURL(file);
                                 }
                             }
+
                             return (
                                 <Form>
                                     <div class="grid grid-cols-2 gap-6 my-6">
                                         <div className="flex flex-col col-span-2">
-                                            <div className="col-span-2 flex justify-start relative w-64 h-50">
+                                            <div className="col-span-2 flex justify-start relative gap-2">
                                                 {
-                                                    imageUrl ? (
-                                                        <img src={imageUrl} alt=""
-                                                            class="w-64 h-50 object-cover pet-photo rounded-xl aspect-square" />
-                                                    ) : (
-                                                        <div class="w-64 h-50 object-cover pet-photo rounded-xl aspect-square" />
-                                                    )
+                                                    imageUrls.map((imageUrl, i) => (
+                                                        <div className='relative' key={i}>
+                                                            {
+                                                                imageUrl ? (
+                                                                    <img src={imageUrls[i]} alt="" class="w-64 h-50 object-cover pet-photo rounded-xl aspect-square" />
+                                                                ) : (
+                                                                    <div class="w-64 h-50 object-cover pet-photo rounded-xl aspect-square" />
+                                                                )
+                                                            }
+                                                            <label htmlFor={`image-${i}`}
+                                                                class="absolute right-3 bottom-3 cursor-pointer bg-white border-2 border-black px-3 rounded-xl">
+                                                                Upload picture
+                                                            </label>
+                                                            <input
+                                                                className="hidden w-full h-full cursor-pointer"
+                                                                id={`image-${i}`}
+                                                                name={`image-${i}`}
+                                                                type="file"
+                                                                onChange={(e) => handleImageChange(e, i)}
+                                                                accept='image/*'
+                                                            />
+                                                        </div>
+                                                    ))
                                                 }
-                                                <label htmlFor="image"
-                                                    class="absolute right-3 bottom-3 cursor-pointer bg-white border-2 border-black px-3 rounded-xl">
-                                                    Upload picture
-                                                </label>
-                                                <input
-                                                    className="hidden w-full h-full cursor-pointer"
-                                                    id="image"
-                                                    name="image"
-                                                    type="file"
-                                                    onChange={handleImageChange}
-                                                    accept='image/*'
-                                                />
                                             </div>
-                                            {errors['image'] && <Text color='text-red-500'>{errors['image']}</Text>}
                                         </div>
+                                        {errors['image'] && <Text color='text-red-500'>{errors['image']}</Text>}
+                                        {errors['image2'] && <Text color='text-red-500'>{errors['image2']}</Text>}
+                                        {errors['image3'] && <Text color='text-red-500'>{errors['image3']}</Text>}
                                         {
                                             fields.map(field => (
                                                 <div className={`col-span-${field.colSpan} flex flex-col`} key={field.name}>

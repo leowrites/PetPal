@@ -20,7 +20,7 @@ import { Chip } from "@material-tailwind/react";
 const EditListing = () => {
     const navigate = useNavigate();
     const { user } = useUser();
-    const [imageUrl, setImageUrl] = useState('');
+    const [imageUrls, setImageUrls] = useState([null, null, null]);
     const [questions, setQuestions] = useState([]);
     const [loading, setLoading] = useState(true);
     const [initialValues, setInitialValues] = useState({
@@ -32,8 +32,7 @@ const EditListing = () => {
         medicalHistory: '',
         behavior: '',
         other: '',
-        image: null,
-        questions: {},
+        images: [null, null, null],
     });
     const { listingId } = useParams();
     const fields = [
@@ -95,34 +94,31 @@ const EditListing = () => {
                 if (listing.shelter.owner !== user.id) {
                    navigate(`/listings/${listingId}`); 
                 }
-                fetch(listing.image)
-                .then(async response => {
-                    const contentType = response.headers.get('content-type')
-                    const blob = await response.blob()
-                    const file = new File([blob], listing.image, { contentType })
-                    QuestionService.list()
-                        .then(res => {
-                            setQuestions(res.data.results)
-                            setLoading(false)
-                            setInitialValues({
-                                status: listing.status,
-                                name: listing.name,
-                                age: listing.age,
-                                breed: listing.breed,
-                                about: listing.bio,
-                                medicalHistory: listing.medical_history,
-                                behavior: listing.behavior,
-                                other: listing.other_notes,
-                                image: file,
-                                questions: res.data.results.map(q => ({[q.id]: false})).reduce((a, b) => ({...a, ...b}), {}),
-                            });
-                        })
-                        .catch(err => console.log(err))
-
-                })
-                setImageUrl(listing.image);
+                setInitialValues({
+                    status: listing.status,
+                    name: listing.name,
+                    age: listing.age,
+                    breed: listing.breed,
+                    about: listing.bio,
+                    medicalHistory: listing.medical_history,
+                    behavior: listing.behavior,
+                    other: listing.other_notes,
+                    images: listing.images.map(async(image) => {
+                        const res = await fetch(image)
+                        const blob = await res.blob()
+                        const contentType = response.headers.get('content-type')
+                        return new File([blob], image, { contentType })
+                    })
+                });
+                setImageUrls(listing.images);
             })
         }
+        QuestionService.list()
+            .then(res => {
+                setQuestions(res.data.results)
+                setLoading(false)
+            })
+            .catch(err => console.log(err))
     }, [listingId, navigate, user.id])
 
     return (
@@ -144,9 +140,9 @@ const EditListing = () => {
                                 formData.append('medical_history', values.medicalHistory);
                                 formData.append('behavior', values.behavior);
                                 formData.append('other_notes', values.other);
-                                if (values.image) {
-                                    formData.append('image', values.image);
-                                }
+                                formData.append('image', await values.images[0]);
+                                formData.append('image2', await values.images[1]);
+                                formData.append('image3', await values.images[2]);
 
                                 await PetListingService.update(
                                     listingId,
@@ -164,45 +160,58 @@ const EditListing = () => {
                             }}
                     >
                         {({errors, setFieldValue, values}) => {
-                            const handleImageChange = (event) => {
+                            const handleImageChange = (event, i) => {
                                 const file = event.currentTarget.files[0];
                                 if (file) {
                                     const reader = new FileReader();
                                     reader.onloadend = () => {
-                                        setImageUrl(reader.result);  // Set the image URL for preview
-                                        setFieldValue("image", file);  // Update Formik state
+                                        let newImageUrls = imageUrls;
+                                        newImageUrls[i] = reader.result;
+                                        setImageUrls(newImageUrls);
+
+                                        let newImages = values.images;
+                                        newImages[i] = file;
+                                        setFieldValue("images", newImages);
                                     };
                                     reader.readAsDataURL(file);
                                 }
                             }
+
                             return (
                                 <Form>
                                     <div class="grid grid-cols-2 gap-6 my-6">
                                         <div className="flex flex-col col-span-2">
-                                            <div className="col-span-2 flex justify-start relative w-64 h-50">
+                                            <div className="col-span-2 flex justify-start relative gap-2">
                                                 {
-                                                    imageUrl ? (
-                                                        <img src={imageUrl} alt=""
-                                                            class="w-64 h-50 object-cover pet-photo rounded-xl aspect-square" />
-                                                    ) : (
-                                                        <div class="w-64 h-50 object-cover pet-photo rounded-xl aspect-square" />
-                                                    )
+                                                    imageUrls.map((imageUrl, i) => (
+                                                        <div className='relative' key={i}>
+                                                            {
+                                                                imageUrl ? (
+                                                                    <img src={imageUrls[i]} alt="" class="w-64 h-50 object-cover pet-photo rounded-xl aspect-square" />
+                                                                ) : (
+                                                                    <div class="w-64 h-50 object-cover pet-photo rounded-xl aspect-square" />
+                                                                )
+                                                            }
+                                                            <label htmlFor={`image-${i}`}
+                                                                class="absolute right-3 bottom-3 cursor-pointer bg-white border-2 border-black px-3 rounded-xl">
+                                                                Upload picture
+                                                            </label>
+                                                            <input
+                                                                className="hidden w-full h-full cursor-pointer"
+                                                                id={`image-${i}`}
+                                                                name={`image-${i}`}
+                                                                type="file"
+                                                                onChange={(e) => handleImageChange(e, i)}
+                                                                accept='image/*'
+                                                            />
+                                                        </div>
+                                                    ))
                                                 }
-                                                <label htmlFor="image"
-                                                    class="absolute right-3 bottom-3 cursor-pointer bg-white border-2 border-black px-3 rounded-xl">
-                                                    Upload picture
-                                                </label>
-                                                <input
-                                                    className="hidden w-full h-full cursor-pointer"
-                                                    id="image"
-                                                    name="image"
-                                                    type="file"
-                                                    onChange={handleImageChange}
-                                                    accept='image/*'
-                                                />
                                             </div>
-                                            {errors['image'] && <Text color='text-red-500'>{errors['image']}</Text>}
                                         </div>
+                                        {errors['image'] && <Text color='text-red-500'>{errors['image']}</Text>}
+                                        {errors['image2'] && <Text color='text-red-500'>{errors['image2']}</Text>}
+                                        {errors['image3'] && <Text color='text-red-500'>{errors['image3']}</Text>}
                                         <div className="col-span-2 flex flex-col">
                                             <label htmlFor="status">Status</label>
                                             <SelectInput
@@ -242,7 +251,18 @@ const EditListing = () => {
                                             ))
                                         }
 
-                                        <div className="flex flex-col col-span-2">
+
+                                        <div className='col-span-2 flex justify-start'>
+                                            <Button className='px-8' type="submit">Save Changes</Button>
+                                        </div>
+                                    </div>
+                                </Form>
+                            )
+                        }}
+                    </Formik>
+
+
+                     {/* <div className="flex flex-col col-span-2">
                                             <div className="flex flex-col md:flex-row justify-between">
                                                 <Heading>Questions</Heading>
                                                 <Link to='/questions'>
@@ -274,16 +294,7 @@ const EditListing = () => {
                                                     </div>
                                                 )
                                             }
-                                        </div>
-
-                                        <div className='col-span-2 flex justify-start'>
-                                            <Button className='px-8' type="submit">Save Changes</Button>
-                                        </div>
-                                    </div>
-                                </Form>
-                            )
-                        }}
-                    </Formik>
+                                        </div> */}
                 </Container>
             </div>
         </Page>
