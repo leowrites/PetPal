@@ -18,6 +18,13 @@ export const UserContextProvider = ({ children }) => {
                     setUser(response.data)
                     setLoading(false)
                 })
+                .catch((error) => {
+                    console.log(error)
+                    localStorage.removeItem('token')
+                    setAuthToken(null)
+                    setUser(null)
+                    setLoading(false)
+                })
         }
         else {
             localStorage.removeItem('token')

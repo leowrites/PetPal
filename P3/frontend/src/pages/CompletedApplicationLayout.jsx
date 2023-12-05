@@ -1,7 +1,7 @@
 import { useParams, useLocation, Link, Outlet } from 'react-router-dom'
 import Page from '../components/layout/Page'
 
-export default function () {
+export default function ({ children }) {
     const { applicationId } = useParams()
     const selectedTab = useLocation().pathname.split('/')[3];
 
@@ -20,7 +20,7 @@ export default function () {
                     Shelter Message
                 </Link>
             </div>
-            <Outlet />
+            { children }        
         </Page>
     )
 }
