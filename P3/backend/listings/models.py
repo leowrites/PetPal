@@ -10,6 +10,8 @@ class PetListing(models.Model):
     breed = models.CharField(max_length=200)
     age = models.PositiveSmallIntegerField()
     image = CloudinaryField('image')
+    image2 = CloudinaryField('image')
+    image3 = CloudinaryField('image')
     bio = models.TextField()
     medical_history = models.TextField()
     behavior = models.TextField()
