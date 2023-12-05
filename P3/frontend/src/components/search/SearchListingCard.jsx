@@ -18,13 +18,13 @@ function timeSince(dateString) {
     const secondsPast = (now.getTime() - date.getTime()) / 1000;
   
     if(secondsPast < 60) {
-      return parseInt(secondsPast) + ' seconds ago';
+      return parseInt(secondsPast) + ` second${secondsPast === 1 ? 's' : ''} ago`;
     }
     if(secondsPast < 3600) {
-      return parseInt(secondsPast/60) + ' minutes ago';
+      return parseInt(secondsPast/60) + ` minute${secondsPast >= 120 ? 's' : ''} ago`;
     }
     if(secondsPast <= 86400) {
-      return parseInt(secondsPast/3600) + ' hours ago';
+      return parseInt(secondsPast/3600) + ` hour${secondsPast >= 7200 ? 's' : ''} ago`;
     }
     if(secondsPast > 86400) {
       let day = date.getDate();

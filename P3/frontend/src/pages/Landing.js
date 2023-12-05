@@ -56,7 +56,7 @@ export const Landing = () => {
                 )
               })}
               {(loading || !landingListings?.length) && SkeletonArray}
-              {!loading ? <div className="pointer-events-none to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-b from-transparent via-white/50 to-white hover:via-white/10 hover:to-white/20 transition " /> : null}
+              {!loading ? <div className="pointer-events-none to-bg-black-10 absolute inset-0 h-full w-full bg-gradient-to-b from-transparent via-white/10 to-white hover:via-white/10 hover:to-white/20 transition " /> : null}
             </div>
           </div>
         </div>
