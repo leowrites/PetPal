@@ -1,6 +1,6 @@
 import React from "react";
 import LogoToLandingButton from "./LogoToLandingButton";
-import { useState, useRef, useContext, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { useUser } from "../../contexts/UserContext";
 import NotificationPopover from "../notifications/NotificationPopover";
@@ -43,13 +43,13 @@ export default function NavBar({}) {
             {/* <!-- normal navbar start --> */}
             <div className=" flex flex-row text-[2rem] items-center pl-[1.5rem]">
                 <LogoToLandingButton/>
-                <Link to="/" className={`hover:border-b-[.5rem] hover:border-[#290005] hover:pb-[.6rem] self-end text-[1rem] font-medium px-[2rem] ml-[1rem] hover:cursor-pointer` + ((selectedTab === "") ? " border-[#290005] border-b-[.5rem] pb-[.6rem]" : " pb-[1.1rem]")}>
+                <Link to="/" className={`hover:border-b-[.5rem] hover:border-[#290005] hover:pb-[.6rem] self-end text-[1rem] font-medium px-[1rem] xl:px-[2rem] ml-[1rem] hover:cursor-pointer` + ((selectedTab === "") ? " border-[#290005] border-b-[.5rem] pb-[.6rem]" : " pb-[1.1rem]")}>
                     Home
                 </Link>
-                <Link to="/search" className={"hover:border-b-[.5rem] hover:border-[#290005] hover:pb-[.6rem] self-end text-[1rem] font-medium px-[2rem] hover:cursor-pointer" + ((selectedTab === "search") ? " border-[#290005] border-b-[.5rem] self-end pb-[.6rem]" : " pb-[1.1rem]")}>
+                <Link to="/search" className={"hover:border-b-[.5rem] hover:border-[#290005] hover:pb-[.6rem] self-end text-[1rem] font-medium px-[1rem] xl:px-[2rem] hover:cursor-pointer" + ((selectedTab === "search") ? " border-[#290005] border-b-[.5rem] self-end pb-[.6rem]" : " pb-[1.1rem]")}>
                     Adopt
                 </Link>
-                <Link to="/shelters" className={"hover:border-b-[.5rem] hover:border-[#290005] hover:pb-[.6rem] self-end text-[1rem] font-medium px-[2rem] hover:cursor-pointer" + ((selectedTab === "shelters") ? " border-[#290005] border-b-[.5rem] self-end pb-[.6rem]" : " pb-[1.1rem]")}>
+                <Link to="/shelters" className={"hover:border-b-[.5rem] hover:border-[#290005] hover:pb-[.6rem] self-end text-[1rem] font-medium px-[1rem] xl:px-[2rem] hover:cursor-pointer" + ((selectedTab === "shelters") ? " border-[#290005] border-b-[.5rem] self-end pb-[.6rem]" : " pb-[1.1rem]")}>
                     Shelters
                 </Link>
             </div>
@@ -59,11 +59,11 @@ export default function NavBar({}) {
                 <div className="self-center flex flex-row gap-[1rem] pr-[1.5rem] font-semibold items-center">
                     {((isShelter) ? (
                         <Link to="/listings">
-                            <div className="mx-[1rem] font-medium hover:cursor-pointer border-b-[3px] border-[#FF9447] hover:border-[#290005]">My Listings</div>
+                            <div className={"font-medium hover:cursor-pointer border-b-[3px] hover:border-[#290005]" + ((selectedTab === "listings") ? " border-[#290005]" : " border-[#FF9447]")}>My Listings</div>
                         </Link>
                     ) : (null))}
                     <Link to="/applications">
-                        <div className="mx-[1rem] font-medium hover:cursor-pointer border-b-[3px] border-[#FF9447] hover:border-[#290005]">My Applications</div>
+                        <div className={"font-medium hover:cursor-pointer border-b-[3px] hover:border-[#290005]" + ((selectedTab === "applications") ? " border-[#290005]" : " border-[#FF9447]")}>My Applications</div>
                     </Link>
                         <NotificationPopover/>
                     <Link to="/profile"
