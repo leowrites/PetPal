@@ -186,8 +186,8 @@ export function ApplicationTable({ applications, pageNumber, hasNextPage, addPag
                 </div>
             </CardHeader>
             <CardBody className="overflow-x-auto px-0">
-                <div className="flex w-72 px-4 gap-2">
-                    <div className="w-72">
+                <div className="flex flex-wrap w-full w-72 px-4 gap-2">
+                    <div className="w-full md:w-72">
                         <Select label="Select Status" onChange={(val) => { updateFilters({ ...filters, 'status': val }) }}>
                             <Option value="">All</Option>
                             <Option value="pending">Pending</Option>
@@ -196,8 +196,8 @@ export function ApplicationTable({ applications, pageNumber, hasNextPage, addPag
                             <Option value="withdrawn">Withdrawn</Option>
                         </Select>
                     </div>
-                    <div className='w-72'>
-                        <Select className="w-72" label="Sort by" onChange={(val) => { updateFilters({ ...filters, 'ordering': val }) }}>
+                    <div className='w-full md:w-72'>
+                        <Select label="Sort by" onChange={(val) => { updateFilters({ ...filters, 'ordering': val }) }}>
                             <Option value="-application_time">Created Time</Option>
                             <Option value="-last_updated">Last Updated Time</Option>
                         </Select>
@@ -244,7 +244,7 @@ export function ApplicationTable({ applications, pageNumber, hasNextPage, addPag
             <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
                 <div></div>
                 <div className="flex gap-2">
-                    <Button variant="outlined" size="sm" onClick={subPageNumber} disabled={isLoading || pageNumber == 1}>
+                    <Button className='hover:pointer-events-none' variant="outlined" size="sm" onClick={subPageNumber} disabled={isLoading || pageNumber === 1}>
                         Previous
                     </Button>
                     <Button variant="outlined" size="sm" onClick={addPageNumber} disabled={isLoading || !hasNextPage} >
