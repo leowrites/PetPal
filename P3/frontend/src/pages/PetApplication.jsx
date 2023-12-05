@@ -6,8 +6,10 @@ import PetDetailService from "../services/PetDetailService"
 import { setAuthToken } from "../services/ApiService"
 import { Formik, Form, Field } from 'formik'
 import PetApplicationService from "../services/PetApplicationService"
+import { Select, Option } from "@material-tailwind/react";
 import Skeleton from 'react-loading-skeleton'
 import Page from "../components/layout/Page"
+import { useUser } from "../contexts/UserContext"
 
 const PetImage = ({ src }) => {
     return (
@@ -221,8 +223,10 @@ const ApplicationForm = ({ petName, assignedQuestions, listingId, completed, ans
 export default function PetApplication({ completed }) {
     const { listingId, applicationId } = useParams()
     const [petDetail, setPetDetail] = useState({})
-    const [applicationResponse, setApplicationResponse] = useState([{}])
+    const [application, setApplication] = useState({})
     const [loading, setLoading] = useState(true)
+    const [statusLoading, setStatusLoading] = useState(false)
+    const { user } = useUser()
     const navigate = useNavigate()
     // should check if the user already aoplied for this pet
     // if they have redirect them to their application page
@@ -235,7 +239,7 @@ export default function PetApplication({ completed }) {
                 .then(res => {
                     console.log(res.data)
                     setPetDetail(res.data.listing)
-                    setApplicationResponse(res.data.application_responses)
+                    setApplication(res.data)
                     setLoading(false)
                 })
                 .catch(err => {
@@ -264,8 +268,70 @@ export default function PetApplication({ completed }) {
         age: petDetail.age,
         description: petDetail.bio
     }
+
+    const handleStatusChange = (val) => {
+        // check if old status is the same as the new status
+        if (val === application.status) {
+            return
+        }
+        setStatusLoading(true)
+        PetApplicationService.update(applicationId, { status: val })
+            .then(res => {
+                console.log(res)
+                setStatusLoading(false)
+                setApplication(res.data)
+            })
+            .catch(err => {
+                setStatusLoading(false)
+                console.error(err)
+            })
+    }
+
+    const shelterAction = () => {
+        return (
+            <div>
+                <p className="mb-4 text-lg">
+                    Update the application status:
+                </p>
+                <div className='w-72'>
+                    <Select size='md' label="update status" onChange={handleStatusChange} value={application.status} disabled={statusLoading}>
+                        <Option value="pending">Pending</Option>
+                        <Option value="denied">Denied</Option>
+                        <Option value="approved">Approved</Option>
+                    </Select>
+                </div>
+            </div>
+        )
+    }
+    const userAction = () => {
+        return (
+            <div>
+                <div className='pb-3'>
+                    Your application status is: {application.status}
+                </div>
+                {
+                    application.status === 'pending' &&
+                    <Button disabled={statusLoading} onClick={() => { handleStatusChange('withdrawn') }}>
+                        Withdraw
+                    </Button>
+                }
+                {
+                    application.status === 'approved' &&
+                    <Button disabled={statusLoading} onClick={() => { handleStatusChange('accepted') }}>
+                        Accept
+                    </Button>
+                }
+            </div>
+        )
+    }
+
     return (
         <Page>
+            <div className='my-5'>
+                {
+                    user.is_shelter ? shelterAction() : userAction()
+                }
+            </div>
             <div className="order-1 grid md:grid-cols-3 gap-4 h-fit">
                 <PetImage src={petDetail.images} />
                 <div className="order-3 md:order-2 md:col-span-2 md:row-span-3 pet-overview-box p-5 rounded-xl">
@@ -276,7 +342,7 @@ export default function PetApplication({ completed }) {
                         petDetail.assigned_questions
                             ? <ApplicationForm petName={petListingOverview.name}
                                 assignedQuestions={petDetail.assigned_questions}
-                                listingId={listingId} completed={completed} answers={applicationResponse} />
+                                listingId={listingId} completed={completed} answers={application.application_responses} />
                             : null
                     }
                 </div>
