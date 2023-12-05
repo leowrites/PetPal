@@ -12,6 +12,7 @@ import { options } from "../../constants/QuestionTypes";
 import Skeleton from "react-loading-skeleton";
 import { useNavigate } from "react-router-dom";
 import Page from "../../components/layout/Page";
+import { useUser } from "../../contexts/UserContext";
 
 
 const NewQuestionModal = ({ open, handleOpen, handleAddQuestion }) => {
@@ -66,6 +67,8 @@ export default function () {
     const handleOpen = (open) => setOpen(open);
     const [questions, setQuestions] = useState([]);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate()
+    const { user } = useUser()
 
     const handleAddQuestion = (questionObj) => {
         setQuestions([...questions, questionObj])
@@ -79,12 +82,19 @@ export default function () {
     }
 
     useEffect(() => {
+        if (!user) {
+            navigate('/login')
+            return
+        }
         QuestionService.list()
             .then(res => {
                 setQuestions(res.data.results)
                 setLoading(false)
             })
-            .catch(err => console.log(err))
+            .catch(err => {
+                navigate('/404')
+                console.log(err)
+            })
     }, [])
 
     return (
