@@ -1,11 +1,24 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Page from '../components/layout/Page';
 import SearchSideBar from '../components/search/SearchSideBar';
+import SearchItems from '../components/search/SearchItems';
 
 export const Search = () => {
   const [listings, setListings] = useState([]);
   const [pageRequested, setPageRequested] = useState(false);
   const [loading, setLoading] = useState(false);
+  const observer = useRef();
+
+  const lastListingElementRef = useCallback(node => {
+    if (loading) return;
+    if (observer.current) observer.current.disconnect();
+    observer.current = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting) {
+        setPageRequested(true);
+      }
+    })
+    if (node) observer.current.observe(node);
+  })
 
   useEffect(() => {
     console.log(listings)
@@ -13,8 +26,8 @@ export const Search = () => {
 
   return (
     <Page>
-      <div className='flex justify-center sm:flex-col'>
-        <aside className='md:sticky md:top-0'>
+      <div className='flex'>
+        <div className='h-screen sticky top-[5rem] min-w-[25rem]'>
           <SearchSideBar 
             setListings={setListings} 
             pageRequested={pageRequested} 
@@ -22,10 +35,10 @@ export const Search = () => {
             loading={loading}
             setLoading={setLoading}
           />
-        </aside>
+        </div>
 
-        <div>
-
+        <div className=''>
+          <SearchItems listings={listings} lastListingElementRef={lastListingElementRef} />
         </div>
       </div>
     </Page>
