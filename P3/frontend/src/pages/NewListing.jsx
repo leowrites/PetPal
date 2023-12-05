@@ -162,9 +162,6 @@ const NewListing = () => {
                                                     if (!value && field.required) {
                                                         return 'This field is required'
                                                     }
-                                                    if (field.inputType === 'number' && (value < 0 || value > 20)) {
-                                                        return 'Invalid age'
-                                                    }
                                                 }}
                                             />
                                             {errors[field.name] && <Text color='text-red-500'>{errors[field.name]}</Text>}
