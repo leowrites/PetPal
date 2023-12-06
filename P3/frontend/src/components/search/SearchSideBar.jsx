@@ -18,7 +18,7 @@ export default function SearchSideBar({ setListings, pageRequested, setPageReque
     const [minAge, setMinAge] = useState(0);
     const [maxAge, setMaxAge] = useState(20);
     const [nextPageLink, setNextPageLink] = useState(null);
-    const [sortValue, setSortValue] = useState("name");
+    const [sortValue, setSortValue] = useState("-listed_date");
 
     useEffect(() => {
         const timer = setTimeout(() => {

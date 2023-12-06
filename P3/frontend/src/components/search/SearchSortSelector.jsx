@@ -12,7 +12,9 @@ import {
     FaSortAlphaDown,
     FaSortAlphaUp,
     FaSortNumericDown,
-    FaSortNumericUp 
+    FaSortNumericUp,
+    FaSortAmountDown,
+    FaSortAmountUp
 } from "react-icons/fa";
 
 function getIconBySortValue(sortValue) {
@@ -25,8 +27,12 @@ function getIconBySortValue(sortValue) {
             return <FaSortNumericDown/>;
         case "-age":
             return <FaSortNumericUp/>;
+        case "listed_date":
+            return <FaSortAmountUp/>;
+        case "-listed_date":
+            return <FaSortAmountDown/>;
         default:
-            return <FaSortAlphaDown/>;
+            return <FaSortNumericDown/>;
     }
 }
 
@@ -41,6 +47,16 @@ function SearchSortSelector({ sortValue, setSortValue }) {
             </PopoverHandler>
             <PopoverContent className="p-0">
                 <List className="flex flex-col gap-1 p-[.25rem]">
+                    <ListItem 
+                        selected={["listed_date", "-listed_date"].includes(sortValue)}
+                        ripple="light"
+                        className="flex flex-row justify-between items-center hover:opacity-80"
+                        onClick={() => setSortValue((prev) => prev === "-listed_date" ? "listed_date" : "-listed_date" )}>
+                        Date Listed
+                        <ListItemSuffix>
+                            {sortValue === "listed_date" ? <FaSortAmountUp/> : <FaSortAmountDown/>}
+                        </ListItemSuffix>
+                    </ListItem>
                     <ListItem 
                         selected={["name", "-name"].includes(sortValue)}
                         ripple="light"
@@ -61,7 +77,6 @@ function SearchSortSelector({ sortValue, setSortValue }) {
                             {sortValue === "-age" ? <FaSortNumericUp/> : <FaSortNumericDown/>}
                         </ListItemSuffix>
                     </ListItem>
-
                 </List>
             </PopoverContent>
         </Popover>
