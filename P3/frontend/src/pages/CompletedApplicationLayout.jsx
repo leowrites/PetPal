@@ -7,7 +7,7 @@ export default function ({ children }) {
 
     return (
         <Page>
-            <div className="flex flex-row gap-6 pb-5 items-baseline">
+            <div className="flex flex-row gap-6 items-baseline">
                 <Link
                     className={`font-semibold hover:border-b-[.5rem] hover:border-[#290005] hover:pb-[.6rem] ${selectedTab !== "comments" ? "border-b-[.5rem] py-[0.6rem] tab-selected" : ""}`}
                     to={`/applications/${applicationId}`}

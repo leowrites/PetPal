@@ -327,7 +327,7 @@ export default function PetApplication({ completed }) {
 
     return (
         <Page>
-            <div className='my-5'>
+            <div>
                 {
                     completed ? user.is_shelter ? shelterAction() : userAction() : null
                 }
