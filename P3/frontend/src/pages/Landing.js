@@ -37,7 +37,7 @@ export const Landing = () => {
         <div class="flex flex-col items-center justify-center gap-[.25rem] pb-[3rem]">
 
           {/* Spacing container */}
-          <div className='flex flex-wrap justify-start max-w-[310px] gap-[1rem] md:max-w-[740px] lg:max-w-[740px] xl:max-w-[1100px]'>
+          <div className='flex flex-wrap justify-start max-w-[310px] gap-[1rem] md:max-w-[700px] lg:max-w-[700px] xl:max-w-[1055px]'>
             {/* Example Pets */}
             <div className='flex flex-row items-center gap-[.5rem]'>
               <div class="text-[1.5rem] pb-[4px] font-semibold">Latest Pets Listed</div>
@@ -47,10 +47,10 @@ export const Landing = () => {
                 }/>
               </Link>
             </div>
-            <div className='relative flex flex-row flex-wrap justify-center gap-[3rem] max-h-[34rem] overflow-hidden border-b-[1px]'>
+            <div className='relative flex flex-row flex-nowrap pb-[1rem] justify-start gap-[3rem] overflow-hidden border-b-[1px]'>
               {landingListings?.map((listing) => {
                 return (
-                  <div className='max-w-[20rem]'>
+                  <div className='min-w-[20rem] max-w-[20rem]'>
                     <SearchListingCard listing={listing}/>
                   </div>
                 )
