@@ -198,7 +198,7 @@ const ApplicationRows = ({ applications, isShelter }) => {
 export function ApplicationTable({ applications, pageNumber, hasNextPage, addPageNumber, subPageNumber, isLoading, updateFilters, filters, isShelter }) {
     const TABLE_HEAD = ['', "Id", "Pet Name", "Status", "Last Updated", 'Created'];
     if (isShelter) {
-        TABLE_HEAD.splice(2, 0, 'Applicant')
+        TABLE_HEAD.splice(3, 0, 'Applicant')
     }
     return (
         <Card className="h-full w-full">
