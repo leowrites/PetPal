@@ -329,7 +329,7 @@ export default function PetApplication({ completed }) {
         <Page>
             <div className='my-5'>
                 {
-                    user.is_shelter ? shelterAction() : userAction()
+                    completed ? user.is_shelter ? shelterAction() : userAction() : null
                 }
             </div>
             <div className="order-1 grid md:grid-cols-3 gap-4 h-fit">
