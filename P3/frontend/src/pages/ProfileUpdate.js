@@ -11,6 +11,7 @@ import UserProfileForm from '../components/profile/UserProfileForm';
 import NotificationPreferencesForm from '../components/profile/NotificationPreferencesForm';
 import ShelterProfileForm from '../components/profile/ShelterProfileForm';
 import { Avatar } from "@material-tailwind/react";
+import Page from '../components/layout/Page';
 
 const ProfileUpdate = () => { 
     const { user, setUser, setToken } = useUser();
@@ -140,52 +141,54 @@ const ProfileUpdate = () => {
     }
     
     return (
-        <div class="container mx-auto px-5 sm:px-5 md:px-5 lg:px-20">
-            <div class="flex flex-row justify-between items-center">
-                <Heading><h1 class="text-[2rem] font-semibold mb-4">Account Settings</h1></Heading>
-                <Link to="/logout" className="text-white bg-[#ff9447] rounded-[20px] px-[1rem] py-[.5rem] font-semibold">Logout</Link>
-            </div>
-            <div class="grid sm:grid-cols-1 md:grid-cols-2 gap-8 mb-8">
-                <div class="bg-white p-6 rounded pt-4 lg:w-3/4">
-                    <Heading>Edit Profile</Heading>
-                    {user.avatar == null ? (
-                        null 
-                    ) : (
-                        <Avatar src={user.avatar == null ? null : user.avatar} alt={user.username} size="xl" />
-                    )}
-                    <UserProfileForm
-                        user={user}
-                        onSubmit={handleUserProfileSubmit}
-                        notification={notification}
-                    />
-                    <Text className=''><Link to='/profile/password/change' className='text-[#290005] underline'>Change Password</Link></Text>
-                    <p className='mt-2 text-md text-[#290005] underline cursor-pointer' onClick={handleDeleteProfile}>Delete Profile</p>
-                    <div className='mt-12'>
-                        <Heading>Notification Preferences</Heading>
-                        <NotificationPreferencesForm
+        <Page>
+            <div class="container mx-auto px-5 sm:px-5 md:px-5 lg:px-20">
+                <div class="flex flex-row justify-between items-center">
+                    <Heading><h1 class="text-[2rem] font-semibold mb-4">Account Settings</h1></Heading>
+                    <Link to="/logout" className="text-white bg-[#ff9447] rounded-[20px] px-[1rem] py-[.5rem] font-semibold">Logout</Link>
+                </div>
+                <div class="grid sm:grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                    <div class="bg-white p-6 rounded pt-4 lg:w-3/4">
+                        <Heading>Edit Profile</Heading>
+                        {user.avatar == null ? (
+                            null 
+                        ) : (
+                            <Avatar src={user.avatar == null ? null : user.avatar} alt={user.username} size="xl" />
+                        )}
+                        <UserProfileForm
                             user={user}
-                            initialValues={notificationPreferences}
-                            onSubmit={handleNotificationPreferenceSubmit}
-                            notification={notificationUpdateNotification}
+                            onSubmit={handleUserProfileSubmit}
+                            notification={notification}
                         />
+                        <Text className=''><Link to='/profile/password/change' className='text-[#290005] underline'>Change Password</Link></Text>
+                        <p className='mt-2 text-md text-[#290005] underline cursor-pointer' onClick={handleDeleteProfile}>Delete Profile</p>
+                        <div className='mt-12'>
+                            <Heading>Notification Preferences</Heading>
+                            <NotificationPreferencesForm
+                                user={user}
+                                initialValues={notificationPreferences}
+                                onSubmit={handleNotificationPreferenceSubmit}
+                                notification={notificationUpdateNotification}
+                            />
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded pt-4 lg:w-3/4">
+                        {user.is_shelter ? (
+                            <>
+                                <Heading>Edit Shelter Profile</Heading>
+                                <ShelterProfileForm
+                                    shelter={shelter}
+                                    onSubmit={handleShelterProfileSubmit}
+                                    notification={shelterNotification}
+                                />
+                            </>
+                        ) : (
+                            null
+                        )}
                     </div>
                 </div>
-                <div class="bg-white p-6 rounded pt-4 lg:w-3/4">
-                    {user.is_shelter ? (
-                        <>
-                            <Heading>Edit Shelter Profile</Heading>
-                            <ShelterProfileForm
-                                shelter={shelter}
-                                onSubmit={handleShelterProfileSubmit}
-                                notification={shelterNotification}
-                            />
-                        </>
-                    ) : (
-                        null
-                    )}
-                </div>
             </div>
-        </div>
+        </Page>
     )
  };
 

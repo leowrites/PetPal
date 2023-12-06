@@ -3,6 +3,7 @@ import Heading from '../components/layout/Heading';
 import { useUser } from '../contexts/UserContext';
 import UserDetailService from '../services/UserDetailService';
 import PasswordChangeForm from '../components/profile/PasswordChangeForm';
+import Page from '../components/layout/Page';
 
 const ChangePassword = () => {
     const { user, setUser } = useUser();
@@ -35,14 +36,14 @@ const ChangePassword = () => {
     }
 
     return (
-        <div>
+        <Page>
             <Heading><h1 class="text-[2rem] font-semibold mb-4">Change Password</h1></Heading>
-        <PasswordChangeForm
-            user={user}
-            onSubmit={handlePasswordChange}
-            notification={notification}
-        />
-        </div>
+            <PasswordChangeForm
+                user={user}
+                onSubmit={handlePasswordChange}
+                notification={notification}
+            />
+        </Page>
     )
 }
 
