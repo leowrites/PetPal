@@ -7,6 +7,7 @@ import Text from '../../../components/Text';
 import Button from '../../../components/inputs/Button';
 import { Link } from 'react-router-dom';
 import ListingQuestion from './ListingQuestion';
+import Heading from '../../../components/layout/Heading';
 
 const ListingQuestionEditor = ({ listingId }) => {
     const [questions, setQuestions] = React.useState([])
@@ -57,7 +58,7 @@ const ListingQuestionEditor = ({ listingId }) => {
             >
                 <div className="flex flex-col md:flex-row justify-between items-center">
                     <DialogHeader >
-                        Add a Question
+                        <Heading>Add a Question</Heading>
                     </DialogHeader>
                     <Link to='/questions'>
                         <Button className='font-xs mr-4 font-bold'>Edit question repository</Button>
