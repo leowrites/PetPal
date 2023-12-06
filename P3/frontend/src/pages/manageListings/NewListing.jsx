@@ -104,7 +104,11 @@ const NewListing = () => {
                                 }).catch((err) => {
                                     if (err.response && err.response.data) {
                                         Object.keys(err.response.data).forEach((key) => {
-                                            setFieldError(key, err.response.data[key][0]);
+                                            let errMessage = err.response.data[key][0];
+                                            if (['image', 'image2', 'image3'].includes(key)) {
+                                                errMessage = 'Please upload at least one image';
+                                            }
+                                            setFieldError(key, errMessage);
                                         });
                                     }
                                 })
@@ -136,34 +140,34 @@ const NewListing = () => {
                                             <div className="col-span-2 flex justify-start relative gap-2">
                                                 {
                                                     imageUrls.map((imageUrl, i) => (
-                                                        <div className='relative' key={i}>
-                                                            {
-                                                                imageUrl ? (
-                                                                    <img src={imageUrls[i]} alt="" class="w-64 h-50 object-cover pet-photo rounded-xl aspect-square" />
-                                                                ) : (
-                                                                    <div class="w-64 h-50 object-cover pet-photo rounded-xl aspect-square" />
-                                                                )
-                                                            }
-                                                            <label htmlFor={`image-${i}`}
-                                                                class="absolute right-3 bottom-3 cursor-pointer bg-white border-2 border-black px-3 rounded-xl">
-                                                                Upload picture
-                                                            </label>
-                                                            <input
-                                                                className="hidden w-full h-full cursor-pointer"
-                                                                id={`image-${i}`}
-                                                                name={`image-${i}`}
-                                                                type="file"
-                                                                onChange={(e) => handleImageChange(e, i)}
-                                                                accept='image/*'
-                                                            />
+                                                        <div className='flex flex-col' key={i}>
+                                                            <div className='relative'>
+                                                                {
+                                                                    imageUrl ? (
+                                                                        <img src={imageUrls[i]} alt="" class="w-64 h-50 object-cover pet-photo rounded-xl aspect-square" />
+                                                                    ) : (
+                                                                        <img class="w-64 h-50 pet-photo rounded-xl aspect-square" alt='' />
+                                                                    )
+                                                                }
+                                                                <label htmlFor={`image-${i}`}
+                                                                    class="absolute right-3 bottom-3 cursor-pointer bg-white border-2 border-black px-3 rounded-xl">
+                                                                    Upload picture
+                                                                </label>
+                                                                <input
+                                                                    className="hidden w-full h-full cursor-pointer"
+                                                                    id={`image-${i}`}
+                                                                    name={`image-${i}`}
+                                                                    type="file"
+                                                                    onChange={(e) => handleImageChange(e, i)}
+                                                                    accept='image/*'
+                                                                />
+                                                            </div>
+                                                            {errors[`image${i > 0 ? i+1 : ''}`] && <Text color='text-red-500'>{errors[`image${(i > 0 ? i + 1 : '')}`]}</Text>}
                                                         </div>
                                                     ))
                                                 }
                                             </div>
                                         </div>
-                                        {errors['image'] && <Text color='text-red-500'>{errors['image']}</Text>}
-                                        {errors['image2'] && <Text color='text-red-500'>{errors['image2']}</Text>}
-                                        {errors['image3'] && <Text color='text-red-500'>{errors['image3']}</Text>}
                                         {
                                             fields.map(field => (
                                                 <div className={`col-span-${field.colSpan} flex flex-col`} key={field.name}>
