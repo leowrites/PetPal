@@ -19,6 +19,7 @@ import cloudinary.uploader
 import cloudinary.api
 import os
 from dotenv import load_dotenv
+from django.core.management.utils import get_random_secret_key
 
 load_dotenv()
 
@@ -30,12 +31,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', get_random_secret_key())
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.getenv("DEBUG", "False") == "True"
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ["*"]
+DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "False") == "True"
 
 # Application definition
 
@@ -97,16 +98,17 @@ WSGI_APPLICATION = 'petpal.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.2/ref/settings/#databases
-json_file_path = './db.json'
-def load_json_settings(file_path):
-    with open(file_path) as f:
-        try:
-            return json.load(f)
-        except ValueError as e:
-            raise ImproperlyConfigured("Error loading JSON file: {0}".format(e))
-db_settings = load_json_settings(json_file_path)
 
-DATABASES = db_settings
+DATABASES = {
+  "default": {
+    "ENGINE": "django.db.backends.postgresql_psycopg2",
+    "NAME": os.environ.get("DATABASE_NAME"),
+    "USER": os.environ.get("DATABASE_USER"),
+    "PASSWORD": os.environ.get("DATABASE_PASSWORD"),
+    "HOST": os.environ.get("DATABASE_HOST"),
+    "PORT": os.environ.get("DATABASE_PORT"),
+  }
+}
 
 
 # Password validation
@@ -146,6 +148,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
