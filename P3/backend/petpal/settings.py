@@ -106,7 +106,16 @@ def load_json_settings(file_path):
             raise ImproperlyConfigured("Error loading JSON file: {0}".format(e))
 db_settings = load_json_settings(json_file_path)
 
-DATABASES = db_settings
+DATABASES = {
+  "default": {
+    "ENGINE": "django.db.backends.postgresql_psycopg2",
+    "NAME": "lhvozhkp",
+    "USER": "lhvozhkp",
+    "PASSWORD": "V_RFhZE7VFnMqpC0ZLUV_T3XnPjjLiaS",
+    "HOST": "berry.db.elephantsql.com",
+    "PORT": 5432
+  }
+}
 
 
 # Password validation
