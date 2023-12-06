@@ -23,6 +23,7 @@ export default function SearchSideBar({ setListings, pageRequested, setPageReque
     useEffect(() => {
         const timer = setTimeout(() => {
             setLoading(true);
+            setPageRequested(1);
             PetDetailService.getPetListings(
                 sortValue,
                 petNameInput,
@@ -30,7 +31,8 @@ export default function SearchSideBar({ setListings, pageRequested, setPageReque
                 listingStatus,
                 breedInput,
                 minAge,
-                maxAge
+                maxAge,
+                1
             ).then((response) => {
                 setListings(response.data.results);
                 setNextPageLink(response.data.next);
@@ -46,7 +48,16 @@ export default function SearchSideBar({ setListings, pageRequested, setPageReque
     useEffect(() => {
         if (nextPageLink === null || pageRequested === 1) return;
         setLoading(true);
-        ApiService.get(nextPageLink).then((response) => {
+        PetDetailService.getPetListings(
+            sortValue,
+            petNameInput,
+            shelterNameInput,
+            listingStatus,
+            breedInput,
+            minAge,
+            maxAge,
+            pageRequested
+        ).then((response) => {
             setListings((prevListings) => [...prevListings, ...response.data.results]);
             setNextPageLink(response.data.next);
             setLoading(false);
