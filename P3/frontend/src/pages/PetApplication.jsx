@@ -271,15 +271,30 @@ export default function PetApplication({ completed }) {
                 })
         }
         else {
+            // navigate shelters away
+            if (user.is_shelter) {
+                navigate('/')
+                return
+            }
             PetDetailService.get(listingId)
                 .then(res => {
                     setPetDetail(res.data)
-                    setLoading(false)
                 })
                 .catch(err => {
                     console.error(err)
                     navigate('/404')
                 })
+            // check if user already applied for this pet
+            PetApplicationService.list()
+            .then(res => {
+                res.data.results.forEach(application => {
+                    if (application.listing.id === parseInt(listingId)) {
+                        navigate(`/applications/${application.id}`)
+                        return
+                    }
+                })
+                setLoading(false)
+            })
         }
     }, [listingId, applicationId, completed, navigate])
     const petListingOverview = {
@@ -363,9 +378,7 @@ export default function PetApplication({ completed }) {
                 <PetImage src={petDetail.images} />
                 <div className="order-3 md:order-2 md:col-span-2 md:row-span-3 pet-overview-box p-5 rounded-xl">
                     {
-                        loading && <SkeletonArray />
-                    }
-                    {
+                        loading ? <SkeletonArray /> :
                         petDetail.assigned_questions
                             ? <ApplicationForm petName={petListingOverview.name}
                                 assignedQuestions={petDetail.assigned_questions}
