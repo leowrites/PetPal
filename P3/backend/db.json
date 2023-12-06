@@ -1,0 +1,10 @@
+{
+  "default": {
+    "ENGINE": "django.db.backends.postgresql_psycopg2",
+    "NAME": "lhvozhkp",
+    "USER": "lhvozhkp",
+    "PASSWORD": "V_RFhZE7VFnMqpC0ZLUV_T3XnPjjLiaS",
+    "HOST": "berry.db.elephantsql.com",
+    "PORT": 5432
+  }
+}
