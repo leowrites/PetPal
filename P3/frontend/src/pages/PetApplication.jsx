@@ -300,12 +300,14 @@ export default function PetApplication({ completed }) {
     const petListingOverview = {
         id: petDetail.id,
         name: petDetail.name,
-        listingTime: petDetail.listed_date,
-        status: petDetail.status,
-        shelter: {
-            id: petDetail.shelter?.id,
-            name: petDetail.shelter?.shelter_name,
-        },
+        listingTime: (new Date(petDetail.listed_date)).toLocaleTimeString('en-US', {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+        }),
+        status: petDetail.status === 'available' ? 'Available' : 'Not Available',
+        shelter: petDetail.shelter?.shelter_name,
+        shelterId: petDetail.shelter?.id,
         breed: petDetail.breed,
         age: petDetail.age,
         description: petDetail.bio
