@@ -40,7 +40,7 @@ const ReadOnlyQuestion = ({ inputConfig, answer }) => {
     )
 }
 
-const WriteOnlyQuestion = ({ inputConfig, assignedQuestion }) => {
+const WriteOnlyQuestion = ({ inputConfig, assignedQuestion, error }) => {
     return (
         <div key={assignedQuestion.id} className={inputConfig.containerClass}>
             <label htmlFor={assignedQuestion.id} className={inputConfig.labelClass}>{assignedQuestion.question.question}</label>
@@ -52,15 +52,18 @@ const WriteOnlyQuestion = ({ inputConfig, assignedQuestion }) => {
                 placeholder={inputConfig.placeholder}
                 required={assignedQuestion.required}
             />
+            {
+                error && <p className="ml-4 text-red-500 text-sm col-span-3">{error}</p>
+            }
         </div>
     )
 }
 
-const PreconfiguredQuestions = (assignedQuestion, answer, completed) => {
+const PreconfiguredQuestions = (assignedQuestion, answer, completed, error) => {
     let inputConfig = {
-        containerClass: 'md:col-span-3 pt-3',
+        containerClass: 'md:col-span-3 pt-3 items-center',
         labelClass: 'block',
-        inputClass: "w-full px-3 py-2 rounded-lg border-2 border-gray-200"
+        inputClass: "block w-full px-3 py-2 rounded-lg border-2 border-gray-200"
     }
     const questionType = assignedQuestion ? assignedQuestion.question.type : answer.question.type
     switch (questionType) {
@@ -94,7 +97,7 @@ const PreconfiguredQuestions = (assignedQuestion, answer, completed) => {
             inputConfig = {
                 ...inputConfig,
                 type: 'checkbox',
-                containerClass: 'flex md:col-span-6 pt-2',
+                containerClass: 'flex md:col-span-6 pt-2 items-center',
                 labelClass: `${inputConfig.labelClass} pr-4`,
                 inputClass: ""
             }
@@ -109,7 +112,7 @@ const PreconfiguredQuestions = (assignedQuestion, answer, completed) => {
     return (
         completed
             ? <ReadOnlyQuestion inputConfig={inputConfig} answer={answer} key={answer.id} />
-            : <WriteOnlyQuestion inputConfig={inputConfig} assignedQuestion={assignedQuestion} key={assignedQuestion.id} />
+            : <WriteOnlyQuestion inputConfig={inputConfig} assignedQuestion={assignedQuestion} key={assignedQuestion.id} error={error}/>
     )
 }
 
@@ -168,7 +171,7 @@ const SuccessMessage = ({ petName, redirectUrl }) => {
 const WriteOnlyQuestions = ({ petName, assignedQuestions, listingId, completed }) => {
     const [success, setSuccess] = useState(false)
     const [redirectUrl, setRedirectUrl] = useState('')
-    const onSubmit = (values, { setSubmitting }) => {
+    const onSubmit = (values, { setSubmitting, setFieldError }) => {
         PetApplicationService.post(listingId, values)
             .then((res) => {
                 console.log(res)
@@ -178,6 +181,12 @@ const WriteOnlyQuestions = ({ petName, assignedQuestions, listingId, completed }
             })
             .catch(err => {
                 console.error(err)
+                if (err?.response?.data)
+                {
+                    Object.keys(err.response.data).forEach((key) => {
+                        setFieldError(key, err.response.data[key][0]);
+                    });
+                }
                 setSubmitting(false)
             })
     }
@@ -194,8 +203,8 @@ const WriteOnlyQuestions = ({ petName, assignedQuestions, listingId, completed }
                         onSubmit={onSubmit}
                         initialValues={initialValues}
                     >
-                        {({ isSubmitting }) => (
-                            <Form>
+                        {({ isSubmitting, errors }) => (
+                            <Form noValidate>
                                 <p className="text-2xl min-w-full font-semibold">Adopt {petName}</p>
                                 <div className="grid md:grid-cols-6 w-full gap-3 mb-4">
                                     {
@@ -206,7 +215,7 @@ const WriteOnlyQuestions = ({ petName, assignedQuestions, listingId, completed }
                                                 <p className="text-lg">No questions to answer for {petName}!</p>
                                             </div>
                                             : assignedQuestions?.map((assignedQuestion) => {
-                                                return PreconfiguredQuestions(assignedQuestion, null, completed)
+                                                return PreconfiguredQuestions(assignedQuestion, null, completed, errors[assignedQuestion.id])
                                             })
                                     }
                                 </div>
