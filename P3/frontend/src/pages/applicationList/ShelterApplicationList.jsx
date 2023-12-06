@@ -34,8 +34,14 @@ export default function ShelterApplicationList() {
                     res.data.results.map((res) => {
                         return {
                             id: res.id,
-                            petName: res.listing.name,
-                            applicant: res.applicant.username,
+                            petListing: {
+                                id: res.listing.id,
+                                name: res.listing.name,
+                            },
+                            applicant: {
+                                id: res.applicant.id,
+                                username: res.applicant.username
+                            },
                             status: res.status,
                             lastUpdated: res.last_updated,
                             created: res.application_time

@@ -72,17 +72,24 @@ export const PetOverviewPanel = ({ petListingOverview, detailsView, applicationI
 }
 
 const ApplicationRows = ({ applications, isShelter }) => {
-
+    console.log(applications)
     const navigate = useNavigate();
     return applications.map(
-        ({ id, petName, applicant, status, lastUpdated, created }, index) => {
+        ({ id, petListing, applicant, status, lastUpdated, created }, index) => {
             const isLast = index === applicant.length - 1;
             const classes = isLast
                 ? "p-4"
                 : "p-4 border-b border-blue-gray-50";
 
             return (
-                <tr className='hover:cursor-pointer' key={id} onClick={() => { navigate(`/applications/${id}`) }}>
+                <tr key={id}>
+                    <td className={classes}>
+                        <IconButton variant="text" onClick={() => { navigate(`/applications/${id}`) }}>
+                            <p>
+                                VIEW
+                            </p>
+                        </IconButton>
+                    </td>
                     <td className={classes}>
                         <div className="flex items-center gap-3">
                             <div className="flex flex-col">
@@ -99,13 +106,15 @@ const ApplicationRows = ({ applications, isShelter }) => {
                     <td className={classes}>
                         <div className="flex items-center gap-3">
                             <div className="flex flex-col">
-                                <Typography
-                                    variant="small"
-                                    color="blue-gray"
-                                    className="font-normal"
-                                >
-                                    {petName}
-                                </Typography>
+                                <Link to={`/listings/${petListing.id}`}>
+                                    <Typography
+                                        variant="small"
+                                        color="blue-gray"
+                                        className="font-normal hover:underline"
+                                    >
+                                        {petListing.name}
+                                    </Typography>
+                                </Link>
                             </div>
                         </div>
                     </td>
@@ -113,13 +122,15 @@ const ApplicationRows = ({ applications, isShelter }) => {
                         isShelter &&
                         <td className={classes}>
                             <div className="flex flex-col">
+                                <Link to={`/users/${applicant.id}`}>
                                 <Typography
                                     variant="small"
                                     color="blue-gray"
-                                    className="font-normal"
+                                    className="font-normal hover:underline"
                                 >
-                                    {applicant}
+                                    {applicant.username}
                                 </Typography>
+                                </Link>
                             </div>
                         </td>
                     }
@@ -167,13 +178,6 @@ const ApplicationRows = ({ applications, isShelter }) => {
                             }
                         </Typography>
                     </td>
-                    <td className={classes}>
-                        <IconButton variant="text" onClick={() => { navigate(`/applications/${id}`) }}>
-                            <p>
-                                VIEW
-                            </p>
-                        </IconButton>
-                    </td>
                 </tr>
             );
         },
@@ -181,7 +185,7 @@ const ApplicationRows = ({ applications, isShelter }) => {
 }
 
 export function ApplicationTable({ applications, pageNumber, hasNextPage, addPageNumber, subPageNumber, isLoading, updateFilters, filters, isShelter }) {
-    const TABLE_HEAD = ["Id", "Pet Name", "Status", "Last Updated", 'Created', ''];
+    const TABLE_HEAD = ['', "Id", "Pet Name", "Status", "Last Updated", 'Created'];
     if (isShelter) {
         TABLE_HEAD.splice(2, 0, 'Applicant')
     }
@@ -238,7 +242,7 @@ export function ApplicationTable({ applications, pageNumber, hasNextPage, addPag
                                     <tr key={i}>
                                         {
                                             Array.from(Array(TABLE_HEAD.length).keys()).map((i) => (
-                                                <td>
+                                                <td key={i}>
                                                     <Skeleton height='2rem' width='10rem' />
                                                 </td>
                                             ))
