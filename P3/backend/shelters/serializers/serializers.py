@@ -56,7 +56,7 @@ def type_to_field(question_type, label, required):
     elif question_type == ShelterQuestion.CHECKBOX:
         return serializers.BooleanField(label=label, required=required)
     elif question_type == ShelterQuestion.DATE:
-        return serializers.DateField(input_formats=['%d-%m-%Y'], label=label, required=required)
+        return serializers.DateField(label=label, required=required)
     elif question_type == ShelterQuestion.EMAIL:
         return serializers.EmailField(max_length=200, min_length=0, label=label, required=required)
     elif question_type == ShelterQuestion.TEXT:
