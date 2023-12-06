@@ -58,7 +58,6 @@ export default function PetDetail() {
         PetDetailService.get(listingId)
             .then(res => {
                 setPetDetail(res.data)
-                setLoading(false)
             })
             .catch(err => {
                 if (err.response.status === 404) {
@@ -74,6 +73,7 @@ export default function PetDetail() {
                     setApplicationId(application.id)
                 }
             })
+            setLoading(false)
         })
     }, [listingId])
     const petListingIDetails = [
