@@ -20,5 +20,5 @@ class PetListingFilter(django_filters.FilterSet):
 
     class Meta:
         model = PetListing
-        fields = ['shelter_name', 'status', 'name', 'breed', 'min_age', 'max_age']
+        fields = ['shelter_name', 'status', 'name', 'breed', 'min_age', 'max_age', 'shelter']
         
