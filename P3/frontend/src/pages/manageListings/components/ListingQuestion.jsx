@@ -29,7 +29,7 @@ const ListingQuestion = ({ listingId, question, handleDelete, handleUpdate }) =>
         <Container className='flex items-center justify-between px-2 py-2' key={question.id}>
             <div className="flex flex-row items-center gap-2">
                 <Chip value={listingQuestion.question?.type} />
-                <Text className="w-full py-2">{listingQuestion.question?.question}{listingQuestion.required && '*'}</Text>
+                <Text className="w-full py-2">{listingQuestion.question?.question}{listingQuestion.required && <span className="text-red-400">*</span>}</Text>
             </div>
             <div className="flex flex-row items-center gap-2">
                 <button
