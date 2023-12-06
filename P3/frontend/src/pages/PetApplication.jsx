@@ -274,6 +274,7 @@ export default function PetApplication({ completed }) {
         }
     }, [listingId, applicationId, completed, navigate])
     const petListingOverview = {
+        id: petDetail.id,
         name: petDetail.name,
         listingTime: petDetail.listed_date,
         status: petDetail.status,

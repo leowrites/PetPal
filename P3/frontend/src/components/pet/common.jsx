@@ -25,6 +25,7 @@ const SkeletonArray = () => {
 }
 
 export const PetOverviewPanel = ({ petListingOverview, detailsView, applicationId, loading }) => {
+    console.log(petListingOverview)
     const { user } = useUser()
     const ActionButton = () => {
         // don't let shelters adopt anything
@@ -48,7 +49,9 @@ export const PetOverviewPanel = ({ petListingOverview, detailsView, applicationI
                     <SkeletonArray />
                     :
                     <>
-                        <p className="text-lg font-bold">{petListingOverview.name}</p>
+                        <Link to={`/listings/${petListingOverview.id}`}>
+                            <p className="text-lg font-bold hover:underline">{petListingOverview.name}</p>
+                        </Link>
                         <p className="text-sm">Listing Time: {petListingOverview.listingTime}</p>
                         <p className="text-sm pet-overview-box-status">Status: {petListingOverview.status}</p>
                         <Link to={`/shelters/${petListingOverview.shelter.id}`}>
