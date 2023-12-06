@@ -87,3 +87,11 @@ class ChangePasswordSerializer(serializers.Serializer):
         instance.set_password(validated_data['password'])
         instance.save()
         return instance
+    
+
+class PublicUserSerializer(serializers.ModelSerializer):
+    avatar = serializers.ImageField(label="Upload an avatar", required=False)
+
+    class Meta:
+        model = User
+        fields = ['username', 'avatar']

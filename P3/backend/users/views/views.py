@@ -33,7 +33,7 @@ class RetrieveOrUpdateOrDestroyUser(generics.RetrieveUpdateDestroyAPIView):
 
     def get_permissions(self):
         if self.request.method == 'GET':
-            permission_classes = [IsAuthenticated]
+            permission_classes = [IsAuthenticated, permissions.IsOwnerOrUserHasApplicationWithShelter]
         else:
             permission_classes = [IsAuthenticated, permissions.IsOwner]
         return [permission() for permission in permission_classes]
@@ -51,3 +51,7 @@ class ChangePassword(generics.UpdateAPIView):
     def get_object(self):
         return self.request.user
     
+# GET /users/<pk>/public
+class PublicUserDetail(generics.RetrieveAPIView):
+    serializer_class = serializers.PublicUserSerializer
+    queryset = User.objects.all()

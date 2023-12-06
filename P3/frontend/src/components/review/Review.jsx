@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Rating from './Rating';
 import UserDetailService from '../../services/UserDetailService';
+import { Avatar } from '@material-tailwind/react'
 
 const Review = ({ review }) => {
     const [reviewUser, setReviewUser] = useState(null);
 
     useEffect(() => {
-        UserDetailService.getById(review.user)
+        UserDetailService.getPublicById(review.user)
             .then((res) => {
                 setReviewUser(res.data);
             })
@@ -14,9 +15,11 @@ const Review = ({ review }) => {
 
     return (
         <div class="review py-4 flex flex-row items-start gap-4">
-            <div>
-                <img src={reviewUser?.avatar} alt="profile" class="w-16 h-16 rounded-full object-cover" />
-            </div>
+            {
+                reviewUser?.avatar && (
+                    <Avatar src={reviewUser?.avatar} alt="profile" className="w-16 h-16" />
+                )
+            }
             <div className="w-full">
                 <div class="flex flex-row justify-between">
                     <p class="text-md font-semibold">{reviewUser?.username}</p>
