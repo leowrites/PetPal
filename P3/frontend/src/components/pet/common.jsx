@@ -51,10 +51,11 @@ export const PetOverviewPanel = ({ petListingOverview, detailsView, applicationI
                         <p className="text-lg font-bold">{petListingOverview.name}</p>
                         <p className="text-sm">Listing Time: {petListingOverview.listingTime}</p>
                         <p className="text-sm pet-overview-box-status">Status: {petListingOverview.status}</p>
-                        <a className="text-sm underline pet-overview-box-shelter" href="../shelter/shelter.html">{petListingOverview.shelter}</a>
+                        <Link to={`/shelters/${petListingOverview.shelter.id}`}>
+                            <a className="text-sm underline pet-overview-box-shelter" >{petListingOverview.shelter.name}</a>
+                        </Link>
                         <p className="text-sm pet-overview-box-breed">{petListingOverview.breed}</p>
                         <p className="text-sm pet-overview-box-breed">Age {petListingOverview.age}</p>
-                        <p className="text-sm"> {petListingOverview.description}</p>
                         <div className="flex flex-row gap-2 mt-4">
                             {
                                 !loading && <ActionButton />

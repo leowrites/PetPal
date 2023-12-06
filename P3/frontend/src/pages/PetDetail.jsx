@@ -34,13 +34,13 @@ const PetImages = ({ images }) => {
     )
 }
 
-const PetDetailLeftPanel = ({ petListingIDetails, loading }) => {
+const PetDetailLeftPanel = ({ petListingDetails, loading }) => {
     return <div
         className="col-span-1 md:col-span-3 p-5 py-10 rounded-xl pet-detail-box order-last md:order-first"
     >
         <div className="flex flex-col gap-2">
             {
-                petListingIDetails.map((detail, i) => (
+                petListingDetails.map((detail, i) => (
                     <DescriptionSection key={i} sectionTitle={detail.sectionTitle} sectionDetails={detail.sectionDetails} loading={loading} />
                 ))
             }
@@ -76,7 +76,11 @@ export default function PetDetail() {
             setLoading(false)
         })
     }, [listingId])
-    const petListingIDetails = [
+    const petListingDetails = [
+        {
+            sectionTitle: 'Description',
+            sectionDetails: petDetail.bio,
+        },
         {
             sectionTitle: 'Medical History',
             sectionDetails: petDetail.medical_history,
@@ -99,11 +103,13 @@ export default function PetDetail() {
             day: "numeric",
         }),
         status: petDetail.status === 'available' ? 'Available' : 'Not Available',
-        shelter: petDetail.shelter?.shelter_name,
+        shelter: {
+            id: petDetail.shelter?.id,
+            name: petDetail.shelter?.shelter_name,
+        },
         shelterOwner: petDetail.shelter?.owner,
         breed: petDetail.breed,
         age: petDetail.age,
-        description: petDetail.bio,
     }
 
 
@@ -111,7 +117,7 @@ export default function PetDetail() {
         <Page>
             <PetImages images={petDetail.images} />
             <div className="grid grid-cols-1 my-5 gap-5 md:grid-cols-5">
-                <PetDetailLeftPanel petListingIDetails={petListingIDetails} loading={loading}/>
+                <PetDetailLeftPanel petListingDetails={petListingDetails} loading={loading}/>
                 <div
                     className="col-span-1 md:col-span-2 p-5 py-10 rounded-xl pet-overview-box order-first md:order-last"
                 >

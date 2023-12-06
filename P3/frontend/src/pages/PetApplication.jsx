@@ -277,7 +277,10 @@ export default function PetApplication({ completed }) {
         name: petDetail.name,
         listingTime: petDetail.listed_date,
         status: petDetail.status,
-        shelter: petDetail.shelter?.shelter_name,
+        shelter: {
+            id: petDetail.shelter?.id,
+            name: petDetail.shelter?.shelter_name,
+        },
         breed: petDetail.breed,
         age: petDetail.age,
         description: petDetail.bio
