@@ -55,7 +55,7 @@ export const PetOverviewPanel = ({ petListingOverview, detailsView, applicationI
                         <p className="text-sm pet-overview-box-breed">{petListingOverview.breed}</p>
                         <p className="text-sm pet-overview-box-breed">Age {petListingOverview.age}</p>
                         <p className="text-sm"> {petListingOverview.description}</p>
-                        <div class="flex flex-row gap-2 mt-4">
+                        <div className="flex flex-row gap-2 mt-4">
                             {
                                 !loading && <ActionButton />
                             }

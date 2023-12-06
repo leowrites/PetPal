@@ -23,15 +23,47 @@ const PetImage = ({ src }) => {
     )
 }
 
-const PreconfiguredQuestions = (question, required, completed, answer) => {
+const ReadOnlyQuestion = ({ inputConfig, answer }) => {
+    return (
+        <div key={answer.id} className={inputConfig.containerClass}>
+            <label htmlFor={inputConfig.question} className={inputConfig.labelClass}>{answer.question.question.question}</label>
+            <Field
+                id={answer.id}
+                name={answer.id}
+                type={inputConfig.type}
+                className={inputConfig.inputClass}
+                placeholder={answer.answer}
+                disabled
+                checked={answer.answer}
+            />
+        </div>
+    )
+}
+
+const WriteOnlyQuestion = ({ inputConfig, assignedQuestion }) => {
+    return (
+        <div key={assignedQuestion.id} className={inputConfig.containerClass}>
+            <label htmlFor={assignedQuestion.id} className={inputConfig.labelClass}>{assignedQuestion.question.question}</label>
+            <Field
+                id={assignedQuestion.id}
+                name={assignedQuestion.id}
+                type={inputConfig.type}
+                className={inputConfig.inputClass}
+                placeholder={inputConfig.placeholder}
+                required={assignedQuestion.required}
+            />
+        </div>
+    )
+}
+
+const PreconfiguredQuestions = (assignedQuestion, answer, completed) => {
     let inputConfig = {
-        question: question.question,
-        name: question.id,
         containerClass: 'md:col-span-3 pt-3',
         labelClass: 'block',
         inputClass: "w-full px-3 py-2 rounded-lg border-2 border-gray-200"
     }
-    switch (question.type) {
+    const questionType = assignedQuestion ? assignedQuestion.question.type : answer.question.type
+    switch (questionType) {
         case 'EMAIL':
             inputConfig = {
                 ...inputConfig,
@@ -75,22 +107,9 @@ const PreconfiguredQuestions = (question, required, completed, answer) => {
             }
     }
     return (
-        <div key={question.id} className={inputConfig.containerClass}>
-            <label htmlFor={inputConfig.question} className={inputConfig.labelClass}>{inputConfig.question}</label>
-            <Field
-                id={inputConfig.question}
-                name={inputConfig.name}
-                type={inputConfig.type}
-                className={inputConfig.inputClass}
-                placeholder={
-                    completed ? answer.answer :
-                        inputConfig.placeholder
-                }
-                required={required}
-                disabled={completed}
-                checked={completed ? answer.answer : null}
-            />
-        </div>
+        completed
+            ? <ReadOnlyQuestion inputConfig={inputConfig} answer={answer} key={answer.id} />
+            : <WriteOnlyQuestion inputConfig={inputConfig} assignedQuestion={assignedQuestion} key={assignedQuestion.id} />
     )
 }
 
@@ -117,8 +136,7 @@ const ReadOnlyQuestions = ({ petName, completed, answers }) => {
                                 <p className="text-lg">No questions answered for {petName}!</p>
                             </div>
                             : answers?.map((answer) => {
-                                const assignedQuestion = answer.question
-                                return PreconfiguredQuestions(assignedQuestion.question, assignedQuestion.required, completed, answer)
+                                return PreconfiguredQuestions(null, answer, completed)
                             })
                     }
                 </div>
@@ -164,7 +182,7 @@ const WriteOnlyQuestions = ({ petName, assignedQuestions, listingId, completed }
             })
     }
     const initialValues = assignedQuestions.reduce((acc, curr) => {
-        acc[curr.question.id] = ''
+        acc[curr.id] = ''
         return acc
     }, {})
     return (
@@ -188,7 +206,7 @@ const WriteOnlyQuestions = ({ petName, assignedQuestions, listingId, completed }
                                                 <p className="text-lg">No questions to answer for {petName}!</p>
                                             </div>
                                             : assignedQuestions?.map((assignedQuestion) => {
-                                                return PreconfiguredQuestions(assignedQuestion.question, assignedQuestion.required, completed)
+                                                return PreconfiguredQuestions(assignedQuestion, null, completed)
                                             })
                                     }
                                 </div>
@@ -209,13 +227,9 @@ const WriteOnlyQuestions = ({ petName, assignedQuestions, listingId, completed }
 
 const ApplicationForm = ({ petName, assignedQuestions, listingId, completed, answers }) => {
     return (
-        <>
-            {
-                completed ?
-                    <ReadOnlyQuestions petName={petName} assignedQuestions={assignedQuestions} completed={completed} answers={answers} /> :
-                    <WriteOnlyQuestions petName={petName} assignedQuestions={assignedQuestions} listingId={listingId} completed={completed} />
-            }
-        </>
+        completed ?
+            <ReadOnlyQuestions petName={petName} assignedQuestions={assignedQuestions} completed={completed} answers={answers} /> :
+            <WriteOnlyQuestions petName={petName} assignedQuestions={assignedQuestions} listingId={listingId} completed={completed} />
     )
 }
 
@@ -305,7 +319,7 @@ export default function PetApplication({ completed }) {
     }
     const userAction = () => {
         return (
-            <div>
+            <div className="mb-4">
                 <div className='pb-3'>
                     Your application status is: {application.status}
                 </div>
