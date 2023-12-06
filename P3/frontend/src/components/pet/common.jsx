@@ -140,7 +140,7 @@ const ApplicationRows = ({ applications, isShelter }) => {
                                 variant="ghost"
                                 size="sm"
                                 value={status}
-                                color={status === 'pending' ? "green" : "red"}
+                                color={['withdrawn', 'denied'].includes(status) ? "red" : "green"}
                             />
                         </div>
                     </td>
