@@ -289,7 +289,7 @@ export default function PetApplication({ completed }) {
 
     const shelterAction = () => {
         return (
-            <div>
+            <div className="mb-4">
                 <p className="mb-4 text-lg">
                     Update the application status:
                 </p>
