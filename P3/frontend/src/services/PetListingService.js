@@ -20,6 +20,11 @@ class PetListingService {
         const response = await ApiService.patch(`/listings/${id}`, data)
         return response
     }
+
+    static async delete(id) {
+        const response = await ApiService.delete(`/listings/${id}`)
+        return response
+    }
 }
 
 export default PetListingService;

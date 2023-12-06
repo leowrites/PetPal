@@ -12,6 +12,7 @@ export default function () {
     const [pageNumber, setPageNumber] = useState(1);
     const [hasNextPage, setHasNextPage] = useState(false);
     const [filters, setFilters] = useState({name: ''})
+    const [deleted, setDeleted] = useState(false)
     const { user } = useUser()
 
     const addPageNumber = () => {
@@ -23,6 +24,15 @@ export default function () {
     const updateFilters = (newFilters) => {
         setPageNumber(1);
         setFilters(newFilters);
+    }
+
+    const deleteListing = (id) => {
+        PetListingService.delete(id)
+            .then(res => {
+                setDeleted((prev) => !prev)
+            }).catch(err => {
+                console.log(err)
+            })
     }
 
     useEffect(() => {
@@ -54,7 +64,7 @@ export default function () {
         }, 500);
 
         return () => clearTimeout(timer);
-    }, [pageNumber, filters]);
+    }, [pageNumber, filters, deleted]);
 
 
     return (
@@ -69,6 +79,7 @@ export default function () {
                 updateFilters={updateFilters} 
                 filters={filters} 
                 isShelter={user.is_shelter}
+                deleteListing={deleteListing}
             />
         </Page>
     )

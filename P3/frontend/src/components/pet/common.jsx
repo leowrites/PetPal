@@ -270,7 +270,7 @@ export function ApplicationTable({ applications, pageNumber, hasNextPage, addPag
     );
 }
 
-const ListingRows = ({ listings, isShelter }) => {
+const ListingRows = ({ listings, isShelter, deleteListing }) => {
 
     const navigate = useNavigate();
     return listings.map(
@@ -348,7 +348,7 @@ const ListingRows = ({ listings, isShelter }) => {
                         </Typography>
                     </td>
                     <td className={classes}>
-                        <IconButton variant="text" onClick={() => { navigate(`/listings/${id}`) }
+                        <IconButton variant="text" color='green' onClick={() => { navigate(`/listings/${id}`) }
                         }>
                             <p>
                                 VIEW
@@ -356,10 +356,18 @@ const ListingRows = ({ listings, isShelter }) => {
                         </IconButton>
                     </td>
                     <td className={classes}>
-                        <IconButton variant="text" onClick={(e) => {e.stopPropagation() ;navigate(`/listings/${id}/edit`) }
+                        <IconButton variant="text" color='blue' onClick={(e) => {e.stopPropagation() ;navigate(`/listings/${id}/edit`) }
                         }>
                             <p>
                                 EDIT
+                            </p>
+                        </IconButton>
+                    </td>
+                    <td className={classes}>
+                        <IconButton variant="text" color='red' onClick={(e) => { e.stopPropagation(); deleteListing(id) }
+                        }>
+                            <p>
+                                DEL
                             </p>
                         </IconButton>
                     </td>
@@ -369,9 +377,9 @@ const ListingRows = ({ listings, isShelter }) => {
     )
 }
 
-export function ListingTable({ listings, pageNumber, hasNextPage, addPageNumber, subPageNumber, isLoading, updateFilters, filters, isShelter }) {
+export function ListingTable({ listings, pageNumber, hasNextPage, addPageNumber, subPageNumber, isLoading, updateFilters, filters, isShelter, deleteListing }) {
     const [sortValue, setSortValue] = useState('-listed_date')
-    const TABLE_HEAD = ['', "Id", "Pet Name", "Status", 'Created', '', ''];
+    const TABLE_HEAD = ['', "Id", "Pet Name", "Status", 'Created', '', '', ''];
 
     useEffect(() => {
         updateFilters({ ...filters, 'ordering': sortValue })
@@ -443,7 +451,7 @@ export function ListingTable({ listings, pageNumber, hasNextPage, addPageNumber,
                                         }
                                     </tr>
                                 ))
-                                : <ListingRows listings={listings} isShelter={isShelter} />
+                                : <ListingRows listings={listings} isShelter={isShelter} deleteListing={deleteListing} />
                         }
                     </tbody>
                 </table>
