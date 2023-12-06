@@ -129,9 +129,12 @@ export default function NavBar({}) {
                     ) : (
                         null
                     )}
-                    <Link to="/listings" className="border-b-[.05rem] border-[#6C6866] py-[1rem] mx-[1.5rem] grow">
+                    {
+                    user && 
+                    <Link to="/applications" className="border-b-[.05rem] border-[#6C6866] py-[1rem] mx-[1.5rem] grow">
                         <div className="px-[2rem] hover:cursor-pointer w-[100%] text-end hover:decoration-black">My Applications</div>
                     </Link>
+                    }
                 </div>
                 { user ? (
                     <div className="flex flex-row justify-end gap-[1rem] mr-[1.5rem] w-[100%] py-[1rem] font-semibold">

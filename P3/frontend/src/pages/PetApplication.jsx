@@ -23,15 +23,50 @@ const PetImage = ({ src }) => {
     )
 }
 
-const PreconfiguredQuestions = (question, required, completed, answer) => {
+const ReadOnlyQuestion = ({ inputConfig, answer }) => {
+    return (
+        <div key={answer.id} className={inputConfig.containerClass}>
+            <label htmlFor={inputConfig.question} className={inputConfig.labelClass}>{answer.question.question.question}</label>
+            <Field
+                id={answer.id}
+                name={answer.id}
+                type={inputConfig.type}
+                className={inputConfig.inputClass}
+                placeholder={answer.answer}
+                disabled
+                checked={answer.answer}
+            />
+        </div>
+    )
+}
+
+const WriteOnlyQuestion = ({ inputConfig, assignedQuestion, error }) => {
+    return (
+        <div key={assignedQuestion.id} className={inputConfig.containerClass}>
+            <label htmlFor={assignedQuestion.id} className={inputConfig.labelClass}>{assignedQuestion.question.question}</label>
+            <Field
+                id={assignedQuestion.id}
+                name={assignedQuestion.id}
+                type={inputConfig.type}
+                className={inputConfig.inputClass}
+                placeholder={inputConfig.placeholder}
+                required={assignedQuestion.required}
+            />
+            {
+                error && <p className="ml-4 text-red-500 text-sm col-span-3">{error}</p>
+            }
+        </div>
+    )
+}
+
+const PreconfiguredQuestions = (assignedQuestion, answer, completed, error) => {
     let inputConfig = {
-        question: question.question,
-        name: question.id,
-        containerClass: 'md:col-span-3 pt-3',
+        containerClass: 'md:col-span-3 pt-3 items-center',
         labelClass: 'block',
-        inputClass: "w-full px-3 py-2 rounded-lg border-2 border-gray-200"
+        inputClass: "block w-full px-3 py-2 rounded-lg border-2 border-gray-200"
     }
-    switch (question.type) {
+    const questionType = assignedQuestion ? assignedQuestion.question.type : answer.question.type
+    switch (questionType) {
         case 'EMAIL':
             inputConfig = {
                 ...inputConfig,
@@ -62,7 +97,7 @@ const PreconfiguredQuestions = (question, required, completed, answer) => {
             inputConfig = {
                 ...inputConfig,
                 type: 'checkbox',
-                containerClass: 'flex md:col-span-6 pt-2',
+                containerClass: 'flex md:col-span-6 pt-2 items-center',
                 labelClass: `${inputConfig.labelClass} pr-4`,
                 inputClass: ""
             }
@@ -75,22 +110,9 @@ const PreconfiguredQuestions = (question, required, completed, answer) => {
             }
     }
     return (
-        <div key={question.id} className={inputConfig.containerClass}>
-            <label htmlFor={inputConfig.question} className={inputConfig.labelClass}>{inputConfig.question}</label>
-            <Field
-                id={inputConfig.question}
-                name={inputConfig.name}
-                type={inputConfig.type}
-                className={inputConfig.inputClass}
-                placeholder={
-                    completed ? answer.answer :
-                        inputConfig.placeholder
-                }
-                required={required}
-                disabled={completed}
-                checked={completed ? answer.answer : null}
-            />
-        </div>
+        completed
+            ? <ReadOnlyQuestion inputConfig={inputConfig} answer={answer} key={answer.id} />
+            : <WriteOnlyQuestion inputConfig={inputConfig} assignedQuestion={assignedQuestion} key={assignedQuestion.id} error={error}/>
     )
 }
 
@@ -117,8 +139,7 @@ const ReadOnlyQuestions = ({ petName, completed, answers }) => {
                                 <p className="text-lg">No questions answered for {petName}!</p>
                             </div>
                             : answers?.map((answer) => {
-                                const assignedQuestion = answer.question
-                                return PreconfiguredQuestions(assignedQuestion.question, assignedQuestion.required, completed, answer)
+                                return PreconfiguredQuestions(null, answer, completed)
                             })
                     }
                 </div>
@@ -150,7 +171,7 @@ const SuccessMessage = ({ petName, redirectUrl }) => {
 const WriteOnlyQuestions = ({ petName, assignedQuestions, listingId, completed }) => {
     const [success, setSuccess] = useState(false)
     const [redirectUrl, setRedirectUrl] = useState('')
-    const onSubmit = (values, { setSubmitting }) => {
+    const onSubmit = (values, { setSubmitting, setFieldError }) => {
         PetApplicationService.post(listingId, values)
             .then((res) => {
                 console.log(res)
@@ -160,11 +181,17 @@ const WriteOnlyQuestions = ({ petName, assignedQuestions, listingId, completed }
             })
             .catch(err => {
                 console.error(err)
+                if (err?.response?.data)
+                {
+                    Object.keys(err.response.data).forEach((key) => {
+                        setFieldError(key, err.response.data[key][0]);
+                    });
+                }
                 setSubmitting(false)
             })
     }
     const initialValues = assignedQuestions.reduce((acc, curr) => {
-        acc[curr.question.id] = ''
+        acc[curr.id] = ''
         return acc
     }, {})
     return (
@@ -176,8 +203,8 @@ const WriteOnlyQuestions = ({ petName, assignedQuestions, listingId, completed }
                         onSubmit={onSubmit}
                         initialValues={initialValues}
                     >
-                        {({ isSubmitting }) => (
-                            <Form>
+                        {({ isSubmitting, errors }) => (
+                            <Form noValidate>
                                 <p className="text-2xl min-w-full font-semibold">Adopt {petName}</p>
                                 <div className="grid md:grid-cols-6 w-full gap-3 mb-4">
                                     {
@@ -188,7 +215,7 @@ const WriteOnlyQuestions = ({ petName, assignedQuestions, listingId, completed }
                                                 <p className="text-lg">No questions to answer for {petName}!</p>
                                             </div>
                                             : assignedQuestions?.map((assignedQuestion) => {
-                                                return PreconfiguredQuestions(assignedQuestion.question, assignedQuestion.required, completed)
+                                                return PreconfiguredQuestions(assignedQuestion, null, completed, errors[assignedQuestion.id])
                                             })
                                     }
                                 </div>
@@ -209,13 +236,9 @@ const WriteOnlyQuestions = ({ petName, assignedQuestions, listingId, completed }
 
 const ApplicationForm = ({ petName, assignedQuestions, listingId, completed, answers }) => {
     return (
-        <>
-            {
-                completed ?
-                    <ReadOnlyQuestions petName={petName} assignedQuestions={assignedQuestions} completed={completed} answers={answers} /> :
-                    <WriteOnlyQuestions petName={petName} assignedQuestions={assignedQuestions} listingId={listingId} completed={completed} />
-            }
-        </>
+        completed ?
+            <ReadOnlyQuestions petName={petName} assignedQuestions={assignedQuestions} completed={completed} answers={answers} /> :
+            <WriteOnlyQuestions petName={petName} assignedQuestions={assignedQuestions} listingId={listingId} completed={completed} />
     )
 }
 
@@ -248,22 +271,41 @@ export default function PetApplication({ completed }) {
                 })
         }
         else {
+            // navigate shelters away
+            if (user.is_shelter) {
+                navigate('/')
+                return
+            }
             PetDetailService.get(listingId)
                 .then(res => {
                     setPetDetail(res.data)
-                    setLoading(false)
                 })
                 .catch(err => {
                     console.error(err)
                     navigate('/404')
                 })
+            // check if user already applied for this pet
+            PetApplicationService.list()
+            .then(res => {
+                res.data.results.forEach(application => {
+                    if (application.listing.id === parseInt(listingId)) {
+                        navigate(`/applications/${application.id}`)
+                        return
+                    }
+                })
+                setLoading(false)
+            })
         }
     }, [listingId, applicationId, completed, navigate])
     const petListingOverview = {
+        id: petDetail.id,
         name: petDetail.name,
         listingTime: petDetail.listed_date,
         status: petDetail.status,
-        shelter: petDetail.shelter?.shelter_name,
+        shelter: {
+            id: petDetail.shelter?.id,
+            name: petDetail.shelter?.shelter_name,
+        },
         breed: petDetail.breed,
         age: petDetail.age,
         description: petDetail.bio
@@ -289,7 +331,7 @@ export default function PetApplication({ completed }) {
 
     const shelterAction = () => {
         return (
-            <div>
+            <div className="mb-4">
                 <p className="mb-4 text-lg">
                     Update the application status:
                 </p>
@@ -305,7 +347,7 @@ export default function PetApplication({ completed }) {
     }
     const userAction = () => {
         return (
-            <div>
+            <div className="mb-4">
                 <div className='pb-3'>
                     Your application status is: {application.status}
                 </div>
@@ -327,7 +369,7 @@ export default function PetApplication({ completed }) {
 
     return (
         <Page>
-            <div className='my-5'>
+            <div>
                 {
                     completed ? user.is_shelter ? shelterAction() : userAction() : null
                 }
@@ -336,9 +378,7 @@ export default function PetApplication({ completed }) {
                 <PetImage src={petDetail.images} />
                 <div className="order-3 md:order-2 md:col-span-2 md:row-span-3 pet-overview-box p-5 rounded-xl">
                     {
-                        loading && <SkeletonArray />
-                    }
-                    {
+                        loading ? <SkeletonArray /> :
                         petDetail.assigned_questions
                             ? <ApplicationForm petName={petListingOverview.name}
                                 assignedQuestions={petDetail.assigned_questions}
