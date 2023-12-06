@@ -384,11 +384,18 @@ export function ListingTable({ listings, pageNumber, hasNextPage, addPageNumber,
                     <p className='font-semibold text-2xl'>
                         Pet Listings
                     </p>
+                    <div className='flex flex-row gap-[1rem]'>
                     <Link to='/questions'>
                         <Button>
                             Manage Questions
                         </Button>
                     </Link>
+                    <Link to='/listings/new'>
+                        <Button>
+                            New Listing
+                        </Button>
+                    </Link>
+                    </div>
                 </div>
             </CardHeader>
             <CardBody className="overflow-x-auto px-0 pb-0">
