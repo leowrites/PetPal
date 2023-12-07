@@ -21,7 +21,7 @@ const RatingInput = (props) => (
         type="number"
         name="rating"
         id="rating"
-        min="0"
+        min="1"
         max="5"
         className="rounded-md border-gray-300 focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50"
         label={'Rating'}
@@ -98,7 +98,7 @@ const ShelterDetail = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-14 flex flex-col gap-y-10">
             {user && listings.length != 0 ? (
                 <div className="grid grid-cols-1 xl:grid-cols-2 gap-x-10 gap-y-16">
-                    <Container>
+                    <Container className="pb-4">
                     <div className="flex flex-col items-center">
                         <Heading><h1 class="mt-4 text-[2rem] font-semibold mb-4">{shelter.shelter_name}</h1></Heading>
                         <p className="text-md font-semibold mb-4 text-center">
@@ -151,7 +151,7 @@ const ShelterDetail = () => {
                 </div>
             ) : (
                 <Container>
-                <div className="flex flex-col items-center">
+                <div className="flex flex-col items-center pb-10">
                     <Heading><h1 class="mt-10 text-[2rem] font-semibold mb-4">{shelter.shelter_name}</h1></Heading>
                     <p className="text-md font-semibold mb-4 text-center">
                         Location: {shelter.location}
@@ -214,13 +214,13 @@ const ShelterDetail = () => {
                 <DialogBody className="pt-0">
                     <Formik
                         initialValues={{
-                            rating: 0,
+                            rating: 5,
                             text: ""
                         }}
                         validate={(values) => {
                             const errors = {};
                             if (values.rating < 0 || values.rating > 5) {
-                                errors.rating = 'Rating must be between 0 and 5';
+                                errors.rating = 'Rating must be between 1 and 5';
                             }
                             if (!values.text) {
                                 errors.text = 'Required';
