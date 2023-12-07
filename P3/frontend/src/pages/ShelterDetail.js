@@ -210,7 +210,7 @@ const ShelterDetail = () => {
                 size={"sm"}
                 handler={handleOpen}
             >
-                <DialogHeader>Write a Review</DialogHeader>
+                <DialogHeader><Heading><h1>Write a Review</h1></Heading></DialogHeader>
                 <DialogBody className="pt-0">
                     <Formik
                         initialValues={{
@@ -223,7 +223,7 @@ const ShelterDetail = () => {
                                 errors.rating = 'Rating must be between 1 and 5';
                             }
                             if (!values.text) {
-                                errors.text = 'Required';
+                                errors.text = 'Review content cannot be blank';
                             }
                             return errors;
                         }}
@@ -260,7 +260,7 @@ const ShelterDetail = () => {
                                         className="mt-0 flex items-center gap-1 font-normal"
                                     >{errors.text}</Typography>}
 
-                                    <Button className="w-full" color="blue" type='submit'>Submit</Button>
+                                    <Button className="w-full" color="orange" type='submit'>Submit</Button>
                                 </div>
                             </Form>
                         )}
