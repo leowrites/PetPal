@@ -1,7 +1,10 @@
-from rest_framework import generics
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import generics, filters
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import PermissionDenied
+
+from shelters.filters import PetApplicationFilter
 from shelters.models.pet_application import PetApplication
 from shelters import models
 from shelters.serializers import serializers
@@ -12,8 +15,16 @@ from shelters.permissions import permissions
 class ListUserApplication(generics.ListAPIView):
     serializer_class = serializers.PetApplicationListSerializer
     permission_classes = [IsAuthenticated]
+    filter_backends = [filters.OrderingFilter, DjangoFilterBackend]
+    filterset_class = PetApplicationFilter
+    ordering_fields = ['application_time', 'last_updated']
+    ordering = ['last_updated']
 
     def get_queryset(self):
+        # for users, return applications that belong to the user
+        # for shelters, return the applications where the shelter is owned by the user
+        if hasattr(self.request.user, 'shelter'):
+            return PetApplication.objects.filter(listing__shelter=self.request.user.shelter).order_by('-application_time')
         return PetApplication.objects.filter(applicant=self.request.user).order_by('-application_time')
 
 

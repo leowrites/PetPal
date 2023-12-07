@@ -72,7 +72,7 @@ export default function NotificationPopover() {
                     else if (response.data.type === "applicationStatusChange") {navigate(`/applications/${response.data.applicationId}`);}
                     else if (response.data.type === "application") {navigate(`/applications/${response.data.applicationId}`);}
                     else if (response.data.type === "petListing") {navigate(`/listings/${response.data.listingId}`);}
-                    else if (response.data.type === "review") {navigate(`/shelters/${response.data.shelterId}/reviews`);}
+                    else if (response.data.type === "review") {navigate(`/shelters/${response.data.shelterId}`);}
                 })
                 .catch((error) => {
                     console.log(error);

@@ -23,6 +23,7 @@ import { UserContextProvider, useUser } from './contexts/UserContext';
 import NewListing from './pages/NewListing';
 import EditListing from './pages/EditListing';
 import ChangePassword from './pages/ChangePassword';
+import PetApplicationList from './pages/PetApplicationList';
 
 const ProtectedRoute = ({ children }) => {
   const { user } = useUser()
@@ -48,7 +49,11 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout />} >
             <Route path="" element={<Landing />} />
-            <Route path="listings" element={<Listings />} />
+            <Route path="listings" element={
+              <ShelterProtectedRoute>
+                <Listings />
+              </ShelterProtectedRoute>
+            } />
             <Route path="listings/:listingId" element={
               <ProtectedRoute>
                 <PetDetail />
@@ -76,20 +81,24 @@ function App() {
             } />
             <Route path="applications" element={
               <ProtectedRoute>
-                <CompletedApplicationLayout />
+                <PetApplicationList />
               </ProtectedRoute>
             }>
-              <Route path=":applicationId" element={
-                <ProtectedRoute>
-                  <PetApplication completed={true} />
-                </ProtectedRoute>
-              } />
-              <Route path=':applicationId/comments' element={
-                <ProtectedRoute>
-                  <Message />
-                </ProtectedRoute>
-              } />
             </Route>
+            <Route path="applications/:applicationId" element={
+              <ProtectedRoute>
+                <CompletedApplicationLayout>
+                  <PetApplication completed={true} />
+                </CompletedApplicationLayout>
+              </ProtectedRoute>
+            } />
+            <Route path='applications/:applicationId/comments' element={
+              <ProtectedRoute>
+                <CompletedApplicationLayout>
+                  <Message />
+                </CompletedApplicationLayout>
+              </ProtectedRoute>
+            } />
             <Route path="profile" element={
                 <ProtectedRoute>
                     <ProfileUpdate />

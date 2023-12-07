@@ -7,7 +7,7 @@ class PetDetailService {
         return response
     }
 
-    static async getPetListings(ordering, name, shelter_name, status, breed, min_age, max_age) {
+    static async getPetListings(ordering, name, shelter_name, status, breed, min_age, max_age, page) {
         const params = {
             ordering: ordering,
             name: name,
@@ -16,6 +16,7 @@ class PetDetailService {
             breed: breed,
             min_age: min_age,
             max_age: max_age,
+            page: page
         }
         const response = await ApiService.get(
             `/listings/`,
