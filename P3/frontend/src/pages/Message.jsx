@@ -123,7 +123,7 @@ const Message = () => {
                     ))
                 }
             </div>
-            <div className="fixed bottom-20 w-full lg:px-48 px-8">
+            <div className="fixed bottom-0 w-full lg:px-48 px-8 pb-20 pt-2 bg-white">
                 <form
                     noValidate
                     className="flex flex-row gap-2 items-baseline w-full"
