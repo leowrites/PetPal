@@ -403,11 +403,11 @@ export function ListingTable({ listings, pageNumber, hasNextPage, addPageNumber,
     return (
         <Card className="h-full w-full">
             <CardHeader floated={false} shadow={false} className="rounded-none">
-                <div className="mb-2 flex items-center justify-between pt-[1rem] gap-8">
+                <div className="mb-2 flex flex-col md:flex-row items-start md:items-center justify-between pt-[1rem] gap-8">
                     <p className='font-semibold text-2xl'>
                         Pet Listings
                     </p>
-                    <div className='flex flex-row gap-[1rem]'>
+                    <div className='flex flex-col sm:flex-row gap-[1rem]'>
                     <Link to='/questions'>
                         <Button>
                             Manage Questions
