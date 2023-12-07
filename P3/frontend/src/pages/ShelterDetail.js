@@ -212,7 +212,7 @@ const ShelterDetail = () => {
                 { user && (
                     <div className="flex justify-center items-center gap-4 mt-5">
                         <ShelterCircularPagination 
-                            totalPages={totalReviewPages} 
+                            totalPages={totalReviewPages === 0 ? 1 : totalReviewPages}
                             onPageChange={(pageNum) => {
                                 setCurrReviewPage(pageNum);
                             }}
