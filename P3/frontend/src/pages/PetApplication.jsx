@@ -284,6 +284,11 @@ export default function PetApplication({ completed }) {
             }
             PetDetailService.get(listingId)
                 .then(res => {
+                    // redirect if not available
+                    if (res.data.status !== 'available') {
+                        navigate('/404')
+                        return
+                    }
                     setPetDetail(res.data)
                 })
                 .catch(err => {
