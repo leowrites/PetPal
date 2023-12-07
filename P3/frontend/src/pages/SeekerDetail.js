@@ -29,13 +29,11 @@ const SeekerDetail = () => {
         <Page>
             <div className="flex flex-col items-center mt-5">
                 <Heading><h1 class="text-[2rem] font-semibold mb-4">{viewUser.username}</h1></Heading>
-                {viewUser.avatar && (
-                    <img 
-                        src={viewUser.avatar} 
-                        alt={`${viewUser.username}'s avatar`} 
-                        className="w-32 h-32 rounded-full object-cover mt-2" // Adjust size as needed
-                    />
-                )}
+                <img 
+                    src={viewUser.avatar ? viewUser.avatar : "https://upload.wikimedia.org/wikipedia/commons/1/18/Mi_villano_Favorito.jpg"}
+                    alt={`${viewUser.username ? viewUser.username : "User"}'s avatar`} 
+                    className="w-48 h-48 rounded-xl object-contain mt-2">
+                </img>
                 <p className="mt-3">{viewUser.email}</p>
             </div>
         </Page>
