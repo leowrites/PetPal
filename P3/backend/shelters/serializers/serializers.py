@@ -10,6 +10,7 @@ from users.models import User
 from django.db import transaction
 from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth.hashers import make_password
+from petpal import settings
 
 
 class ShelterQuestionSerializer(serializers.ModelSerializer):
@@ -56,7 +57,7 @@ def type_to_field(question_type, label, required):
     elif question_type == ShelterQuestion.CHECKBOX:
         return serializers.BooleanField(label=label, required=required)
     elif question_type == ShelterQuestion.DATE:
-        return serializers.DateField(label=label, required=required)
+        return serializers.DateField(input_formats=settings.DATE_INPUT_FORMATS, label=label, required=required)
     elif question_type == ShelterQuestion.EMAIL:
         return serializers.EmailField(max_length=200, min_length=0, label=label, required=required)
     elif question_type == ShelterQuestion.TEXT:
