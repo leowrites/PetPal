@@ -36,7 +36,7 @@ const ProtectedRoute = ({ children }) => {
 
 const ShelterProtectedRoute = ({ children }) => {
   const { user } = useUser()
-  if (!user && !user?.is_shelter) {
+  if (!user || !user?.is_shelter) {
     return <Navigate to={'/404'} />
   }
   return children
