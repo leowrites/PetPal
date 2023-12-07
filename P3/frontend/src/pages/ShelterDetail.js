@@ -193,7 +193,7 @@ const ShelterDetail = () => {
                     <Heading><h1 class="mt-0 text-[1.75rem] font-semibold mb-4">Reviews</h1></Heading>
                     {
                         user && (
-                            <Button className="flex items-center gap-3 px-3" onClick={handleOpen}><FaPen />Write a Review</Button>
+                            <Button className="flex items-center gap-3 px-3 mr-8" onClick={handleOpen}><FaPen />Write a Review</Button>
                         )
                     }
                 </div>

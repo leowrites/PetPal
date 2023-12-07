@@ -16,7 +16,7 @@ const Review = ({ review }) => {
     return (
         <div class="review py-4 flex flex-row items-start gap-4">
             <Avatar src={reviewUser?.avatar === null ? '/logo.svg' : reviewUser?.avatar} alt="profile" className="size-16" />
-            <div className="w-10/12">
+            <div className="w-11/12">
                 <div class="flex flex-col xl:flex-row justify-between">
                     <p class="text-md font-semibold">{reviewUser?.username}</p>
                     <p class="text-md font-semibold text-[#ff9447]">{(new Date(review.date_created)).toLocaleTimeString('en-US', {
