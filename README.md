@@ -1,6 +1,13 @@
 # PetPal
 CSC309 PetPal Project
-https://king-prawn-app-y8dyq.ondigitalocean.app/signup
+
+[https://king-prawn-app-y8dyq.ondigitalocean.app](https://king-prawn-app-y8dyq.ondigitalocean.app/)
+
+# Contributors
+- @justinwli930
+- @leowrites
+- @jasonfyw
+- @PierreLessard
 
 # Getting Started
 ## Tech Stack
@@ -22,13 +29,7 @@ $ python manage.py runserver
 
 ## UI Setup
 ```
-cd PetPal/frontend
-npm install
-npm start
+$ cd PetPal/frontend
+$ npm install
+$ npm start
 ```
-
-# Contributors
-- @justinwli930
-- @leowrites
-- @jasonfyw
-- @PierreLessard
