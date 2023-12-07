@@ -8,6 +8,7 @@ const Shelters = () => {
     const [shelters, setShelters] = useState([]);
     const [currPage, setCurrPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
+    const [loading, setLoading] = useState(true);
     const itemsPerPage = 10;
 
     useEffect(() => {
@@ -16,6 +17,7 @@ const Shelters = () => {
                 const response = await ShelterService.getAll(currPage);
                 setShelters(response.data.results);
                 setTotalPages(Math.ceil(response.data.count / itemsPerPage));
+                setLoading(false)
             }
             catch (error) {
                 return;
@@ -32,7 +34,7 @@ const Shelters = () => {
 
             <div className="w-full mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {shelters.map(shelter => (
-                    <ShelterCard shelter={shelter} />
+                    <ShelterCard shelter={shelter} loading={loading}/>
                 ))}
             </div>
 
