@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react"
-import { Link } from "react-router-dom"
-import Button from "../components/inputs/Button"
 import Page from "../components/layout/Page"
 import { ListingTable } from "../components/pet/common"
 import PetListingService from "../services/PetListingService"
 import { useUser } from "../contexts/UserContext";
 
-export default function () {
+export default function Listings() {
     const [listings, setListings] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [pageNumber, setPageNumber] = useState(1);
@@ -64,6 +62,7 @@ export default function () {
         }, 500);
 
         return () => clearTimeout(timer);
+        // eslint-disable-next-line
     }, [pageNumber, filters, deleted]);
 
 

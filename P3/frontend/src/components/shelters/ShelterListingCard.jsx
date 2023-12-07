@@ -3,10 +3,7 @@ import {
     CardHeader,
     CardBody,
     CardFooter,
-    div,
     Button,
-    Tooltip,
-    IconButton,
     Chip
 } from "@material-tailwind/react";
 import { useNavigate } from "react-router-dom";
@@ -28,12 +25,12 @@ export default function ShelterListingCard({listing}) {
             <CardHeader floated={false} color="blue-gray" onClick={() => navigate(`/listings/${listing.id}`)}>
                 <img
                 src={listing.image}
+                alt={listing.name}
                 className="w-[26rem] h-[16rem] object-cover bg-[#e7e7e7]"
                 onError={({ currentTarget }) => {
                     currentTarget.onerror = null
                     currentTarget.src="logo.svg";
                   }}
-                alt={`${listing.name} ${listing.id} image`}
                 />
                 <div className="hover:cursor-pointer opacity-0 hover:opacity-100 to-bg-black-10 absolute inset-0 h-full w-full transition bg-gradient-to-tr from-transparent via-black/10 to-black/20 " />
                 <div className="!absolute top-4 right-4 rounded-full">
@@ -58,7 +55,7 @@ export default function ShelterListingCard({listing}) {
                 </div>
             </CardBody>
             <CardFooter className="pt-0">
-                { listing.status == "available" ? (
+                { listing.status === "available" ? (
                     <Button className="bg-[#ff9447]" size="md" fullWidth={true} onClick={() => navigate(`/listings/${listing.id}`)}>
                         Adopt
                     </Button>

@@ -1,12 +1,9 @@
 import { Form, Formik } from 'formik';
 import TextInput from '../inputs/TextInput';
-import Text from '../Text'
-import Button from '../inputs/Button'
-import { useFormikContext } from 'formik';
+import Text from '../Text';
+import Button from '../inputs/Button';
 
 const UserProfileForm = ({ user, onSubmit, notification, errors }) => {
-
-    const { setFieldValue } = useFormikContext() ?? {};
 
     return (
         <Formik

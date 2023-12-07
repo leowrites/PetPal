@@ -60,7 +60,7 @@ export const PetOverviewPanel = ({ petListingOverview, detailsView, applicationI
                         <p className="text-sm">Listing Time: {petListingOverview.listingTime}</p>
                         <p className="text-sm pet-overview-box-status">Status: {petListingOverview.status}</p>
                         <Link to={`/shelters/${petListingOverview.shelter?.id}`}>
-                            <a className="text-sm underline pet-overview-box-shelter" >{petListingOverview.shelter?.name}</a>
+                            <div className="text-sm underline pet-overview-box-shelter" >{petListingOverview.shelter?.name}</div>
                         </Link>
                         <p className="text-sm pet-overview-box-breed">{petListingOverview.breed}</p>
                         <p className="text-sm pet-overview-box-breed">Age {petListingOverview.age}</p>
@@ -393,6 +393,7 @@ export function ListingTable({ listings, pageNumber, hasNextPage, addPageNumber,
 
     useEffect(() => {
         updateFilters({ ...filters, 'ordering': sortValue })
+        // eslint-disable-next-line
     }, [sortValue])
 
     return (

@@ -88,6 +88,7 @@ const ShelterDetail = () => {
         if (currPage === 1 || currPage === Math.ceil(listings.length / listingsPerPage)) {
             fetchListings();
         }
+        // eslint-disable-next-line
     }, [currPage, shelterId])
 
     useEffect(() => {

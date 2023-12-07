@@ -6,7 +6,6 @@ import SearchTextInput from "./SearchTextInput";
 import SearchFilterSelector from "./SearchFilterSelector";
 import AgeMultiRange from "./AgeMultiRange";
 import PetDetailService from "../../services/PetDetailService";
-import { ApiService } from "../../services/ApiService";
 import SearchSortSelector from "./SearchSortSelector";
 import LoadingSpinner from "../presenter/LoadingSpinner";
 
@@ -43,6 +42,7 @@ export default function SearchSideBar({ setListings, pageRequested, setPageReque
         }, 500);
     
         return () => clearTimeout(timer);
+        // eslint-disable-next-line
     }, [sortValue, listingStatus, petNameInput, shelterNameInput, breedInput, minAge, maxAge, setLoading, setListings]);
 
     useEffect(() => {
@@ -64,6 +64,7 @@ export default function SearchSideBar({ setListings, pageRequested, setPageReque
         }).catch((error) => {
             console.log(error);
         });
+        // eslint-disable-next-line
     }, [pageRequested, setLoading, setListings, setNextPageLink]);
 
     return (

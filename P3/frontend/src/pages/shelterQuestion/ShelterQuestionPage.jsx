@@ -2,7 +2,6 @@ import Heading from "../../components/layout/Heading";
 import Button from "../../components/inputs/Button";
 import { useEffect, useState } from "react";
 import QuestionService from "../../services/QuestionService";
-import { setAuthToken } from "../../services/ApiService";
 import QuestionCard from './components/QuestionCard'
 import QuestionModal from "./components/QuestionModal";
 import { Formik, Form } from 'formik';
@@ -16,7 +15,6 @@ import { useUser } from "../../contexts/UserContext";
 
 
 const NewQuestionModal = ({ open, handleOpen, handleAddQuestion }) => {
-    const navigate = useNavigate()
     const initialValues = {
         question: '',
         type: 'TEXT',
@@ -62,7 +60,7 @@ const SkeletonArray = () => {
     )
 }
 
-export default function () {
+export default function ShelterQuestionPage() {
     const [open, setOpen] = useState(false);
     const handleOpen = (open) => setOpen(open);
     const [questions, setQuestions] = useState([]);
@@ -95,7 +93,8 @@ export default function () {
                 navigate('/404')
                 console.log(err)
             })
-    }, [])
+            // eslint-disable-next-line
+    }, [navigate])
 
     return (
         <Page>

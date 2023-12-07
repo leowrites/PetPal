@@ -3,7 +3,6 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 import Button from '../components/inputs/Button'
 import { PetOverviewPanel } from "../components/pet/common"
 import PetDetailService from "../services/PetDetailService"
-import { setAuthToken } from "../services/ApiService"
 import { Formik, Form, Field } from 'formik'
 import PetApplicationService from "../services/PetApplicationService"
 import { Select, Option } from "@material-tailwind/react";
@@ -302,6 +301,7 @@ export default function PetApplication({ completed }) {
                 setLoading(false)
             })
         }
+        // eslint-disable-next-line
     }, [listingId, applicationId, completed, navigate])
     const petListingOverview = {
         id: petDetail.id,

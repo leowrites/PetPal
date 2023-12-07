@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Heading from '../components/layout/Heading';
 import { useUser } from '../contexts/UserContext';
 import UserDetailService from '../services/UserDetailService';
@@ -6,11 +6,11 @@ import PasswordChangeForm from '../components/profile/PasswordChangeForm';
 import Page from '../components/layout/Page';
 
 const ChangePassword = () => {
-    const { user, setUser } = useUser();
+    const { user } = useUser();
     const [notification, setNotification] = useState('');
     
     const handlePasswordChange = async (values, { setSubmitting }) => {
-        if (values.password != values.password2) {
+        if (values.password !== values.password2) {
             setSubmitting(false);
             return;
         }

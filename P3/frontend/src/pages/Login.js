@@ -21,7 +21,8 @@ const Login = () => {
         if (user) {
             navigate("/");
         }
-    }, [user]);
+        // eslint-disable-next-line
+    }, [user, navigate]);
 
     const onSubmit = ({ username, password }) => {
         setStatusLoading(true)

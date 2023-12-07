@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Select, Option } from "@material-tailwind/react";
 
 export default function ReadFilterSelector({ readFilter, setReadFilter, setLoading }) {

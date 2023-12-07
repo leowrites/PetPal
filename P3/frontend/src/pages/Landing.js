@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import ListingCard from '../components/presenter/ListingCard';
 import SearchListingCard from '../components/search/SearchListingCard';
 import Button from '../components/inputs/Button';
 import { Link } from 'react-router-dom';

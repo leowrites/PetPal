@@ -1,4 +1,4 @@
-import { ApiService, setAuthToken } from "./ApiService";
+import { ApiService } from "./ApiService";
 
 
 class AuthService {

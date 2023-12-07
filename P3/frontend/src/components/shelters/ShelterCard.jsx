@@ -1,6 +1,5 @@
 import {
     Card,
-    CardHeader,
     CardBody,
   } from "@material-tailwind/react";
 import Button from "../inputs/Button";

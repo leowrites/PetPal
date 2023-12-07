@@ -9,6 +9,7 @@ export const Search = () => {
   const [loading, setLoading] = useState(false);
   const observer = useRef();
 
+  // eslint-disable-next-line
   const lastListingElementRef = useCallback(node => {
     if (loading) return;
     if (observer.current) observer.current.disconnect();

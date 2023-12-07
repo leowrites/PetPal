@@ -5,10 +5,11 @@ import { Link, useLocation } from "react-router-dom";
 import { useUser } from "../../contexts/UserContext";
 import NotificationPopover from "../notifications/NotificationPopover";
 
-export default function NavBar({}) {
+export default function NavBar() {
 
     const { user } = useUser()
     const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+    const [isActive, setIsActive] = useState(false);
 
     useEffect(() => {
         const handleResize = () => setWindowWidth(window.innerWidth);
@@ -20,6 +21,7 @@ export default function NavBar({}) {
         if (windowWidth >= 1024 && isActive) {
             setIsActive(false);
         }
+        // eslint-disable-next-line
     }, [windowWidth])
 
     const isShelter = user?.is_shelter;
@@ -29,7 +31,6 @@ export default function NavBar({}) {
     let iconOpenRef = useRef(null);
     let iconCloseRef = useRef(null);
 
-    const [isActive, setIsActive] = useState(false);
 
     function toggleNavBar() {
         setIsActive(current => !current);

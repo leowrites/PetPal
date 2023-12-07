@@ -1,7 +1,7 @@
-import { useParams, useLocation, Link, Outlet } from 'react-router-dom'
+import { useParams, useLocation, Link } from 'react-router-dom'
 import Page from '../components/layout/Page'
 
-export default function ({ children }) {
+export default function CompletedApplicationLayout({ children }) {
     const { applicationId } = useParams()
     const selectedTab = useLocation().pathname.split('/')[3];
 

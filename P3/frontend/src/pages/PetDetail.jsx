@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react"
-import { useParams, useNavigate, Link } from 'react-router-dom'
-import Button from '../components/inputs/Button'
+import { useParams, useNavigate } from 'react-router-dom'
 import { PetOverviewPanel } from "../components/pet/common"
 import PetDetailService from "../services/PetDetailService"
-import { setAuthToken } from "../services/ApiService"
 import Skeleton from "react-loading-skeleton"
 import PetApplicationService from "../services/PetApplicationService"
 import Page from "../components/layout/Page"
@@ -75,7 +73,7 @@ export default function PetDetail() {
             })
             setLoading(false)
         })
-    }, [listingId])
+    }, [listingId, navigate])
     const petListingDetails = [
         {
             sectionTitle: 'Description',

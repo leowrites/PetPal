@@ -12,7 +12,6 @@ import { Formik, Form } from 'formik';
 import TextInput from "../../../components/inputs/TextInput";
 import SelectInput from "../../../components/inputs/SelectInput";
 import { options } from "../../../constants/QuestionTypes";
-import Subheading from '../../../components/layout/Subheading'
 import { MdModeEdit } from 'react-icons/md';
 import { FaRegTrashAlt } from "react-icons/fa";
 import QuestionModal from "./QuestionModal";
@@ -57,7 +56,7 @@ const EditQuestionModal = ({ open, handleOpen, questionObj, handleEditQuestion }
 
 }
 
-export default function ({ questionObj, handleDelete, handleUpdate }) {
+export default function QuestionCard({ questionObj, handleDelete, handleUpdate }) {
     const [open, setOpen] = useState(false);
     const [deleting, setDeleting] = useState(false);
     const handleOpen = (open) => setOpen(open);

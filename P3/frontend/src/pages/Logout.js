@@ -10,7 +10,8 @@ const Logout = () => {
         setToken(null)
         navigate('/login')
         window.location.reload();
-    }, [])
+        // eslint-disable-next-line
+    }, [navigate])
 
     return (
         <></>

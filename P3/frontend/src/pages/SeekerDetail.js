@@ -26,6 +26,7 @@ const SeekerDetail = () => {
             .catch(err => {
                 navigate('/404')
             })
+            // eslint-disable-next-line
     }, [userId, navigate])
 
     return (

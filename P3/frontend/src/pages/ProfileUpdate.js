@@ -88,6 +88,7 @@ const ProfileUpdate = () => {
             }
         }
         getShelter();
+        // eslint-disable-next-line
     }, [])
 
     const handleNotificationPreferenceSubmit = async (values, { setSubmitting }) => {
