@@ -36,9 +36,9 @@ const SeekerDetail = () => {
                     loading ? <Skeleton /> :
                     <>
                         <img 
-                            src={viewUser.avatar ? viewUser.avatar : "https://upload.wikimedia.org/wikipedia/commons/1/18/Mi_villano_Favorito.jpg"}
+                            src={viewUser.avatar ? viewUser.avatar : "/logo.svg"}
                             alt={`${viewUser.username ? viewUser.username : "User"}'s avatar`} 
-                            className="w-48 h-48 rounded-xl object-cover mt-2">
+                            className="w-48 h-48 rounded-xl object-contain mt-2">
                         </img>
                         <p className="mt-6">
                             <a href={`mailto:${viewUser.email}`} className="hover:text-[#ff9447]">

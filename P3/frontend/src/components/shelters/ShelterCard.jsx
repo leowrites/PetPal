@@ -12,17 +12,7 @@ import Skeleton from "react-loading-skeleton";
         <>
             {loading ? <Skeleton /> :
                 <Card className="w-full xl:flex-row bg-[#FFF8F4]">
-                    <CardHeader
-                    shadow={false}
-                    floated={false}
-                    className="m-0 w-2/5 shrink-0 rounded-r-none"
-                    >
-                    <div className="hidden xl:flex justify-center items-center h-full bg-[#FFF8F4]">
-                        <img src="https://i.ebayimg.com/images/g/fTEAAOSwvrBkDaUa/s-l1200.jpg" alt="Profile Icon" className="rounded-xl h-4/5 w-4/5" />
-                    </div>
-                    </CardHeader>
-
-                    <CardBody className="flex flex-col justify-between">
+                    <CardBody className="ml-2 mt-2 xl:mt-0 flex flex-col justify-between">
                         <div className="w-full overflow-hidden">
                             <p className="w-full text-[#290005] font-semibold text-xl mb-2">
                                 {shelter.shelter_name}
