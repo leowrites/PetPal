@@ -61,7 +61,7 @@ const ListingQuestionEditor = ({ listingId }) => {
                         <Heading>Add a Question</Heading>
                     </DialogHeader>
                     <Link to='/questions'>
-                        <Button className='font-xs mr-4 font-bold'>Edit question repository</Button>
+                        <Button className='font-xs mr-4 font-medium'>Edit question repository</Button>
                     </Link>
                 </div>
                 <DialogBody className="flex flex-col gap-2">
@@ -71,7 +71,7 @@ const ListingQuestionEditor = ({ listingId }) => {
                         .map(question => (
                             <Container className='flex items-center justify-between px-4 py-1' key={question.id}>
                                 <Text className="w-full py-2">{question.question}</Text>
-                                <Button onClick={() => ListingQuestionService.create(listingId, question.id).then(res => setListingQuestions([...listingQuestions, res.data]))}>Add</Button>
+                                <Button className="font-medium" onClick={() => ListingQuestionService.create(listingId, question.id).then(res => setListingQuestions([...listingQuestions, res.data]))}>Add</Button>
                             </Container>
                         ))
                     }

@@ -6,6 +6,7 @@ import ListingQuestionService from '../../../services/ListingQuestionService';
 import Button from '../../../components/inputs/Button';
 import { FaPen, FaTrash } from "react-icons/fa";
 import { Dialog, DialogHeader, DialogBody } from '@material-tailwind/react'
+import Heading from '../../../components/layout/Heading';
 
 
 const ListingQuestion = ({ listingId, question, handleDelete, handleUpdate }) => {
@@ -54,11 +55,14 @@ const ListingQuestion = ({ listingId, question, handleDelete, handleUpdate }) =>
             >
                 <div className="flex flex-col md:flex-row justify-between items-center">
                     <DialogHeader>
-                        Edit listing question
+                        <Heading>
+                            Edit listing question
+                        </Heading>
                     </DialogHeader>
                 </div>
                 <DialogBody className="flex flex-col gap-2">
                     <Button
+                        className="font-medium"
                         color="red"
                         onClick={handleUpdateRequired}
                     >
