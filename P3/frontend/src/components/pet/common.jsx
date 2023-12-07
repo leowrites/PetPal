@@ -335,7 +335,7 @@ const ListingRows = ({ listings, isShelter, deleteListing }) => {
                             <Chip
                                 variant="ghost"
                                 size="sm"
-                                value={status}
+                                value={status === 'available' ? 'Available' : 'Not Available'}
                                 color={status === 'available' ? "green" : "red"}
                             />
                         </div>
