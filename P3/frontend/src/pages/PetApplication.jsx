@@ -312,7 +312,10 @@ export default function PetApplication({ completed }) {
             day: "numeric",
         }),
         status: petDetail.status === 'available' ? 'Available' : 'Not Available',
-        shelter: petDetail.shelter?.shelter_name,
+        shelter: {
+            id: petDetail.shelter?.id,
+            name: petDetail.shelter?.shelter_name,
+        },
         shelterId: petDetail.shelter?.id,
         breed: petDetail.breed,
         age: petDetail.age,
