@@ -15,6 +15,7 @@ const Login = () => {
     const navigate = useNavigate();
     const [formError, setFormError] = useState('')
     const { user, setToken } = useUser();
+    const [statusLoading, setStatusLoading] = useState(false)
 
     useEffect(() => {
         if (user) {
@@ -23,13 +24,16 @@ const Login = () => {
     }, [user]);
 
     const onSubmit = ({ username, password }) => {
+        setStatusLoading(true)
         AuthService.login(username, password)
             .then((res) => {
                 setToken(res.access)
+                setStatusLoading(false)
                 navigate('/')
             })
             .catch((err) => {
                 setFormError('Username or password incorrect')
+                setStatusLoading(false)
             })
     }
 
@@ -53,7 +57,7 @@ const Login = () => {
 
                                 <TextInput id='password' name='password' placeholder='Password' type='password' className='lg:w-[22rem] w-[18rem] border-2 border-[#290005] bg-[#FFF8F4]' />
 
-                                <Button className='mt-6' type='submit'>Sign in</Button>
+                                <Button disabled={statusLoading} className='mt-6' type='submit'>Sign in</Button>
                             </div>
                         </Form>
                     </Formik>
