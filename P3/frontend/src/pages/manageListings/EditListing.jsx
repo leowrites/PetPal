@@ -13,6 +13,7 @@ import SelectInput from '../../components/inputs/SelectInput';
 import Page from '../../components/layout/Page';
 import ListingQuestionEditor from './components/ListingQuestionEditor';
 
+
 const EditListing = () => {
     const navigate = useNavigate();
     const { user } = useUser();
@@ -117,8 +118,22 @@ const EditListing = () => {
                     <Formik
                         initialValues={initialValues}
                         enableReinitialize
-                        onSubmit={async (values, { setFieldError }) => {
+                        onSubmit={async (values, { setFieldError, setSubmitting }) => {
+                            setSubmitting(true);
                             if (user.is_shelter) {
+                                let isValidImages = true;
+                                for (let i = 0; i < values.images.length; i++) {
+                                    if (values.images[i]) {
+                                        if (values.images[i].size > 10485760) {
+                                            isValidImages = false;
+                                            setFieldError(`image${i > 0 ? i+1 : ''}`, 'Image size must be less than 10MB');
+                                        }
+                                    }
+                                }
+                                if (!isValidImages) {
+                                    setSubmitting(false);
+                                    return;
+                                }
                                 const formData = new FormData();
                                 formData.append('status', values.status);
                                 formData.append('name', values.name);
@@ -136,6 +151,7 @@ const EditListing = () => {
                                     listingId,
                                     formData
                                 ).then((res) => {
+                                    setSubmitting(false);
                                     window.location.href = `/listings/${res.data.id}`
                                 }).catch((err) => {
                                     if (err.response && err.response.data) {
@@ -143,11 +159,12 @@ const EditListing = () => {
                                             setFieldError(key, err.response.data[key][0]);
                                         });
                                     }
+                                    setSubmitting(false);
                                 })
                             }
                             }}
                     >
-                        {({errors, setFieldValue, values}) => {
+                        {({errors, setFieldValue, values, isSubmitting}) => {
                             const handleImageChange = (event, i) => {
                                 const file = event.currentTarget.files[0];
                                 if (file) {
@@ -241,7 +258,7 @@ const EditListing = () => {
 
 
                                         <div className='col-span-2 flex justify-start'>
-                                            <Button className='px-8' type="submit">Save Changes</Button>
+                                            <Button className='px-8' type="submit" disabled={isSubmitting}>Save Changes</Button>
                                         </div>
                                     </div>
                                 </Form>

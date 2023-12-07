@@ -12,7 +12,6 @@ import NotificationPreferencesForm from '../components/profile/NotificationPrefe
 import ShelterProfileForm from '../components/profile/ShelterProfileForm';
 import { Avatar } from "@material-tailwind/react";
 import Page from '../components/layout/Page';
-import { Formik, Form, useField, useFormikContext } from 'formik';
 
 const ProfileUpdate = () => { 
     const { user, setUser, setToken } = useUser();
@@ -28,6 +27,11 @@ const ProfileUpdate = () => {
         formData.append('username', values.username);
         formData.append('email', values.email);
         if (values.avatar) {
+            if (values.avatar.size > 10485760) {
+                setFieldError('avatar', 'File size must be less than 10MB');
+                setSubmitting(false);
+                return;
+            }
             formData.append('avatar', values.avatar);
         }
 
