@@ -32,7 +32,9 @@ const ProfileUpdate = () => {
                 setSubmitting(false);
                 return;
             }
-            formData.append('avatar', values.avatar);
+            else if (values.avatar instanceof File) {
+                formData.append('avatar', values.avatar);
+            }
         }
 
         try {
