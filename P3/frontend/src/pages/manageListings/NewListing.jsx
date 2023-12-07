@@ -150,7 +150,7 @@ const NewListing = () => {
                                                                     )
                                                                 }
                                                                 <label htmlFor={`image-${i}`}
-                                                                    class="absolute right-3 bottom-3 cursor-pointer bg-white border-2 border-black px-3 rounded-xl">
+                                                                    class="absolute right-2 left-2 md:left-auto bottom-2 cursor-pointer bg-white border-2 border-black px-2 rounded-xl text-sm sm:text-base">
                                                                     Upload picture
                                                                 </label>
                                                                 <input
@@ -162,7 +162,7 @@ const NewListing = () => {
                                                                     accept='image/*'
                                                                 />
                                                             </div>
-                                                            {errors[`image${i > 0 ? i+1 : ''}`] && <Text color='text-red-500'>{errors[`image${(i > 0 ? i + 1 : '')}`]}</Text>}
+                                                            {errors[`image${i > 0 ? i+1 : ''}`] && <Text color='text-red-500 text-sm px-2'>{errors[`image${(i > 0 ? i + 1 : '')}`]}</Text>}
                                                         </div>
                                                     ))
                                                 }
