@@ -42,7 +42,7 @@ export default function SearchListingCard({listing}) {
             <CardHeader floated={false}
             shadow={false}
             color="transparent"
-            className="relative px-[1rem] text-[#290005] rounded-none text-3xl hover:cursor-pointer whitespace-nowrap transition hover:text-[#ff9447] font-[500]" onClick={() => navigate(`/listings/${listing.id}`)}> 
+            className="relative px-[1rem] text-[#290005] rounded-none text-3xl hover:cursor-pointer whitespace-nowrap transition hover:text-[#ff9447] font-[500] overflow-hidden" onClick={() => navigate(`/listings/${listing.id}`)}> 
                 {listing.name}
                 <div className="absolute right-0 top-0 h-full w-[20%] transition bg-gradient-to-r from-transparent via-white/50 to-white " />
             </CardHeader>
@@ -74,8 +74,9 @@ export default function SearchListingCard({listing}) {
                     <div>{listing.age} Year{listing.age !== 1 ? 's' : ''} Old</div> <FaBirthdayCake className="mb-[.1rem]" />
                 </div>
                 </div>
-                <div variant="lead" color="gray" className="ml-[.5rem] mt-[.25rem] font-normal text-md">
+                <div variant="lead" color="gray" className="relative ml-[.5rem] mt-[.25rem] font-normal text-md whitespace-nowrap overflow-hidden">
                     {listing.bio}
+                    <div className="absolute right-0 top-0 h-full w-[20%] transition bg-gradient-to-r from-transparent via-white/50 to-white " />
                 </div>
             </CardBody>
             <CardFooter className="pt-0">
