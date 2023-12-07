@@ -6,5 +6,6 @@ Steps to deploy the website:
 5. Click on Add Resource and select "Detect from Srouce Code", similarly add path to the backend
 6. Review everything and create the app
 7. Go to settings, backend to configure the run command for Django. Edit "Run Command" and enter `gunicorn --worker-tmp-dir /dev/shm petpal.wsgi`
-8. Add any enviornment variables needed for frontend or backend
-9. DigitalOcean will automatically deploy the app
+8. Go to settings, frontend to configure the run command for React. Edit "Build Command" and enter npm run build, then edit "Run Command" and enter `npm start`
+9. Add any enviornment variables needed for frontend or backend
+10. DigitalOcean will automatically deploy the app
