@@ -24,8 +24,6 @@ const NewListing = () => {
             name: 'age',
             displayName: 'Age',
             inputType: 'number',
-            min: 0,
-            max: 20,
             colSpan: 1,
             required: true,
         },
