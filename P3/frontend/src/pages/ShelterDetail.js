@@ -175,7 +175,7 @@ const ShelterDetail = () => {
                 </div>
                 </Container> 
             )}
-            <Container className="px-12 py-8">
+            <Container className="px-4 md:px-12 py-8">
                 <div className="flex flex-row justify-between items-center">
                     <Heading><h1 class="mt-0 text-[1.75rem] font-semibold mb-4">Reviews</h1></Heading>
                     {
