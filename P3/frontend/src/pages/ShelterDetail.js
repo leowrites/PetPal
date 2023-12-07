@@ -55,6 +55,8 @@ const ShelterDetail = () => {
     const [open, setOpen] = useState(false)
     const handleOpen = (open) => setOpen(open);
     const [isLoading, setIsLoading] = useState(false)
+    const [backendTotalPages, setBackendTotalPages] = useState(1)
+    const [totalPages, setTotalPages] = useState(1)
 
     useEffect(() => {
         ShelterService.getById(shelterId)
@@ -67,14 +69,26 @@ const ShelterDetail = () => {
     }, [shelterId, navigate]);
 
     useEffect(() => {
-        PetListingService.getByShelter(shelterId)
-            .then(res => {
-                setListings(res.data.results)
-            })
-            .catch(err => {
+        const fetchListings = async () => {
+            try {
+                const pageNum = Math.floor((currPage / 5)) + 1
+                if (pageNum > backendTotalPages) {
+                    return;
+                }
+                const res = await PetListingService.getByShelter(shelterId, pageNum)
+                setBackendTotalPages(Math.ceil(res.data.count / 10));
+                setTotalPages(Math.ceil(res.data.count / listingsPerPage));
+                setListings(prevListings => [...prevListings, ...res.data.results]);
+            }
+            catch (err) {
                 setListings([])
-            })
-    }, [shelterId])
+            }
+        }
+        
+        if (currPage === 1 || currPage === Math.ceil(listings.length / listingsPerPage)) {
+            fetchListings();
+        }
+    }, [currPage, shelterId])
 
     useEffect(() => {
         ReviewService.list(shelterId, currReviewPage)
@@ -88,7 +102,6 @@ const ShelterDetail = () => {
             })
     }, [shelterId, currReviewPage])
 
-    const totalPages = Math.ceil(listings.length / listingsPerPage)
     const indexOfLastListing = currPage * listingsPerPage
     const indexOfFirstListing = indexOfLastListing - listingsPerPage
     const currListings = listings.slice(indexOfFirstListing, indexOfLastListing)
@@ -123,7 +136,7 @@ const ShelterDetail = () => {
                     </div>
                     </Container>
                     <Container className="flex flex-col justify-center px-4">
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 justify-items-center">
+                        <div className={`grid ${currListings.length === 1 ? 'place-items-center' : 'grid-cols-1 lg:grid-cols-2'} gap-4`}>
                             {currListings.map((listing) => (
                                 <ShelterListingCard listing={listing} />
                             ))}

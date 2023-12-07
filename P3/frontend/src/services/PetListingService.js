@@ -6,8 +6,8 @@ class PetListingService {
         return response
     }
 
-    static async getByShelter(shelterId) {
-        const response = await ApiService.get(`/shelters/${shelterId}/listings`)
+    static async getByShelter(shelterId, page) {
+        const response = await ApiService.get(`/shelters/${shelterId}/listings?page=${page}`)
         return response
     }
 
