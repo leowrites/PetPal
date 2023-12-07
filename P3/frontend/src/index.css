@@ -1,0 +1,147 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  position: relative;
+  margin: 0;
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  padding: 0;
+  font-size: 16px;
+  min-height: 100vh;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+h1 {
+    font-family: 'Abril Fatface', cursive;
+}
+
+h2 {
+    font-family: 'IBM Plex Sans Condensed';
+}
+
+p {
+    font-family: 'Poppins', sans-serif;
+}
+
+.tab-selected {
+    border-color: #290005;
+}
+
+main {
+    padding-bottom: 5rem;
+}
+
+#navBarCollapsibleContent {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+}
+
+#notificationsDropdown {
+    max-height: 0px;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+}
+
+.show {
+    visibility: visible !important;
+    -webkit-animation: fadeIn 1s !important;
+    animation: fadeIn 1s;
+    z-index: 1000;
+}
+
+#notificationsDropdownMobile {
+    visibility: hidden;
+    z-index: 10;
+}
+
+.pet-photo,
+.shelter-photo {
+    border: 2px solid #290005;
+    /* border-radius: 10px; */
+}
+
+.pet-detail-box,
+.shelter-chat-box,
+.shelter-detail-box {
+    border: 2px solid #290005;
+}
+
+.pet-overview-box {
+    border: 2px solid #290005;
+    height: 100%;
+}
+
+.enabled-button {
+    background-color: #ff9447;
+}
+
+.disabled-button {
+    background-color: #290005;
+}
+
+.pet-overview-box-status {
+    color: #ff9447;
+}
+
+.pet-overview-box-breed {
+    color: #953f43;
+}
+
+.pet-overview-box-shelter {
+    color: #5a2028;
+}
+
+.pet-overview-box-breed,
+.pet-overview-box-shelter,
+.pet-overview-box-status {
+    font-weight: 600;
+}
+
+.status-banner {
+    background-color: #953f43;
+}
+
+.schedule-table {
+    font-size: small;
+}
+
+.schedule-table td {
+    width: 8rem;
+}
+
+.rating-star-filled {
+    color: #ff9447;
+}
+
+.rating-star-unfilled {
+    color: #d9d9d9;
+}
+
+.review .profile-icon {
+    font-size: 3rem;
+}
+
+.review-reply .profile-icon {
+    font-size: 2rem;
+}
+
+.no-spinner {
+    -moz-appearance: textfield;
+}
+
+.no-spinner::-webkit-outer-spin-button,
+.no-spinner::-webkit-inner-spin-button {
+    margin: 0;
+    -webkit-appearance: none;
+}
