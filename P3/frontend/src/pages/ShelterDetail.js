@@ -34,7 +34,6 @@ const ShelterDetail = () => {
                 setListings(res.data.results)
             })
             .catch(err => {
-                console.log("error fetching listings:", err)
                 setListings([])
             })
     }, [shelterId])

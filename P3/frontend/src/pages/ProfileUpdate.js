@@ -41,7 +41,6 @@ const ProfileUpdate = () => {
             }, 5000);
         }
         catch (err) {
-            console.log('Error with profile update', err);
             if (err?.response?.data){
                 Object.keys(err.response.data).forEach((key) => {
                     setFieldError(key, err.response.data[key][0]);
@@ -64,7 +63,7 @@ const ProfileUpdate = () => {
                 setNotificationPreferences(response.data);
             }
             catch (error) {
-                console.log('Error getting notification preferences', error);
+                console.log('Error getting notification preferences');
             }
         }
         getNotificationPreferences();
@@ -78,7 +77,7 @@ const ProfileUpdate = () => {
                     setShelter(response.data);
                 }
                 catch (error) {
-                    console.log('Error getting shelter', error);
+                    console.log('Error getting shelter');
                 }
             }
         }
@@ -145,7 +144,7 @@ const ProfileUpdate = () => {
                 window.location.reload();
             } 
             catch (error) {
-                console.log('Error deleting profile', error);
+                console.log('Error deleting profile');
             }
         }
     }
