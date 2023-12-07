@@ -59,7 +59,7 @@ export default function ShelterListingCard({listing}) {
             </CardBody>
             <CardFooter className="pt-0">
                 { listing.status == "available" ? (
-                    <Button size="md" fullWidth={true} onClick={() => navigate(`/listings/${listing.id}`)}>
+                    <Button className="bg-[#ff9447]" size="md" fullWidth={true} onClick={() => navigate(`/listings/${listing.id}`)}>
                         Adopt
                     </Button>
                 ) : (
