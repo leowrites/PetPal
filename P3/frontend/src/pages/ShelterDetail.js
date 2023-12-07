@@ -53,7 +53,7 @@ const ShelterDetail = () => {
                             Location: {shelter.location}
                         </p>
                         <div className="flex justify-center items-center">
-                            <img src="https://i.ebayimg.com/images/g/fTEAAOSwvrBkDaUa/s-l1200.jpg" alt="Profile Icon" className="h-64 w-64 rounded-lg" />
+                            <img src="/logo.svg" alt="Profile Icon" className="h-64 w-64 rounded-lg" />
                         </div>
                         <p className="mt-8 font-semibold text-xl mb-2 text-center">
                             Our Mission Statement:
@@ -103,7 +103,7 @@ const ShelterDetail = () => {
                         Location: {shelter.location}
                     </p>
                     <div className="flex justify-center items-center">
-                        <img src="https://i.ebayimg.com/images/g/fTEAAOSwvrBkDaUa/s-l1200.jpg" alt="Profile Icon" className="h-64 w-64 rounded-lg" />
+                        <img src="/logo.svg" alt="Logo" className="h-64 w-64 rounded-lg" />
                     </div>
                     <p className="mt-8 font-semibold text-xl mb-2 text-center">
                         Our Mission Statement:
