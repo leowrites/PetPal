@@ -12,6 +12,7 @@ import NotificationPreferencesForm from '../components/profile/NotificationPrefe
 import ShelterProfileForm from '../components/profile/ShelterProfileForm';
 import { Avatar } from "@material-tailwind/react";
 import Page from '../components/layout/Page';
+import { Formik, Form, useField, useFormikContext } from 'formik';
 
 const ProfileUpdate = () => { 
     const { user, setUser, setToken } = useUser();
@@ -22,7 +23,7 @@ const ProfileUpdate = () => {
     const [shelter, setShelter] = useState({})
     const [shelterNotification, setShelterNotification] = useState('')
     
-    const handleUserProfileSubmit = async (values, { setSubmitting }) => {
+    const handleUserProfileSubmit = async (values, { setSubmitting, setFieldError }) => {
         const formData = new FormData();
         formData.append('username', values.username);
         formData.append('email', values.email);
@@ -39,9 +40,13 @@ const ProfileUpdate = () => {
                 setNotification('');
             }, 5000);
         }
-        catch (error) {
-            setNotification('Error with profile update');
-            console.log('Error with profile update', error);
+        catch (err) {
+            console.log('Error with profile update', err);
+            if (err?.response?.data){
+                Object.keys(err.response.data).forEach((key) => {
+                    setFieldError(key, err.response.data[key][0]);
+                });
+            }
 
             setTimeout(() => {
                 setNotification('');
@@ -102,7 +107,7 @@ const ProfileUpdate = () => {
         }
     }
 
-    const handleShelterProfileSubmit = async (values, { setSubmitting }) => {
+    const handleShelterProfileSubmit = async (values, { setSubmitting, setFieldError }) => {
         if (user.is_shelter) {
             try {
                 const response = await ShelterService.patch(user.shelter_id, values);
@@ -113,8 +118,13 @@ const ProfileUpdate = () => {
                     setShelterNotification('');
                 }, 5000)
             }
-            catch (error) {
+            catch (err) {
                 setShelterNotification('Error updating shelter information');
+                if (err?.response?.data){
+                    Object.keys(err.response.data).forEach((key) => {
+                        setFieldError(key, err.response.data[key][0]);
+                    });
+                }
 
                 setTimeout(() => {
                     setShelterNotification('');
