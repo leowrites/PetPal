@@ -118,8 +118,8 @@ const EditListing = () => {
 
     return (
         <Page>
-            <div className='flex flex-col items-center justify-center gap-8'>
-                <Container className="sm:w-4/5 md:w-3/4 lg:w-2/3 xl:w-2/3">
+            <div className='flex flex-col items-center justify-center gap-8 w-full'>
+                <Container className="sm:w-full md:w-4/5">
                     <Heading>Edit Pet Listing</Heading>
                     <Formik
                         initialValues={initialValues}
@@ -258,7 +258,7 @@ const EditListing = () => {
                 </Container>
 
 
-                <Container className="sm:w-4/5 md:w-3/4 lg:w-2/3 xl:w-2/3 flex flex-col col-span-2 gap-4">
+                <Container className="sm:w-full md:w-4/5 flex flex-col col-span-2 gap-4">
                     <Heading>Questions</Heading>
                     <Text className='col-span-2'>Select which questions applicants will respond to in their application.</Text>
                     <ListingQuestionEditor listingId={listingId}/>

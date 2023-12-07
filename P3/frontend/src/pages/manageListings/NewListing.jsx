@@ -68,8 +68,8 @@ const NewListing = () => {
 
     return (
         <Page>
-            <div className='flex items-center justify-center'>
-                <Container className="sm:w-4/5 md:w-3/4 lg:w-2/3 xl:w-2/3">
+            <div className='flex items-center justify-center w-full'>
+                <Container className="sm:w-full md:w-4/5">
                     <Heading>Add a New Pet</Heading>
                     <Formik
                         initialValues={{
