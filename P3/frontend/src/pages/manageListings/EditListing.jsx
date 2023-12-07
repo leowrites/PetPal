@@ -11,19 +11,12 @@ import { useUser } from '../../contexts/UserContext';
 import { useParams, useNavigate } from 'react-router-dom';
 import SelectInput from '../../components/inputs/SelectInput';
 import Page from '../../components/layout/Page';
-import QuestionService from '../../services/QuestionService';
-import Skeleton from 'react-loading-skeleton';
-import { Checkbox } from '@material-tailwind/react';
-import { Link } from 'react-router-dom';
-import { Chip } from "@material-tailwind/react";
 import ListingQuestionEditor from './components/ListingQuestionEditor';
 
 const EditListing = () => {
     const navigate = useNavigate();
     const { user } = useUser();
     const [imageUrls, setImageUrls] = useState([null, null, null]);
-    const [questions, setQuestions] = useState([]);
-    const [loading, setLoading] = useState(true);
     const [initialValues, setInitialValues] = useState({
         status: '',
         name: '',
