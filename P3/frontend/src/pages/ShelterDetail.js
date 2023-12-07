@@ -140,7 +140,7 @@ const ShelterDetail = () => {
                     </div>
                     </Container>
                     <Container className="flex flex-col justify-center px-4">
-                        <div className={`grid ${currListings.length === 1 ? 'place-items-center' : 'grid-cols-1 lg:grid-cols-2'} gap-4`}>
+                        <div className={`grid ${currListings.length === 1 ? 'grid-cols-1 place-items-center' : 'grid-cols-1 lg:grid-cols-2'} gap-4`}>
                             {currListings.map((listing) => (
                                 <ShelterListingCard listing={listing} />
                             ))}
