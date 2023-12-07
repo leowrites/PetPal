@@ -10,6 +10,10 @@ class UserDetailService {
         const response = await ApiService.get(`users/`)
         return response
     }
+    static async getPublicById(id) {
+        const response = await ApiService.get(`users/${id}/public`)
+        return response
+    }
 
     static async patchSelf(id, data) {
         const response = await ApiService.patch(`users/${id}`, data)

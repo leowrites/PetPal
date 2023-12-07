@@ -51,3 +51,7 @@ class ChangePassword(generics.UpdateAPIView):
     def get_object(self):
         return self.request.user
     
+# GET /users/<pk>/public
+class PublicUserDetail(generics.RetrieveAPIView):
+    serializer_class = serializers.PublicUserSerializer
+    queryset = User.objects.all()
