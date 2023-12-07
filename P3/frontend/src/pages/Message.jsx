@@ -32,6 +32,9 @@ const Message = () => {
 
     const handleSendMessage = (e) => {
         e.preventDefault()
+        if (message === '') {
+            return
+        }
         PetApplicationCommentService.create(applicationId, message)
             .then((res) => {
                 setMessages([...messages, res.data]);
@@ -105,6 +108,7 @@ const Message = () => {
                                 py-2
                                 lg:w-2/3
                                 w-full
+                                break-words
                             `}>
                                 {message.text}
                             </div>
@@ -131,7 +135,7 @@ const Message = () => {
                         placeholder='Send message'
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
-                        className="rounded-full w-full px-6 py-2 border-2 border-gray-800"
+                        className="rounded-full w-full px-6 py-2 border-2 border-gray-800 focus:outline-orange-400"
                         containerprops={{
                         className: "min-w-0",
                         }}
