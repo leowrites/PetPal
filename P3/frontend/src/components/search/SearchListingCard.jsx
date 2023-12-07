@@ -80,8 +80,8 @@ export default function SearchListingCard({listing}) {
                 </div>
             </CardBody>
             <CardFooter className="pt-0">
-                <Button size="md" fullWidth={true} onClick={() => navigate(`/shelters/${listing.shelter.id}`)}>
-                    View {listing.shelter.shelter_name}
+                <Button size="md" color="orange" fullWidth={true} onClick={() => navigate(`/listings/${listing.id}`)}>
+                    View
                 </Button>
             </CardFooter>
         </Card>
