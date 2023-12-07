@@ -54,6 +54,7 @@ const ShelterDetail = () => {
     const reviewPerPage = 10
     const [open, setOpen] = useState(false)
     const handleOpen = (open) => setOpen(open);
+    const [isLoading, setIsLoading] = useState(false)
 
     useEffect(() => {
         ShelterService.getById(shelterId)
@@ -230,6 +231,7 @@ const ShelterDetail = () => {
                             return errors;
                         }}
                         onSubmit={(values) => {
+                            setIsLoading(true)
                             ReviewService.create(shelterId, {
                                 rating: values.rating,
                                 text: values.text,
@@ -238,9 +240,11 @@ const ShelterDetail = () => {
                                 .then(res => {
                                     setReviews([res.data, ...reviews])
                                     handleOpen(false)
+                                    setIsLoading(false)
                                 })
                                 .catch(err => {
                                     console.log("error creating review:", err)
+                                    setIsLoading(false)
                                 })
                         }}
                     >
@@ -262,7 +266,7 @@ const ShelterDetail = () => {
                                         className="mt-0 flex items-center gap-1 font-normal"
                                     >{errors.text}</Typography>}
 
-                                    <Button className="w-full" color="orange" type='submit'>Submit</Button>
+                                    <Button className="w-full" color="orange" type='submit' disabled={isLoading}>Submit</Button>
                                 </div>
                             </Form>
                         )}
