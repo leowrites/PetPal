@@ -15,11 +15,7 @@ const Review = ({ review }) => {
 
     return (
         <div class="review py-4 flex flex-row items-start gap-4">
-            {
-                reviewUser?.avatar && (
-                    <Avatar src={reviewUser?.avatar} alt="profile" className="w-16 h-16" />
-                )
-            }
+            <Avatar src={reviewUser?.avatar === null ? 'https://upload.wikimedia.org/wikipedia/commons/1/18/Mi_villano_Favorito.jpg' : reviewUser?.avatar} alt="profile" className="w-16 h-16" />
             <div className="w-full">
                 <div class="flex flex-row justify-between">
                     <p class="text-md font-semibold">{reviewUser?.username}</p>
