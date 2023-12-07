@@ -39,7 +39,7 @@ export const Landing = () => {
           {/* Spacing container */}
           <div className='flex flex-wrap justify-start max-w-[310px] gap-[1rem] md:max-w-[700px] lg:max-w-[700px] xl:max-w-[1055px]'>
             {/* Example Pets */}
-            <div className='flex flex-row items-center gap-[.5rem]'>
+            <div className='flex flex-row items-center gap-[.5rem] mt-5'>
               <div class="text-[1.5rem] pb-[4px] font-semibold">Latest Pets Listed</div>
               <Link to='/search'>
                 <Button className='w-[8rem] h-[2rem] mb-[.25rem] flex text-center items-center justify-center' onClick={() => {}} buttonType='' children={
