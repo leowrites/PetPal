@@ -1,12 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
-import Page from '../components/layout/Page';
-import Container from '../components/layout/Container';
-import { Input, Button } from '@material-tailwind/react'
+import { Button } from '@material-tailwind/react'
 import { FaArrowUp, FaPaperPlane } from 'react-icons/fa';
 import { useParams } from 'react-router-dom';
 import PetApplicationCommentService from '../services/PetApplicationCommentService';
 import { useUser } from '../contexts/UserContext';
-import UserDetailService from '../services/UserDetailService';
+import { useNavigate } from 'react-router-dom';
 
 const Message = () => {
     const [message, setMessage] = useState('');
@@ -16,6 +14,7 @@ const Message = () => {
     const divRef = useRef(null);
     const [totalMessages, setTotalMessages] = useState(0);
     const [currPage, setCurrPage] = useState(1);
+    const navigate = useNavigate();
 
     useEffect(() => {
         PetApplicationCommentService.list(applicationId)
@@ -25,9 +24,11 @@ const Message = () => {
                 scrollToBottom();
             })
             .catch((err) => {
-                console.log(err);
+                if (err.response.status === 403) {
+                    navigate('/404')
+                }
             });
-    }, [applicationId])
+    }, [applicationId, navigate])
 
     const handleSendMessage = (e) => {
         e.preventDefault()
