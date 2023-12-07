@@ -268,10 +268,10 @@ export function ApplicationTable({ applications, pageNumber, hasNextPage, addPag
             <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 p-4">
                 <div></div>
                 <div className="flex gap-2">
-                    <Button className='hover:pointer-events-none' variant="outlined" size="sm" onClick={subPageNumber} disabled={isLoading || pageNumber === 1}>
+                    <Button className={isLoading || pageNumber === 1 ? 'opacity-80' : ''} variant="outlined" size="sm" onClick={subPageNumber} disabled={isLoading || pageNumber === 1}>
                         Previous
                     </Button>
-                    <Button variant="outlined" size="sm" onClick={addPageNumber} disabled={isLoading || !hasNextPage} >
+                    <Button variant="outlined" size="sm" className={isLoading || !hasNextPage ? 'opacity-80' : ''} onClick={addPageNumber} disabled={isLoading || !hasNextPage} >
                         Next
                     </Button>
                 </div>
