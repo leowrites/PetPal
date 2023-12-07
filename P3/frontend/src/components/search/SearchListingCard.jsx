@@ -42,7 +42,10 @@ export default function SearchListingCard({listing}) {
             <CardHeader floated={false}
             shadow={false}
             color="transparent"
-            className="px-[1rem] text-[#290005] rounded-none text-3xl hover:cursor-pointer transition hover:text-[#ff9447] font-[500]" onClick={() => navigate(`/listings/${listing.id}`)}> {listing.name} </CardHeader>
+            className="relative px-[1rem] text-[#290005] rounded-none text-3xl hover:cursor-pointer whitespace-nowrap transition hover:text-[#ff9447] font-[500]" onClick={() => navigate(`/listings/${listing.id}`)}> 
+                {listing.name}
+                <div className="absolute right-0 top-0 h-full w-[20%] transition bg-gradient-to-r from-transparent via-white/50 to-white " />
+            </CardHeader>
             <CardHeader floated={false} color="blue-gray" onClick={() => navigate(`/listings/${listing.id}`)}>
                 <img
                 src={listing.image}
