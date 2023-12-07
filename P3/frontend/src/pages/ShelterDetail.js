@@ -78,7 +78,11 @@ const ShelterDetail = () => {
                 const res = await PetListingService.getByShelter(shelterId, pageNum)
                 setBackendTotalPages(Math.ceil(res.data.count / 10));
                 setTotalPages(Math.ceil(res.data.count / listingsPerPage));
-                setListings(prevListings => [...prevListings, ...res.data.results]);
+                const newFetchedListings = res.data.results.filter(newListing => 
+                    !listings.some(existingListing => existingListing.id === newListing.id)
+                );
+    
+                setListings(prevListings => [...prevListings, ...newFetchedListings]);
             }
             catch (err) {
                 setListings([])
