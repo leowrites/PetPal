@@ -33,6 +33,7 @@ const UserProfileForm = ({ user, onSubmit, notification, errors }) => {
                             className="w-full file:mr-2 file:py-1 file:px-2
                             file:border-0 file:text-sm file:font-semibold
                             file:bg-[#290005] file:text-white hover:file:bg-[#ff9447] file:cursor-pointer"/>
+                        {errors.avatar && <Text color='text-red-500'>{errors.avatar}</Text>}
 
                         <label for="username" class="mt-3 block font-semibold">Username</label>
                         <TextInput 

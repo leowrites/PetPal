@@ -82,8 +82,26 @@ const NewListing = () => {
                             other: '',
                             images: [null, null, null]
                         }}
-                        onSubmit={async (values, { setFieldError }) => {
+                        onSubmit={async (values, { setFieldError, setSubmitting }) => {
+                            setSubmitting(true);
                             if (user.is_shelter) {
+                                let isValidImages = true;
+                                for (let i = 0; i < values.images.length; i++) {
+                                    if (values.images[i]) {
+                                        if (values.images[i].size > 10485760) {
+                                            isValidImages = false;
+                                            setFieldError(`image${i > 0 ? i+1 : ''}`, 'Image size must be less than 10MB');
+                                        }
+                                    } else {
+                                        isValidImages = false;
+                                        setFieldError(`image${i > 0 ? i+1 : ''}`, 'Please upload at least one image');
+                                    
+                                    }
+                                }
+                                if (!isValidImages) {
+                                    setSubmitting(false);
+                                    return;
+                                }
                                 const formData = new FormData();
                                 formData.append('name', values.name);
                                 formData.append('age', values.age);
@@ -100,6 +118,7 @@ const NewListing = () => {
                                     user.shelter_id,
                                     formData
                                 ).then((res) => {
+                                    setSubmitting(false);
                                     window.location.href = `/listings/${res.data.id}`
                                 }).catch((err) => {
                                     if (err.response && err.response.data) {
@@ -111,11 +130,12 @@ const NewListing = () => {
                                             setFieldError(key, errMessage);
                                         });
                                     }
+                                    setSubmitting(false);
                                 })
                             }
                             }}
                     >
-                        {({errors, setFieldValue, values}) => {
+                        {({errors, setFieldValue, values, isSubmitting}) => {
                             const handleImageChange = (event, i) => {
                                 const file = event.currentTarget.files[0];
                                 if (file) {
@@ -191,7 +211,7 @@ const NewListing = () => {
                                             ))
                                         }
                                         <div className='col-span-2 flex justify-start'>
-                                            <Button className='px-8' type="submit">Create</Button>
+                                            <Button className='px-8' type="submit" disabled={isSubmitting}>Create</Button>
                                         </div>
                                     </div>
                                 </Form>
