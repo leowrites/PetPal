@@ -13,11 +13,13 @@ export default function NotificationList({ notifications, createNotificationClic
         <List>
             {notifications.map((notification) => (
                 <ListItem key={notification.id} disabled={loading} selected={false} className="h-[3rem] w-[20rem]" onClick={createNotificationClickHandler(notification)}>
-                        {notification.message}
+                        <div  className="max-w-[15rem] text-ellipsis overflow-hidden break-normal">
+                            {notification.message}
+                        </div>
                         <ListItemSuffix>
                             <div className="flex flex-row items-center">
                                 {!notification.read ? 
-                                    <FaCircle color="orange" className="mr-[.5rem]"/> : 
+                                    <FaCircle color="orange" className="ml-[.25rem] mr-[.5rem]"/> : 
                                     <></>
                                 }
                                 <IconButton variant="text" disabled={loading} onClick={(e) => {
