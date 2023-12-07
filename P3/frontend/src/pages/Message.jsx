@@ -79,7 +79,7 @@ const Message = () => {
 
     return (
         <div className="min-h-screen w-full left-0 fixed">
-            <div ref={divRef} className="lg:px-48 px-8 flex flex-col gap-1 overflow-auto h-[80vh] pb-36" style={{overflowAnchor: 'auto'}}>
+            <div ref={divRef} className="lg:px-48 px-8 flex flex-col gap-1 overflow-auto h-[80vh] pb-36 pt-8" style={{overflowAnchor: 'auto'}}>
                 {
                     messages.length < totalMessages && (
                         <div className="flex flex-row gap-2 items-baseline w-full justify-center">
