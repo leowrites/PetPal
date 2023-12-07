@@ -32,6 +32,13 @@ const SkeletonArray = () => {
 export const PetOverviewPanel = ({ petListingOverview, detailsView, applicationId, loading }) => {
     console.log(petListingOverview)
     const { user } = useUser()
+    const AdoptButton = () => {
+        return (
+            petListingOverview.status === 'Available' && <Link to={`applications`}>
+                <Button>Adopt</Button>
+            </Link>
+        )
+    }
     const ActionButton = () => {
         // don't let shelters adopt anything
         if (user.is_shelter) return null
@@ -41,9 +48,7 @@ export const PetOverviewPanel = ({ petListingOverview, detailsView, applicationI
                     <Button>View Application</Button>
                 </Link>
                 : detailsView ?
-                    <Link to='applications'>
-                        <Button>Adopt</Button>
-                    </Link>
+                    <AdoptButton />
                     : null
         )
     }
