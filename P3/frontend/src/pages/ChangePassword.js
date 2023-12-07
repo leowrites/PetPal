@@ -23,7 +23,6 @@ const ChangePassword = () => {
             }, 5000);
         }
         catch (error) {
-            console.log('Error with password change', error);
             setNotification('Error with password change');
 
             setTimeout(() => {

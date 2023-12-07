@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import ShelterListingCard from "../components/shelters/ShelterListingCard";
 import { useUser } from "../contexts/UserContext";
 import { ArrowRightIcon, ArrowLeftIcon } from "@heroicons/react/24/outline";
-import { Button, IconButton } from "@material-tailwind/react";
+import { Button } from "@material-tailwind/react";
 
 const ShelterDetail = () => {
     const { user } = useUser()
@@ -34,7 +34,6 @@ const ShelterDetail = () => {
                 setListings(res.data.results)
             })
             .catch(err => {
-                console.log("error fetching listings:", err)
                 setListings([])
             })
     }, [shelterId])
@@ -46,7 +45,7 @@ const ShelterDetail = () => {
 
     return (
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-14">
-            {user && listings.length != 0 ? (
+            {user && listings.length !== 0 ? (
                 <div className="grid grid-cols-1 xl:grid-cols-2 gap-x-40 gap-y-16">
                     <div className="flex flex-col items-center">
                         <Heading><h1 class="mt-10 text-[2rem] font-semibold mb-4">{shelter.shelter_name}</h1></Heading>
