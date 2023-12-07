@@ -19,9 +19,12 @@ export default function ShelterListingCard({listing}) {
     return (
         <Card className="w-full max-w-[26rem] shadow-lg">
             <CardHeader floated={false}
-            shadow={false}
-            color="transparent"
-            className="px-[1rem] text-[#290005] rounded-none text-3xl hover:cursor-pointer transition hover:text-[#ff9447] font-[500]" onClick={() => navigate(`/listings/${listing.id}`)}> {listing.name} </CardHeader>
+                shadow={false}
+                color="transparent"
+                className="relative px-[1rem] text-[#290005] rounded-none text-3xl hover:cursor-pointer whitespace-nowrap transition hover:text-[#ff9447] font-[500]" onClick={() => navigate(`/listings/${listing.id}`)}> 
+                {listing.name}
+                <div className="absolute right-0 top-0 h-full w-[20%] transition bg-gradient-to-r from-transparent via-white/50 to-white " />
+            </CardHeader>
             <CardHeader floated={false} color="blue-gray" onClick={() => navigate(`/listings/${listing.id}`)}>
                 <img
                 src={listing.image}
@@ -49,8 +52,9 @@ export default function ShelterListingCard({listing}) {
                     <div>{listing.age} Year Old</div> <FaBirthdayCake className="mb-[.1rem]" />
                 </div>
                 </div>
-                <div variant="lead" color="gray" className="ml-[.5rem] mt-[.25rem] font-normal text-md">
+                <div variant="lead" color="gray" className="relative ml-[.5rem] mt-[.25rem] font-normal text-md whitespace-nowrap overflow-hidden">
                     {listing.bio}
+                    <div className="absolute right-0 top-0 h-full w-[20%] transition bg-gradient-to-r from-transparent via-white/50 to-white " />
                 </div>
             </CardBody>
             <CardFooter className="pt-0">
@@ -59,7 +63,11 @@ export default function ShelterListingCard({listing}) {
                         Adopt
                     </Button>
                 ) : (
-                    null
+                    <div className="opacity-0">
+                        <Button size="md" fullWidth={true} disabled>
+                            Adopt
+                        </Button>
+                    </div>
                 )} 
             </CardFooter>
         </Card>
