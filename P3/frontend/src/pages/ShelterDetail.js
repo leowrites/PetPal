@@ -179,7 +179,11 @@ const ShelterDetail = () => {
             <Container className="px-12 py-8">
                 <div className="flex flex-row justify-between items-center">
                     <Heading><h1 class="mt-0 text-[1.75rem] font-semibold mb-4">Reviews</h1></Heading>
-                    <Button className="flex items-center gap-3 px-3" onClick={handleOpen}><FaPen />Write a Review</Button>
+                    {
+                        user && (
+                            <Button className="flex items-center gap-3 px-3" onClick={handleOpen}><FaPen />Write a Review</Button>
+                        )
+                    }
                 </div>
                 <div className="flex flex-col gap-y-4 w-full">
                     {
