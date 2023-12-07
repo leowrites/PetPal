@@ -4,14 +4,7 @@ import UserDetailService from '../../services/UserDetailService';
 import { Avatar } from '@material-tailwind/react'
 
 const Review = ({ review }) => {
-    const [reviewUser, setReviewUser] = useState(null);
-
-    useEffect(() => {
-        UserDetailService.getPublicById(review.user)
-            .then((res) => {
-                setReviewUser(res.data);
-            })
-    }, [review.user]);
+    const reviewUser = review.user;
 
     return (
         <div class="review py-4 flex flex-row items-start gap-4">

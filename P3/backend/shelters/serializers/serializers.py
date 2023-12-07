@@ -269,6 +269,7 @@ class ShelterCreationSerializer(serializers.ModelSerializer):
 
 
 class ShelterReviewSerializer(serializers.ModelSerializer):
+    user = UserProfileSerializer(read_only=True)
     class Meta:
         model = models.ShelterReview
         fields = ['text', 'user', 'date_created', 'rating', 'shelter']
