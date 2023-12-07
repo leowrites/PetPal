@@ -70,7 +70,6 @@ const ShelterDetail = () => {
 
     useEffect(() => {
         const fetchListings = async () => {
-            console.log("CALLED:", currPage);
             try {
                 const pageNum = Math.floor((currPage / 5)) + 1
                 if (pageNum > backendTotalPages) {
@@ -86,8 +85,6 @@ const ShelterDetail = () => {
             }
         }
         
-        console.log("currPage:", currPage);
-        console.log("maxPage:", Math.ceil(listings.length / listingsPerPage));
         if (currPage === 1 || currPage === Math.ceil(listings.length / listingsPerPage)) {
             fetchListings();
         }
