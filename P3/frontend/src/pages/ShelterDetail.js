@@ -40,7 +40,6 @@ const ReviewInput = (props) => (
     />
 )
 
-
 const ShelterDetail = () => {
     const { user } = useUser()
     const { shelterId } = useParams()
@@ -72,7 +71,6 @@ const ShelterDetail = () => {
                 setListings(res.data.results)
             })
             .catch(err => {
-                console.log("error fetching listings:", err)
                 setListings([])
             })
     }, [shelterId])
@@ -96,7 +94,7 @@ const ShelterDetail = () => {
 
     return (
         <div className="container mx-auto px-4 sm:px-6 lg:px-8 mt-14 flex flex-col gap-y-10">
-            {user && listings.length != 0 ? (
+            {user && listings.length !== 0 ? (
                 <div className="grid grid-cols-1 xl:grid-cols-2 gap-x-10 gap-y-16">
                     <Container className="pb-4">
                     <div className="flex flex-col items-center">

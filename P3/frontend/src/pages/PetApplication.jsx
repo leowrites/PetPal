@@ -10,6 +10,7 @@ import { Select, Option } from "@material-tailwind/react";
 import Skeleton from 'react-loading-skeleton'
 import Page from "../components/layout/Page"
 import { useUser } from "../contexts/UserContext"
+import { convertDateFormat } from "../utils"
 
 const PetImage = ({ src }) => {
     return (
@@ -172,6 +173,11 @@ const WriteOnlyQuestions = ({ petName, assignedQuestions, listingId, completed }
     const [success, setSuccess] = useState(false)
     const [redirectUrl, setRedirectUrl] = useState('')
     const onSubmit = (values, { setSubmitting, setFieldError }) => {
+        assignedQuestions.forEach((assignedQuestion) => {
+            if (assignedQuestion.question.type === 'DATE') {
+                values[assignedQuestion.id] = convertDateFormat(values[assignedQuestion.id])
+            }
+        })
         PetApplicationService.post(listingId, values)
             .then((res) => {
                 console.log(res)
@@ -300,12 +306,14 @@ export default function PetApplication({ completed }) {
     const petListingOverview = {
         id: petDetail.id,
         name: petDetail.name,
-        listingTime: petDetail.listed_date,
-        status: petDetail.status,
-        shelter: {
-            id: petDetail.shelter?.id,
-            name: petDetail.shelter?.shelter_name,
-        },
+        listingTime: (new Date(petDetail.listed_date)).toLocaleTimeString('en-US', {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+        }),
+        status: petDetail.status === 'available' ? 'Available' : 'Not Available',
+        shelter: petDetail.shelter?.shelter_name,
+        shelterId: petDetail.shelter?.id,
         breed: petDetail.breed,
         age: petDetail.age,
         description: petDetail.bio

@@ -20,8 +20,8 @@ import Logout from './pages/Logout'
 import ProfileUpdate from './pages/ProfileUpdate'
 import 'react-loading-skeleton/dist/skeleton.css'
 import { UserContextProvider, useUser } from './contexts/UserContext';
-import NewListing from './pages/NewListing';
-import EditListing from './pages/EditListing';
+import NewListing from './pages/manageListings/NewListing';
+import EditListing from './pages/manageListings/EditListing';
 import ChangePassword from './pages/ChangePassword';
 import PetApplicationList from './pages/PetApplicationList';
 
@@ -36,8 +36,8 @@ const ProtectedRoute = ({ children }) => {
 
 const ShelterProtectedRoute = ({ children }) => {
   const { user } = useUser()
-  if (!user || !user.is_shelter) {
-    return <Navigate to={'/login'} />
+  if (!user || !user?.is_shelter) {
+    return <Navigate to={'/404'} />
   }
   return children
 }
@@ -60,9 +60,9 @@ function App() {
               </ProtectedRoute>
             } />
             <Route path="listings/:listingId/edit" element={
-              <ProtectedRoute>
+              <ShelterProtectedRoute>
                 <EditListing />
-              </ProtectedRoute>
+              </ShelterProtectedRoute>
             } />
             <Route path="listings/new" element={
               <ShelterProtectedRoute>
