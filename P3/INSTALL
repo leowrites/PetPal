@@ -1,6 +1,10 @@
-# This text file should explain how to deploy your website.
-
-# You should write detailed description on:
-
-# 1. All the packages you need to install
-# 2. How to configure various servers (e.g., Nginx, Apache, etc)
+Steps to deploy the website:
+1. Commit your repository to GitHub
+2. Sign up for a DigitalOcean account
+3. Go to App and click on Create App
+4. Select the "GitHub" option and select the repository, select a branch and add path to the frontend in "Source Directory" and click next
+5. Click on Add Resource and select "Detect from Srouce Code", similarly add path to the backend
+6. Review everything and create the app
+7. Go to settings, backend to configure the run command for Django. Edit "Run Command" and enter `gunicorn --worker-tmp-dir /dev/shm petpal.wsgi`
+8. Add any enviornment variables needed for frontend or backend
+9. DigitalOcean will automatically deploy the app
