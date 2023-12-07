@@ -108,6 +108,7 @@ export default function PetDetail() {
             name: petDetail.shelter?.shelter_name,
         },
         shelterOwner: petDetail.shelter?.owner,
+        shelterId: petDetail.shelter?.id,
         breed: petDetail.breed,
         age: petDetail.age,
     }

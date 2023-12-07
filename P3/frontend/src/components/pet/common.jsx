@@ -59,8 +59,8 @@ export const PetOverviewPanel = ({ petListingOverview, detailsView, applicationI
                         </Link>
                         <p className="text-sm">Listing Time: {petListingOverview.listingTime}</p>
                         <p className="text-sm pet-overview-box-status">Status: {petListingOverview.status}</p>
-                        <Link to={`/shelters/${petListingOverview.shelter.id}`}>
-                            <a className="text-sm underline pet-overview-box-shelter" >{petListingOverview.shelter.name}</a>
+                        <Link to={`/shelters/${petListingOverview.shelter?.id}`}>
+                            <a className="text-sm underline pet-overview-box-shelter" >{petListingOverview.shelter?.name}</a>
                         </Link>
                         <p className="text-sm pet-overview-box-breed">{petListingOverview.breed}</p>
                         <p className="text-sm pet-overview-box-breed">Age {petListingOverview.age}</p>
