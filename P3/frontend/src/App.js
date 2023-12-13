@@ -43,7 +43,7 @@ const ShelterProtectedRoute = ({ children }) => {
 }
 
 function App() {
-  if (process.env.NODE_ENV === 'production') {
+  if (process.env.REACT_APP_ENV === 'production') {
     console.log = () => { };
     console.warn = () => { };
     console.error = () => { };
